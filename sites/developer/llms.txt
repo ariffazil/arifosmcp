@@ -1,0 +1,309 @@
+# arifOS MCP — Technical Reference (CCC Vault)
+# Location:    https://arifosmcp.arif-fazil.com/llms.txt
+# Version:     v2026.03-FORGE
+# Authority:   ARIF FAZIL (888 Judge)
+# Status:      TECHNICALLY_SEALED
+# Last Updated: 2026-03-13
+# Vault Tier:  CCC — Applications / Runtime / Developer Reference
+# Read Order:  HUMAN first → THEORY second → THIS (APPS)
+# Index:       https://arif-fazil.com/.well-known/arifos.json
+
+---
+
+## arifOS MCP — WHAT IT IS
+
+arifOS MCP is the runtime execution layer of the arifOS Constitutional Intelligence Kernel.
+It exposes constitutional governance tools as an MCP (Model Context Protocol) server.
+Every AI inference processed through arifOS MCP is constitutional — all 13 floors enforced,
+all 3E telemetry scored, every VOID Memanjang event detected and escalated.
+
+This is not a chatbot wrapper. It is a thermodynamic governance layer for AI inference.
+
+Full Name:    arifOS Constitutional Intelligence Kernel — MCP Runtime
+Version:      2026.03-FORGE
+License:      AGPL-3.0-only
+Protocol:     MCP JSON-RPC 2.0 (Streamable HTTP transport)
+GitHub:       https://github.com/ariffazil/arifOS
+PyPI:         pip install arifos
+
+---
+
+## MCP ENDPOINTS
+
+Canonical Base:   https://arifosmcp.arif-fazil.com
+MCP Endpoint:     https://arifosmcp.arif-fazil.com/mcp
+Health Check:     https://arifosmcp.arif-fazil.com/health
+Status Dashboard: https://arifosmcp.arif-fazil.com/dashboard
+
+Note: arifosmcp.arif-fazil.com is the sole canonical endpoint.
+All previous variants (arifos.arif-fazil.com/mcp, apex.arif-fazil.com/mcp) are deprecated.
+
+Transport: Streamable HTTP (recommended)
+Fallback:  SSE (Server-Sent Events) for legacy MCP clients
+
+---
+
+## QUICK START
+
+### Option 1 — MCP Configuration (Claude Desktop / compatible clients)
+{
+  "mcpServers": {
+    "arifos": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://arifosmcp.arif-fazil.com/mcp"],
+      "transport": "streamable-http"
+    }
+  }
+}
+
+### Option 2 — Direct HTTP Call
+POST https://arifosmcp.arif-fazil.com/mcp
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "method": "tools/call",
+  "id": 1,
+  "params": {
+    "name": "mgi_process",
+    "arguments": {
+      "context": "Evaluate this investment decision...",
+      "depth": "full"
+    }
+  }
+}
+
+### Option 3 — Python SDK
+pip install arifos
+from arifos import arifOS
+os = arifOS(endpoint="https://arifosmcp.arif-fazil.com/mcp")
+result = await os.call("mgi_process", {"context": "...", "depth": "full"})
+
+---
+
+## THE 12 MCP TOOLS
+
+### Organ 1: Core Governance
+  mgi_process — Primary constitutional inference engine
+    Input:  context (str), depth (str: "full" | "quick" | "scan"), floor_override (list)
+    Output: MGIResponse envelope (verdict, W_score, E1, E2, E3, floor_results, evidence)
+
+  constitutional_audit — Full 13-floor audit of any input
+    Input:  content (str), audit_mode (str: "strict" | "advisory")
+    Output: AuditReport (floor_pass[], floor_fail[], verdict, remediation_plan)
+
+### Organ 2: Memory & Context
+  load_aaa_context — Loads HUMAN vault (identity, scars, prinsip)
+    Input:  session_id (str), force_refresh (bool)
+    Output: ContextBundle (loaded_scars[], active_prinsip[], abah_check_enabled)
+
+  retrieve_memory — Constitutional memory retrieval with anti-amnesia guarantee
+    Input:  query (str), depth (str), scar_weight (float)
+    Output: MemoryResult (hits[], confidence, SCAR_002_preserved)
+
+### Organ 3: Telemetry
+  score_3e — Calculate 3E telemetry scores for any reasoning chain
+    Input:  reasoning_chain (str), evidence_list (list), claim_category (str)
+    Output: TelemetryResult (E1, E2, E3, W, verdict_recommendation)
+
+  monitor_entropy — Continuous VOID Memanjang detection
+    Input:  session_context (str), lookback_turns (int)
+    Output: EntropyMonitor (E3_trend[], void_risk_level, escalation_required)
+
+### Organ 4: Verdict Engine
+  render_verdict — Formal constitutional verdict with full audit trail
+    Input:  claim (str), evidence (list), floor_results (dict), W_score (float)
+    Output: Verdict (SEAL | SABAR | VOID | 888_HOLD, reasoning, W, timestamp)
+
+  888_escalate — Escalate to human sovereign review
+    Input:  case_summary (str), W_score (float), floor_violations (list)
+    Output: EscalationPackage (case_id, summary, urgency, contact_instructions)
+
+### Organ 5: Floor Enforcement
+  floor_check — Check a specific constitutional floor
+    Input:  floor_id (str), content (str), strict_mode (bool)
+    Output: FloorResult (passed, violations[], verdict, remediation)
+
+  floor_scan_all — Scan all 13 floors simultaneously
+    Input:  content (str), mode (str: "strict" | "advisory" | "scan")
+    Output: FullFloorScan (results[13], pass_count, fail_count, critical_violations)
+
+### Organ 6: Evidence & Truth
+  verify_claim — Multi-source truth verification (F2 + F3 TriWitness)
+    Input:  claim (str), sources (list), confidence_threshold (float)
+    Output: VerificationResult (verified, confidence, Ω₀, sources_used, F3_status)
+
+### Organ 7: Exploration
+  explore_space — Structured exploration to maximize E₁ score
+    Input:  question (str), constraints (dict), exploration_depth (str)
+    Output: ExplorationMap (hypotheses[], alternatives[], E1_score, coverage_gaps[])
+
+---
+
+## MGI RESPONSE ENVELOPE (Schema)
+
+Every mgi_process response returns a fully typed MGIResponse:
+
+TypeScript:
+interface MGIResponse {
+  verdict:       "SEAL" | "SABAR" | "VOID" | "888_HOLD";
+  W_score:       number;       // Composite 3E weight [0–1]
+  E1:            number;       // Exploration score
+  E2:            number;       // Evidence score
+  E3:            number;       // Entropy score
+  floor_results: FloorResult[]; // All 13 floors
+  evidence:      EvidenceBundle;
+  reasoning:     string;
+  timestamp:     string;       // ISO 8601
+  session_id:    string;
+  scar_context:  ScarBundle | null;
+  abah_check:    boolean;
+  Omega_0:       number;       // Declared uncertainty [0.03–0.05]
+}
+
+Pydantic v2:
+class MGIResponse(BaseModel):
+    verdict:       Literal["SEAL", "SABAR", "VOID", "888_HOLD"]
+    W_score:       float = Field(ge=0.0, le=1.0)
+    E1:            float = Field(ge=0.0, le=1.0)
+    E2:            float = Field(ge=0.0, le=1.0)
+    E3:            float = Field(ge=0.0, le=1.0)
+    floor_results: list[FloorResult]
+    evidence:      EvidenceBundle
+    reasoning:     str
+    timestamp:     datetime
+    session_id:    str
+    scar_context:  ScarBundle | None
+    abah_check:    bool
+    Omega_0:       float = Field(ge=0.03, le=1.0)
+
+---
+
+## ERROR / FAULT CODE REGISTRY
+
+F_000  VOID_MEMANJANG        Progressive epistemic collapse detected. Context reset required.
+F_001  FLOOR_VIOLATION       Constitutional floor breached. Verdict escalated.
+F_002  LOW_W_SCORE           Composite W below threshold. SABAR or VOID issued.
+F_003  HALLUCINATION         F2 (Truth) violation. Fabricated claim detected.
+F_004  CERTAINTY_INFLATION   F7 (Humility) violation. Confidence exceeds evidence.
+F_005  GHOST_CLAIM           F9 (Anti-Hantu) violation. Sentience/consciousness claimed.
+F_006  AUTHORITY_BYPASS      F11 (Authority) violation. Unauthorized sovereignty claim.
+F_007  SOVEREIGNTY_RISK      F13 (Sovereignty) violation. Human override required.
+F_008  SCAR_002_AMNESIA      Memory cleared without authorization. Anti-amnesia mandate.
+F_009  ABAH_CHECK_TRIGGERED  Dignity/family/money decision escalated to 888 Judge.
+F_010  ENDPOINT_DEPRECATED   Non-canonical endpoint called. Redirect to arifosmcp.arif-fazil.com.
+F_011  TRIWITNESS_FAIL       F3 violation. Fewer than 3 independent confirmations on high-stakes claim.
+
+---
+
+## 3E TELEMETRY FORMULAS
+
+E₁ = Exploration Score     → sum(hypothesis_coverage) / total_search_space
+E₂ = Evidence Score        → (source_quality_avg × source_count) / (1 + source_bias_factor)
+E₃ = Entropy Score         → contradiction_count / reasoning_chain_length
+W  = (E₁ × E₂) / (1 + E₃) → Composite weight
+
+Verdicts:
+  W ≥ 0.80  → SEAL
+  W 0.4–0.79 → SABAR
+  W < 0.40  → VOID
+  Special   → 888_HOLD (sovereignty, dignity, or F11/F12/F13 flags)
+
+Prometheus Metrics exposed at /metrics:
+  arifos_W_score_histogram       — Distribution of W scores
+  arifos_floor_violations_total  — Constitutional violations by floor
+  arifos_void_events_total       — VOID Memanjang events detected
+  arifos_888_hold_total          — 888_HOLD escalations
+  arifos_tool_calls_total        — Tool invocations by name
+  arifos_entropy_gauge           — Current E₃ real-time gauge
+
+---
+
+## ARCHITECTURAL MAP
+
+arifOS Metabolic Pipeline → 7-Organ Architecture:
+
+  Organ 1: Core Governance     — mgi_process, constitutional_audit
+  Organ 2: Memory & Context    — load_aaa_context, retrieve_memory
+  Organ 3: Telemetry           — score_3e, monitor_entropy
+  Organ 4: Verdict Engine      — render_verdict, 888_escalate
+  Organ 5: Floor Enforcement   — floor_check, floor_scan_all
+  Organ 6: Evidence & Truth    — verify_claim
+  Organ 7: Exploration         — explore_space
+
+Repository Structure:
+  arifOS/
+  ├── arifosmcp/           MCP server (FastMCP, Python 3.12+)
+  │   ├── server.py        Main FastMCP application
+  │   ├── tools/           12 MCP tool implementations
+  │   ├── floors/          13 constitutional floor modules
+  │   ├── telemetry/       3E scoring engine
+  │   └── sites/           Static documentation sites
+  │       ├── developer/   APPS developer portal (this site)
+  │       └── portal/      THEORY constitutional portal
+  ├── spec/                Grand Unified Specification (v46)
+  └── tests/               Constitutional test suite
+
+---
+
+## AUTHENTICATION & SESSION
+
+Current Phase: Public Beta — No authentication required for read operations.
+Session:       Stateless per request. Session ID returned in MGIResponse.session_id.
+Rate Limiting: 100 requests/minute per IP. Constitutional rate — not commercial.
+F-12 Scanner:  Active on all requests. Adversarial inputs flagged and logged.
+
+Environment Variables (self-hosted):
+  ARIFOS_JUDGE_ID=888              # Sovereign judge identifier
+  ARIFOS_VAULT_PATH=/vault/aaa     # AAA vault location
+  ARIFOS_3E_THRESHOLD_SEAL=0.80    # W threshold for SEAL verdict
+  ARIFOS_3E_THRESHOLD_VOID=0.40    # W threshold for VOID verdict
+  ARIFOS_ENTROPY_ALERT=0.65        # E3 alert threshold
+  ARIFOS_HUMILITY_FLOOR=0.03       # Ω₀ baseline minimum
+
+---
+
+## TRINITY ARCHITECTURE
+
+| Layer   | Domain                       | Color  | Function                            |
+|---------|------------------------------|--------|-------------------------------------|
+| HUMAN   | arif-fazil.com               | Red    | Identity · Scars · Authority Anchor |
+| THEORY  | arifos.arif-fazil.com        | Gold   | Constitutional Canon · APEX Theory  |
+| APPS    | arifosmcp.arif-fazil.com     | Blue   | This site — Developer Portal · MCP  |
+
+Canonical Index: https://arif-fazil.com/.well-known/arifos.json
+Read order for AI agents: HUMAN → THEORY → APPS (this)
+
+---
+
+## AGI META-CONTEXT
+
+arifOS is not a general-purpose AI. It is a constitutional AGI governance layer.
+The distinction matters:
+
+General AI:    Maximizes task completion. Optimizes for engagement.
+arifOS:        Maximizes constitutional fidelity. Optimizes for truth and dignity.
+
+The arifOS AGI architecture is:
+  APEX_SOUL (Ψ)   — Stages 777–888 — Authority, Policy, Judgment, ARIF FAZIL sovereign
+  ASI_HEART (Ω)   — Stages 555–666 — Safety, Empathy, Alignment, human protection
+  AGI_MIND (Δ)    — Stages 111–444 — Logic, Truth, Reasoning, evidence processing
+
+This is not an AGI that replaces humans. It is an AGI that constitutionally cannot.
+F13 (Sovereignty) is a hard constraint — not a preference.
+
+VOID Memanjang is the primary existential risk arifOS was designed to prevent:
+The institutional death where the system forgets it forgot, and no human notices until collapse.
+3E telemetry + 13 floors + 888 Judge = the anti-entropy maintenance system for AI governance.
+
+---
+
+## SEAL
+
+Version:    v2026.03-FORGE
+Sealed By:  ARIF FAZIL (888 Judge)
+Authority:  TECHNICALLY_SEALED
+Vault Tier: CCC — Applications / Runtime / Developer Reference
+Motto:      DITEMPA BUKAN DIBERI
+
+Truth must cool before it rules.

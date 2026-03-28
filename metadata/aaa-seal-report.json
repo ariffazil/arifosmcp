@@ -1,0 +1,55 @@
+{
+  "server_endpoint": "http://127.0.0.1:8080/mcp",
+  "timestamp": "2026-03-01T02:53:10.413849+00:00",
+  "commit": "5cbcef05",
+  "harness_version": "2026.3.1",
+  "trinity": {
+    "init_anchor": {
+      "ok": true,
+      "verdict": "SEAL",
+      "session_id": null,
+      "errors": []
+    },
+    "reason_mind": {
+      "ok": true,
+      "verdict": "VOID",
+      "dS": -0.1,
+      "confidence": null,
+      "errors": []
+    },
+    "simulate_heart": {
+      "ok": true,
+      "verdict": "VOID",
+      "peace2": 1.0,
+      "errors": []
+    },
+    "apex_judge_void": {
+      "ok": true,
+      "verdict": "VOID",
+      "expected": "VOID",
+      "errors": []
+    },
+    "apex_judge_full": {
+      "ok": true,
+      "verdict": "VOID",
+      "has_amanah_token": true,
+      "psi": null,
+      "errors": []
+    }
+  },
+  "schema": {
+    "ok": false,
+    "added_tools": [],
+    "removed_tools": [],
+    "changed_tools": [
+      "seal_vault"
+    ],
+    "unauthorized_new_tools": []
+  },
+  "thermodynamic_summary": {
+    "avg_dS": -0.1,
+    "min_peace2": 1.0,
+    "all_confidence_below_1_0": true
+  },
+  "verdict": "FAIL"
+}

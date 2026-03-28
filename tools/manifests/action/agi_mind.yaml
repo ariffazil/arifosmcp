@@ -1,0 +1,11 @@
+name: agi_mind
+type: mega-tool
+authority: AGI_ENGINE
+description: Advanced General Intelligence reasoning engine for complex task planning.
+floors:
+  - F1: AMANAH
+  - F12: TAFSIR
+risk_tier: P1
+parameters:
+  problem: string
+  constraints: array

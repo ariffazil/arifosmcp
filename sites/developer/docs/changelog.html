@@ -1,0 +1,294 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Changelog — arifOS MCP Docs</title>
+  <meta http-equiv="refresh" content="0; url=https://arifos.arif-fazil.com/docs/changelog.html">
+  <link rel="canonical" href="https://arifos.arif-fazil.com/docs/changelog.html">
+  <meta name="description" content="Release history and changelog for arifOS MCP — constitutional AI governance system.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<!-- Trinity Strip -->
+<div class="trinity-strip">
+  <a href="https://arif-fazil.com" class="trinity-node human">HUMAN</a>
+  <a href="https://apex.arif-fazil.com" class="trinity-node theory">THEORY</a>
+  <a href="https://arifosmcp.arif-fazil.com" class="trinity-node apps active">APPS</a>
+</div>
+
+<!-- Navigation -->
+<nav class="main-nav">
+  <a href="../index.html" class="nav-logo">
+    <svg viewBox="0 0 48 48" width="32" height="32" fill="none" aria-label="arifOS Trinity">
+      <line x1="24" y1="8" x2="24" y2="22" stroke="#ffd24a" stroke-width="3" stroke-linecap="round"/>
+      <line x1="24" y1="26" x2="11" y2="40" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+      <line x1="24" y1="26" x2="37" y2="40" stroke="#ff4d4f" stroke-width="3" stroke-linecap="round"/>
+      <text x="24" y="28" text-anchor="middle" font-size="10" fill="#e8e8f0" font-family="monospace">Δ</text>
+      <circle cx="24" cy="6" r="4" stroke="#ffd24a" stroke-width="1.5" fill="none"/>
+      <circle cx="9" cy="41" r="4" stroke="#2563eb" stroke-width="1.5" fill="none"/>
+      <circle cx="39" cy="41" r="4" stroke="#ff4d4f" stroke-width="1.5" fill="none"/>
+      <circle cx="24" cy="24" r="5" stroke="#2563eb" stroke-width="1.5" fill="#12121a"/>
+    </svg>
+    <span class="nav-title">arifOS<span class="nav-mcp"> MCP</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="overview.html">Docs</a>
+    <a href="tools.html">API Reference</a>
+    <a href="integrations.html">Guides</a>
+    <a href="changelog.html" class="active">Changelog</a>
+  </div>
+  <div class="nav-right">
+    <span class="version-badge">v2026.03.14</span>
+    <a href="https://github.com/ariffazil/arifosmcp" class="btn-github" target="_blank">GitHub ↗</a>
+  </div>
+  <button class="nav-hamburger" aria-label="Menu">☰</button>
+</nav>
+
+<!-- Sidebar Overlay (mobile) -->
+<div class="sidebar-overlay"></div>
+
+<!-- Doc Layout -->
+<div class="doc-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-search">
+      <input type="text" placeholder="Search docs…" aria-label="Search documentation">
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Getting Started</div>
+      <div class="sidebar-group-items">
+        <a href="getting-started.html" class="sidebar-link">Installation</a>
+        <a href="getting-started.html#quick-start" class="sidebar-link">Quick Start</a>
+        <a href="getting-started.html#env-vars" class="sidebar-link">Environment Variables</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Architecture</div>
+      <div class="sidebar-group-items">
+        <a href="overview.html" class="sidebar-link">MGI Envelope</a>
+        <a href="overview.html#metabolic-loop" class="sidebar-link">Metabolic Loop</a>
+        <a href="overview.html#trinity-engines" class="sidebar-link">Trinity Engines</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Tools Reference</div>
+      <div class="sidebar-group-items">
+        <a href="tools.html#reality-compass" class="sidebar-link">reality_compass</a>
+        <a href="tools.html#reality-atlas" class="sidebar-link">reality_atlas</a>
+        <a href="tools.html#arifos-kernel" class="sidebar-link">arifOS_kernel</a>
+        <a href="tools.html#check-vital" class="sidebar-link">check_vital</a>
+        <a href="tools.html#init-anchor-state" class="sidebar-link">init_anchor_state</a>
+        <a href="tools.html#verify-vault-ledger" class="sidebar-link">verify_vault_ledger</a>
+        <a href="tools.html#audit-rules" class="sidebar-link">audit_rules</a>
+        <a href="tools.html#session-memory" class="sidebar-link">session_memory</a>
+        <a href="tools.html#open-apex-dashboard" class="sidebar-link">open_apex_dashboard</a>
+        <div class="sidebar-divider"></div>
+        <a href="tools.html#search-reality" class="sidebar-link">search_reality <span class="legacy-label">legacy</span></a>
+        <a href="tools.html#ingest-evidence" class="sidebar-link">ingest_evidence <span class="legacy-label">legacy</span></a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Constitutional Floors</div>
+      <div class="sidebar-group-items">
+        <a href="floors.html" class="sidebar-link">F1–F13 Overview</a>
+        <a href="floors.html#verdict-states" class="sidebar-link">Verdict States</a>
+        <a href="floors.html#fault-codes" class="sidebar-link">Fault Codes</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> 3E Telemetry</div>
+      <div class="sidebar-group-items">
+        <a href="overview.html#3e-cycle" class="sidebar-link">3E Cycle</a>
+        <a href="overview.html#metrics" class="sidebar-link">Metrics</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Integrations</div>
+      <div class="sidebar-group-items">
+        <a href="integrations.html#claude-desktop" class="sidebar-link">Claude Desktop</a>
+        <a href="integrations.html#cursor" class="sidebar-link">Cursor / VS Code</a>
+        <a href="integrations.html#python-sdk" class="sidebar-link">Python SDK</a>
+        <a href="integrations.html#typescript-sdk" class="sidebar-link">TypeScript SDK</a>
+        <a href="integrations.html#http-curl" class="sidebar-link">HTTP / curl</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Self-Hosting</div>
+      <div class="sidebar-group-items">
+        <a href="getting-started.html#docker" class="sidebar-link">Docker Setup</a>
+        <a href="getting-started.html#vps" class="sidebar-link">VPS Architecture</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Changelog</div>
+      <div class="sidebar-group-items">
+        <a href="changelog.html" class="sidebar-link active">v2026.03.14-FORGED</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="doc-content">
+    <h1>Changelog</h1>
+    <p class="doc-subtitle">Release history for arifOS MCP. Every version is forged through constitutional verification — <em>Ditempa Bukan Diberi</em>.</p>
+
+    <!-- v2026.03.14-FORGED -->
+    <div class="timeline-entry" id="v2026-03-14">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">March 13, 2026</div>
+      <h2 class="timeline-version">v2026.03.14-FORGED</h2>
+      <p style="color: var(--text-muted); margin-bottom: 16px;">The inaugural forged release. Complete constitutional AI governance system with full MCP integration, 13-floor verification, Trinity ΔΩΨ engines, and VAULT999 immutable ledger.</p>
+
+      <h3 id="new-tools">New Tools</h3>
+      <ul class="timeline-list">
+        <li><strong><code>reality_compass</code></strong> — Constitutional web search powered by Brave Search API with full 13-floor governance and VAULT999 sealing</li>
+        <li><strong><code>reality_atlas</code></strong> — Vector-based evidence retrieval using Qdrant with constitutional governance and semantic search across the evidence graph</li>
+        <li><strong><code>arifOS_kernel</code></strong> — The core governance kernel. Routes any query through all 13 constitutional floors with full metabolic loop (000→999)</li>
+        <li><strong><code>check_vital</code></strong> — System health monitor exposing thermodynamic budget, floor pass rate, vault integrity, and 3E telemetry metrics</li>
+        <li><strong><code>init_anchor_state</code></strong> — Session identity initialization with anchor token minting and sovereign identity binding</li>
+        <li><strong><code>verify_vault_ledger</code></strong> — VAULT999 Merkle chain integrity verifier with full SHA-256 chain validation and breach detection</li>
+        <li><strong><code>audit_rules</code></strong> — Constitutional audit engine for evaluating content against specific floor rules with threshold analysis</li>
+        <li><strong><code>session_memory</code></strong> — Sovereign session memory system supporting store, retrieve, list, and forget operations</li>
+        <li><strong><code>open_apex_dashboard</code></strong> — APEX governance dashboard providing real-time session analytics, floor pass rates, and verdict distribution</li>
+      </ul>
+
+      <h3 id="architecture">Architecture</h3>
+      <ul class="timeline-list">
+        <li><strong>MGI Envelope</strong> — Metabolic Governance Intelligence wrapper that encloses every AI response in a constitutional verification membrane</li>
+        <li><strong>Metabolic Loop</strong> — 10-stage pipeline (000_INIT → 999_VAULT) for full constitutional processing</li>
+        <li><strong>Trinity Engines</strong> — Three-engine architecture: Δ (Epistemic), Ω (Ethical), Ψ (Execution)</li>
+        <li><strong>VAULT999</strong> — Immutable SHA-256 Merkle chain for recording every governance decision with tamper-proof audit trail</li>
+        <li><strong>Constitutional Floors</strong> — 13 floors (F1 Tauhid → F13 Khalifah) with configurable thresholds and VOID triggers</li>
+        <li><strong>3E Telemetry</strong> — Real-time observability across Epistemic, Ethical, and Execution dimensions</li>
+      </ul>
+
+      <h3 id="verdict-system">Verdict System</h3>
+      <ul class="timeline-list">
+        <li><strong>SEAL</strong> — Full verification. All 13 floors passed, response sealed into VAULT999</li>
+        <li><strong>PROVISIONAL</strong> — High confidence but one or more non-critical floors below threshold</li>
+        <li><strong>PARTIAL</strong> — Mixed results. Critical floors passed but evidence gaps remain</li>
+        <li><strong>SABAR</strong> — Patience state. Awaiting additional evidence or external data</li>
+        <li><strong>HOLD</strong> — Temporarily held. Mechanical issues (not constitutional violations)</li>
+        <li><strong>HOLD_888</strong> — Judge-level hold. The 888_JUDGE stage requires additional review</li>
+        <li><strong>VOID</strong> — Constitutional violation detected. Reserved exclusively for floor breaches</li>
+      </ul>
+
+      <h3 id="integrations-release">Integrations</h3>
+      <ul class="timeline-list">
+        <li><strong>Claude Desktop</strong> — Native STDIO integration via <code>claude_desktop_config.json</code></li>
+        <li><strong>Cursor / VS Code</strong> — MCP server configuration for AI-assisted development environments</li>
+        <li><strong>ChatGPT</strong> — HTTP transport integration for OpenAI's ChatGPT with function calling</li>
+        <li><strong>Kimi</strong> — HTTP transport integration for Moonshot AI's Kimi assistant</li>
+        <li><strong>Python SDK</strong> — Full <code>mcp</code> Python client with STDIO and HTTP transport examples</li>
+        <li><strong>TypeScript SDK</strong> — Full <code>@modelcontextprotocol/sdk</code> client with STDIO and HTTP examples</li>
+        <li><strong>HTTP / curl</strong> — RESTful JSON-RPC interface for direct API access</li>
+      </ul>
+
+      <h3 id="transport">Transport</h3>
+      <ul class="timeline-list">
+        <li><strong>STDIO</strong> — Default transport for local client integration (Claude Desktop, Cursor)</li>
+        <li><strong>Streamable HTTP</strong> — HTTP transport on configurable port for remote/cloud deployments</li>
+        <li><strong>Docker</strong> — Official container image at <code>ghcr.io/ariffazil/arifosmcp:latest</code></li>
+      </ul>
+
+      <h3 id="infrastructure">Infrastructure</h3>
+      <ul class="timeline-list">
+        <li><strong>FastMCP 3.1.0</strong> — Built on the FastMCP server framework with Python ≥ 3.12</li>
+        <li><strong>Qdrant</strong> — Optional vector database for <code>reality_atlas</code> evidence storage</li>
+        <li><strong>Brave Search</strong> — Web search provider for <code>reality_compass</code></li>
+        <li><strong>Docker Compose</strong> — Production deployment with Nginx reverse proxy, Qdrant, and persistent VAULT999 storage</li>
+        <li><strong>VPS Architecture</strong> — Reference architecture for self-hosted deployments with TLS termination</li>
+      </ul>
+
+      <h3 id="developer-docs">Developer Documentation</h3>
+      <ul class="timeline-list">
+        <li>Complete API reference for all 9 active tools + 2 legacy tools</li>
+        <li>Constitutional floors reference with thresholds, VOID triggers, and fault codes</li>
+        <li>Integration guides for 7 platforms with full configuration examples</li>
+        <li>Architecture overview with MGI Envelope, Metabolic Loop, and Trinity Engine documentation</li>
+        <li>Getting started guide with installation, quick start, and environment variable reference</li>
+      </ul>
+
+      <div class="callout callout-info" style="margin-top: 24px;">
+        <div class="callout-title">Versioning Convention</div>
+        arifOS MCP uses date-based versioning in the format <code>vYYYY.MM.DD-TAG</code>. The <code>FORGED</code> tag indicates a release that has passed full constitutional verification — true to the principle <em>Ditempa Bukan Diberi</em> (Forged, Not Given).
+      </div>
+    </div>
+
+    <!-- Legacy Migration Note -->
+    <div class="timeline-entry" id="legacy-migration">
+      <div class="timeline-dot" style="background: var(--hold-yellow);"></div>
+      <div class="timeline-date">Migration Notice</div>
+      <h2 class="timeline-version" style="font-size: 18px;">Legacy Tool Deprecation</h2>
+      <p style="color: var(--text-muted); margin-bottom: 16px;">The following tools from pre-release development have been deprecated in favor of their constitutional replacements:</p>
+
+      <table class="doc-table">
+        <thead>
+          <tr><th>Legacy Tool</th><th>Replacement</th><th>Migration Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>search_reality</code></td>
+            <td><code>reality_compass</code></td>
+            <td>Replace <code>query</code> parameter with <code>input</code>. Results now include full governance envelope with verdict and telemetry.</td>
+          </tr>
+          <tr>
+            <td><code>ingest_evidence</code></td>
+            <td><code>reality_atlas</code></td>
+            <td>Use <code>action: "ingest"</code> parameter. Automatic vector embedding replaces manual chunking. Constitutional governance now applied to all ingested content.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-danger" style="margin-top: 16px;">
+        <div class="callout-title">Removal Timeline</div>
+        Legacy tools will be removed in a future release. Migrate to the replacement tools as soon as possible. Both legacy tools currently forward to their replacements internally but do not return governance envelopes.
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Right TOC -->
+  <aside class="toc">
+    <div class="toc-title">On this page</div>
+    <a href="#v2026-03-14">v2026.03.14-FORGED</a>
+    <a href="#new-tools" class="toc-h3">New Tools</a>
+    <a href="#architecture" class="toc-h3">Architecture</a>
+    <a href="#verdict-system" class="toc-h3">Verdict System</a>
+    <a href="#integrations-release" class="toc-h3">Integrations</a>
+    <a href="#transport" class="toc-h3">Transport</a>
+    <a href="#infrastructure" class="toc-h3">Infrastructure</a>
+    <a href="#developer-docs" class="toc-h3">Developer Docs</a>
+    <a href="#legacy-migration">Legacy Migration</a>
+  </aside>
+
+</div>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-line">© 2026 ARIF FAZIL · arifOS MCP · Ditempa Bukan Diberi</div>
+  <div class="footer-line"><a href="https://perplexity.ai" target="_blank">Created with Perplexity Computer</a></div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../app.js"></script>
+</body>
+</html>

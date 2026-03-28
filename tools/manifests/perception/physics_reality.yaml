@@ -1,0 +1,10 @@
+name: physics_reality
+type: mega-tool
+authority: REALITY_CHECK
+description: Grounding engine for physical constraints, GEOX data, and environmental awareness.
+floors:
+  - F2: SIDDIQ
+  - F9: TAQWA (Awareness)
+risk_tier: P1
+parameters:
+  observation: object

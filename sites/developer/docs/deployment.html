@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deployment Guide — arifOS MCP Docs</title>
+  <meta http-equiv="refresh" content="0; url=https://arifos.arif-fazil.com/docs/deployment.html">
+  <link rel="canonical" href="https://arifos.arif-fazil.com/docs/deployment.html">
+  <meta name="description" content="Production deployment guide for arifOS MCP. VPS architecture, Docker setup, TLS configuration, and monitoring.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/main.css">
+  <style>
+    .arch-diagram {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      margin: var(--space-6) 0;
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      line-height: 1.8;
+      overflow-x: auto;
+    }
+    
+    .arch-box {
+      border: 1px solid var(--border-hover);
+      border-radius: var(--radius-md);
+      padding: var(--space-3) var(--space-4);
+      background: var(--bg-base);
+      text-align: center;
+      min-width: 120px;
+    }
+    
+    .arch-box.primary {
+      border-color: var(--color-apps);
+      background: var(--color-apps-dim);
+    }
+    
+    .arch-box.secondary {
+      border-color: var(--color-agility);
+      background: rgba(255, 210, 74, 0.05);
+    }
+    
+    .arch-box.storage {
+      border-color: var(--color-human);
+      background: rgba(255, 77, 79, 0.05);
+    }
+    
+    .arch-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-6);
+      margin: var(--space-4) 0;
+    }
+    
+    .arch-arrow {
+      color: var(--text-dim);
+    }
+    
+    .arch-label {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: var(--text-xs);
+      margin-top: var(--space-2);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Trinity Strip -->
+<div class="trinity-strip">
+  <a href="https://arif-fazil.com" class="trinity-node human">HUMAN</a>
+  <a href="https://apex.arif-fazil.com" class="trinity-node theory">THEORY</a>
+  <a href="https://arifosmcp.arif-fazil.com" class="trinity-node apps active">APPS</a>
+</div>
+
+<!-- Navigation -->
+<nav class="main-nav">
+  <a href="../index.html" class="nav-logo">
+    <svg viewBox="0 0 48 48" width="32" height="32" fill="none">
+      <line x1="24" y1="8" x2="24" y2="22" stroke="#ffd24a" stroke-width="3" stroke-linecap="round"/>
+      <line x1="24" y1="26" x2="11" y2="40" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+      <line x1="24" y1="26" x2="37" y2="40" stroke="#ff4d4f" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="24" cy="6" r="4" stroke="#ffd24a" stroke-width="1.5" fill="none"/>
+      <circle cx="9" cy="41" r="4" stroke="#2563eb" stroke-width="1.5" fill="none"/>
+      <circle cx="39" cy="41" r="4" stroke="#ff4d4f" stroke-width="1.5" fill="none"/>
+      <circle cx="24" cy="24" r="5" stroke="#2563eb" stroke-width="1.5" fill="#12121a"/>
+    </svg>
+    <span class="nav-title">arifOS<span class="nav-mcp">MCP</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="overview.html">Documentation</a>
+    <a href="tools.html">Tools</a>
+    <a href="integrations.html">Integrations</a>
+    <a href="deployment.html" class="active">Deployment</a>
+  </div>
+  <div class="nav-right">
+    <span class="version-badge">v2026.03.14</span>
+    <a href="https://github.com/ariffazil/arifosmcp" class="btn btn-sm btn-secondary" target="_blank">GitHub</a>
+  </div>
+  <button class="nav-hamburger" aria-label="Menu">☰</button>
+</nav>
+
+<!-- Sidebar Overlay -->
+<div class="sidebar-overlay"></div>
+
+<!-- Doc Layout -->
+<div class="doc-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-search">
+      <input type="text" placeholder="Search docs…" aria-label="Search documentation">
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span>Getting Started</div>
+      <div class="sidebar-group-items">
+        <a href="getting-started.html" class="sidebar-link">Installation</a>
+        <a href="getting-started.html#quick-start" class="sidebar-link">Quick Start</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span>Deployment</div>
+      <div class="sidebar-group-items">
+        <a href="#vps-architecture" class="sidebar-link">VPS Architecture</a>
+        <a href="#docker-setup" class="sidebar-link">Docker Setup</a>
+        <a href="#tls-configuration" class="sidebar-link">TLS Configuration</a>
+        <a href="#environment-variables" class="sidebar-link">Environment Variables</a>
+        <a href="#monitoring" class="sidebar-link">Monitoring</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span>Resources</div>
+      <div class="sidebar-group-items">
+        <a href="changelog.html" class="sidebar-link">Changelog</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="doc-content">
+    <h1>Deployment Guide</h1>
+    <p class="doc-subtitle">
+      Production deployment guide for arifOS MCP including VPS architecture, Docker configuration, TLS setup, and monitoring.
+    </p>
+
+    <div class="callout callout-info">
+      <div class="callout-title">Production Ready</div>
+      <p>
+        arifOS MCP is designed for production deployments with high availability, horizontal scaling, and comprehensive monitoring built-in.
+      </p>
+    </div>
+
+    <h2 id="vps-architecture">VPS Architecture</h2>
+    
+    <p>
+      For production deployments, we recommend the following VPS architecture:
+    </p>
+
+    <div class="arch-diagram">
+      <div class="arch-row">
+        <div class="arch-box primary">
+          <strong>arifOS MCP</strong><br>
+          Server<br>
+          <span style="color: var(--text-muted)">Port 8080</span>
+        </div>
+        <span class="arch-arrow">⟷</span>
+        <div class="arch-box secondary">
+          <strong>Qdrant</strong><br>
+          Vector Store<br>
+          <span style="color: var(--text-muted)">Port 6333</span>
+        </div>
+        <span class="arch-arrow">⟷</span>
+        <div class="arch-box storage">
+          <strong>VAULT999</strong><br>
+          Ledger<br>
+          <span style="color: var(--text-muted)">Persistent Disk</span>
+        </div>
+      </div>
+      
+      <div class="arch-row">
+        <span class="arch-arrow">↑</span>
+      </div>
+      
+      <div class="arch-row">
+        <div class="arch-box" style="border-color: var(--color-success)">
+          <strong>Nginx</strong><br>
+          Reverse Proxy<br>
+          <span style="color: var(--text-muted)">TLS Termination</span>
+        </div>
+      </div>
+      
+      <div class="arch-row">
+        <span class="arch-arrow">↑</span>
+      </div>
+      
+      <div class="arch-row">
+        <div style="color: var(--text-muted)">
+          Internet ← MCP clients connect here
+        </div>
+      </div>
+    </div>
+
+    <h3>Architecture Components</h3>
+
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Purpose</th>
+            <th>Port</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>arifOS MCP Server</strong></td>
+            <td>Constitutional governance kernel</td>
+            <td class="mono">8080</td>
+          </tr>
+          <tr>
+            <td><strong>Qdrant</strong></td>
+            <td>Vector storage for session memory</td>
+            <td class="mono">6333</td>
+          </tr>
+          <tr>
+            <td><strong>VAULT999</strong></td>
+            <td>Merkle chain ledger on persistent disk</td>
+            <td class="mono">—</td>
+          </tr>
+          <tr>
+            <td><strong>Nginx</strong></td>
+            <td>TLS termination and reverse proxy</td>
+            <td class="mono">443 → 8080</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="docker-setup">Docker Setup</h2>
+
+    <p>All services are containerized with Docker Compose:</p>
+
+    <div class="code-block">
+      <div class="code-block-header">
+        <span>docker-compose.yml</span>
+        <button class="copy-btn">Copy</button>
+      </div>
+      <pre><code class="language-yaml">version: '3.8'
+
+services:
+  arifosmcp:
+    image: arifosmcp:latest
+    container_name: arifosmcp_server
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      - ARIFOS_ENV=production
+      - ARIFOS_QDRANT_URL=http://qdrant:6333
+      - ARIFOS_VAULT_PATH=/data/vault999
+    volumes:
+      - vault-data:/data/vault999
+    depends_on:
+      - qdrant
+    networks:
+      - arifos-network
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: arifosmcp_qdrant
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:6333:6333"
+    volumes:
+      - qdrant-storage:/qdrant/storage
+    networks:
+      - arifos-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: arifosmcp_nginx
+    restart: unless-stopped
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - arifosmcp
+    networks:
+      - arifos-network
+
+volumes:
+  vault-data:
+  qdrant-storage:
+
+networks:
+  arifos-network:
+    driver: bridge</code></pre>
+    </div>
+
+    <h2 id="tls-configuration">TLS Configuration</h2>
+
+    <p>Nginx handles TLS termination. Example configuration:</p>
+
+    <div class="code-block">
+      <div class="code-block-header">
+        <span>nginx.conf</span>
+        <button class="copy-btn">Copy</button>
+      </div>
+      <pre><code class="language-nginx">server {
+    listen 443 ssl http2;
+    server_name arifosmcp.yourdomain.com;
+
+    ssl_certificate /etc/nginx/ssl/cert.pem;
+    ssl_certificate_key /etc/nginx/ssl/key.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+    location / {
+        proxy_pass http://arifosmcp:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+server {
+    listen 80;
+    server_name arifosmcp.yourdomain.com;
+    return 301 https://$server_name$request_uri;
+}</code></pre>
+    </div>
+
+    <h2 id="environment-variables">Environment Variables</h2>
+
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Variable</th>
+            <th>Description</th>
+            <th>Default</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">ARIFOS_ENV</td>
+            <td>Environment mode (development/production)</td>
+            <td>development</td>
+          </tr>
+          <tr>
+            <td class="mono">ARIFOS_QDRANT_URL</td>
+            <td>Qdrant vector store URL</td>
+            <td>http://localhost:6333</td>
+          </tr>
+          <tr>
+            <td class="mono">ARIFOS_VAULT_PATH</td>
+            <td>Path to VAULT999 ledger storage</td>
+            <td>./vault999</td>
+          </tr>
+          <tr>
+            <td class="mono">ARIFOS_LOG_LEVEL</td>
+            <td>Logging level (debug/info/warn/error)</td>
+            <td>info</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="monitoring">Monitoring</h2>
+
+    <p>
+      arifOS MCP exposes Prometheus metrics at <code>/metrics</code> endpoint:
+    </p>
+
+    <div class="code-block">
+      <div class="code-block-header">
+        <span>Metrics Example</span>
+        <button class="copy-btn">Copy</button>
+      </div>
+      <pre><code># HELP arifos_requests_total Total requests processed
+# TYPE arifos_requests_total counter
+arifos_requests_total{status="seal"} 1523
+arifos_requests_total{status="void"} 47
+arifos_requests_total{status="partial"} 89
+
+# HELP arifos_latency_seconds Request latency
+# TYPE arifos_latency_seconds histogram
+arifos_latency_seconds_bucket{le="0.1"} 523
+arifos_latency_seconds_bucket{le="0.5"} 1289
+arifos_latency_seconds_bucket{le="1.0"} 1659</code></pre>
+    </div>
+
+    <div class="callout callout-success">
+      <div class="callout-title">Next Steps</div>
+      <p>
+        Your arifOS MCP server is now ready for production! Check the 
+        <a href="integrations.html">integrations guide</a> to connect your MCP clients.
+      </p>
+    </div>
+
+  </main>
+
+  <!-- Table of Contents -->
+  <nav class="toc" aria-label="On this page">
+    <div class="toc-title">On this page</div>
+    <a href="#vps-architecture">VPS Architecture</a>
+    <a href="#docker-setup">Docker Setup</a>
+    <a href="#tls-configuration">TLS Configuration</a>
+    <a href="#environment-variables">Environment Variables</a>
+    <a href="#monitoring">Monitoring</a>
+  </nav>
+
+</div>
+
+<script src="../app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-nginx.min.js"></script>
+</body>
+</html>

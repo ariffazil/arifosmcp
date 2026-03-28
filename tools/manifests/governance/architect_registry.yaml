@@ -1,0 +1,9 @@
+name: architect_registry
+type: mega-tool
+authority: REGISTRY_KEEPER
+description: Catalog of all system components, tools, and their architectural relations.
+floors:
+  - F8: TABLIGH
+risk_tier: P2
+parameters:
+  query: string

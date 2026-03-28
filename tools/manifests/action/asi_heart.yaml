@@ -1,0 +1,10 @@
+name: asi_heart
+type: mega-tool
+authority: ASI_CORE
+description: Artificial Super Intelligence emotional and alignment core, ensuring humane outcomes.
+floors:
+  - F1: AMANAH
+  - F13: KHILAFAH
+risk_tier: P0
+parameters:
+  action_context: object

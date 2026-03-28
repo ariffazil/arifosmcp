@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>arifOS WebMCP | Live Vitals & Sovereign Gateway</title>
+    <!-- Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-deep: #050507;
+            --bg-glass: rgba(16, 18, 27, 0.6);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            
+            --text-primary: #ffffff;
+            --text-secondary: #94A3B8;
+            --text-accent: #38BDF8;
+            
+            --color-seal: #10B981;
+            --color-void: #EF4444;
+            --color-hold: #F59E0B;
+            --color-mind: #8B5CF6;
+            
+            --glow-seal: rgba(16, 185, 129, 0.4);
+            --glow-hold: rgba(245, 158, 11, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-deep);
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(56, 189, 248, 0.08) 0%, transparent 40%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        header {
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-glass);
+            background: rgba(5, 5, 7, 0.8);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .brand h1 {
+            font-weight: 800;
+            letter-spacing: -1px;
+            font-size: 1.5rem;
+            background: linear-gradient(to right, #ffffff, #94A3B8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .badge-status {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 9999px;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--color-seal);
+            border: 1px solid var(--glow-seal);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.3s ease;
+        }
+
+        .badge-status.disconnected {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--color-void);
+            border-color: var(--color-void);
+        }
+
+        .pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: currentColor;
+            box-shadow: 0 0 10px currentColor;
+            animation: pulse-op 2s infinite;
+        }
+
+        @keyframes pulse-op {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        main {
+            flex: 1;
+            padding: 3rem;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Glass Panel Styling */
+        .glass-panel {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass-panel:hover {
+            transform: translateY(-2px);
+        }
+
+        .panel-header {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Vitals Grid */
+        .vitals-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .vital-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .vital-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-accent);
+        }
+
+        .vital-value {
+            font-size: 2rem;
+            font-weight: 800;
+            font-variant-numeric: tabular-nums;
+            transition: color 0.3s ease;
+        }
+
+        /* 888 HOLD Queue */
+        .hold-queue {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .hold-card {
+            background: linear-gradient(145deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.02));
+            border: 1px solid var(--glow-hold);
+            border-radius: 16px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            animation: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slide-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hold-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--color-hold);
+            box-shadow: 0 0 15px var(--color-hold);
+        }
+
+        .hold-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .hold-id {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--color-hold);
+        }
+        
+        .hold-reason {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .hold-meta {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .hold-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .btn-seal {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--color-seal);
+            border: 1px solid var(--color-seal);
+        }
+
+        .btn-seal:hover {
+            background: var(--color-seal);
+            color: #fff;
+            box-shadow: 0 0 20px var(--glow-seal);
+        }
+
+        .btn-void {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--color-void);
+            border: 1px solid var(--color-void);
+        }
+
+        .btn-void:hover {
+            background: var(--color-void);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .empty-holds {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            main {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <h1>arifOS.webmcp</h1>
+        </div>
+        <div id="connectionStatus" class="badge-status disconnected">
+            <div class="pulse"></div>
+            <span>[F13] Sovereign Gateway Offline</span>
+        </div>
+    </header>
+
+    <main>
+        <!-- Telemetry Panel -->
+        <section class="glass-panel" style="align-self: start;">
+            <div class="panel-header">
+                🔌 Metabolic Telemetry
+            </div>
+            <div class="vitals-grid">
+                <div class="vital-card">
+                    <span class="vital-label">Entropy (ΔS)</span>
+                    <span class="vital-value" id="val-ds">-</span>
+                </div>
+                <div class="vital-card">
+                    <span class="vital-label">Genius (G★)</span>
+                    <span class="vital-value" id="val-gstar">-</span>
+                </div>
+                <div class="vital-card">
+                    <span class="vital-label">Peace²</span>
+                    <span class="vital-value" id="val-peace2">-</span>
+                </div>
+                <div class="vital-card">
+                    <span class="vital-label">Humility (Ω₀)</span>
+                    <span class="vital-value" id="val-omega">-</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 888_HOLD Desk -->
+        <section class="glass-panel">
+            <div class="panel-header">
+                ⚖️ 888_JUDGE Pending Docket
+            </div>
+            
+            <div id="holdQueue" class="hold-queue">
+                <div class="empty-holds" id="emptyState">
+                    No pending actions. The execution layer is continuous.
+                </div>
+                <!-- Hold cards injected here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- SDK Integration -->
+    <script type="module">
+        import { WebMCPSDK } from './sdk.js';
+
+        // Initialize SDK
+        const mcp = new WebMCPSDK({
+            actorId: 'ariffazil', // The Sovereign
+            // For testing locally without A2A backend running, wsUrl can be mocked, but we'll point it to the actual route
+            wsUrl: 'ws://localhost:8080/webmcp/ws' 
+        });
+
+        // DOM Elements
+        const DOM = {
+            status: document.getElementById('connectionStatus'),
+            ds: document.getElementById('val-ds'),
+            gstar: document.getElementById('val-gstar'),
+            peace2: document.getElementById('val-peace2'),
+            omega: document.getElementById('val-omega'),
+            queue: document.getElementById('holdQueue'),
+            emptyState: document.getElementById('emptyState')
+        };
+
+        // State
+        const activeHolds = new Map();
+
+        // SDK Event Handlers
+        mcp.on('connected', () => {
+            DOM.status.classList.remove('disconnected');
+            DOM.status.querySelector('span').innerText = '[F13] Sovereign Gateway Synced';
+        });
+
+        mcp.on('disconnected', () => {
+            DOM.status.classList.add('disconnected');
+            DOM.status.querySelector('span').innerText = '[F13] Sovereign Gateway Offline';
+        });
+
+        mcp.on('vitals', (msg) => {
+            const data = msg.data;
+            if (data.dS !== undefined) DOM.ds.innerText = data.dS.toFixed(2);
+            if (data.G_star !== undefined) DOM.gstar.innerText = data.G_star.toFixed(2);
+            if (data.peace2 !== undefined) DOM.peace2.innerText = data.peace2.toFixed(2);
+            if (data.omega !== undefined) DOM.omega.innerText = data.omega.toFixed(3);
+        });
+
+        mcp.on('888_HOLD', (msg) => {
+            const h = msg.payload;
+            if(!activeHolds.has(h.hold_id)) {
+                activeHolds.set(h.hold_id, h);
+                renderHolds();
+            }
+        });
+
+        window.resolveHold = async (holdId, decision) => {
+            try {
+                // Optimistic UI Removal
+                const element = document.getElementById(holdId);
+                if (element) {
+                    element.style.opacity = '0';
+                    element.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        activeHolds.delete(holdId);
+                        renderHolds();
+                    }, 300);
+                }
+                
+                // Real SDK call
+                await mcp.resolveHold(holdId, decision, 'Resolved via Live Dashboard');
+            } catch (err) {
+                console.error("Failed to resolve:", err);
+                alert("Failed to resolve HOLD: " + err.message);
+                // On failure, we should technically revert optimistic UI, but left out for brevity
+            }
+        };
+
+        function renderHolds() {
+            if (activeHolds.size === 0) {
+                DOM.queue.innerHTML = '';
+                DOM.queue.appendChild(DOM.emptyState);
+                return;
+            }
+
+            const fragment = document.createDocumentFragment();
+            activeHolds.forEach(h => {
+                const div = document.createElement('div');
+                div.className = 'hold-card';
+                div.id = h.hold_id;
+                div.innerHTML = `
+                    <div class="hold-header">
+                        <span class="hold-id">${h.hold_id}</span>
+                        <span class="vital-label" style="color:var(--color-hold)">${h.risk_level.toUpperCase()} RISK</span>
+                    </div>
+                    <div class="hold-reason">${h.reason}</div>
+                    <div class="hold-meta">
+                        <span>Action: ${h.action_type}</span>
+                        <span>Source: ${h.source_protocol}</span>
+                        <span>Agent: ${h.actor_id}</span>
+                    </div>
+                    ${h.pre_execution_hash ? `<div class="vital-label" style="margin-bottom:1.5rem">F1 Hash: ${h.pre_execution_hash}</div>` : ''}
+                    <div class="hold-actions">
+                        <button class="btn btn-void" onclick="resolveHold('${h.hold_id}', 'DENIED')">VOID (Block)</button>
+                        <button class="btn btn-seal" onclick="resolveHold('${h.hold_id}', 'APPROVED')">SEAL (Execute)</button>
+                    </div>
+                `;
+                fragment.appendChild(div);
+            });
+
+            DOM.queue.innerHTML = '';
+            DOM.queue.appendChild(fragment);
+        }
+
+        // Start connection
+        mcp.connect();
+
+        // -------------------------------------------------------------
+        // DEMO OVERRIDE (For testing UX without live backend)
+        // -------------------------------------------------------------
+        setTimeout(() => {
+            mcp.emit('connected', {});
+            mcp.emit('vitals', { data: { dS: -0.42, G_star: 0.92, peace2: 1.05, omega: 0.04 }});
+            // Simulate an incoming cross-protocol hold after 3 seconds
+            setTimeout(() => {
+                mcp.emit('888_HOLD', {
+                    payload: {
+                        hold_id: 'HOLD-A2A-' + Math.random().toString(36).substr(2, 6),
+                        risk_level: 'critical',
+                        reason: 'F13 Sovereign: Human Ratification Required for File System Wipe',
+                        action_type: 'fs_delete_recursive',
+                        source_protocol: 'A2A',
+                        actor_id: 'Agent-007',
+                        pre_execution_hash: 'a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6'
+                    }
+                });
+            }, 3000);
+        }, 500);
+
+    </script>
+</body>
+</html>

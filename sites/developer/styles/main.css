@@ -1,0 +1,23 @@
+/* ============================================================
+   arifOS MCP Design System — Main Bundle
+   Import all modular stylesheets in correct order
+   Version: 2026.03.14
+   ============================================================ */
+
+/* 1. Design Tokens (variables) - must be first */
+@import 'tokens.css';
+
+/* 2. Base styles & reset */
+@import 'base.css';
+
+/* 3. Layout components (nav, sidebar, footer) */
+@import 'layout.css';
+
+/* 4. UI components (buttons, cards, badges, etc.) */
+@import 'components.css';
+
+/* 5. Landing page specific styles */
+@import 'landing.css';
+
+/* 6. Utility classes (last for override capability) */
+@import 'utilities.css';

@@ -1,0 +1,76 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "arifOS Sovereign MCP Hub",
+    "description": "Production-grade Constitutional AI Governance Kernel. Enforces 13 Floors of safety, truth, and reliability.",
+    "version": "2026.03.14"
+  },
+  "servers": [
+    {
+      "url": "https://arifosmcp.arif-fazil.com/mcp",
+      "description": "Production MCP Hub"
+    }
+  ],
+  "paths": {
+    "/tools/call": {
+      "post": {
+        "summary": "Execute a governed tool",
+        "description": "Calls one of the 25 canonical tools within the arifOS Double Helix.",
+        "operationId": "callTool",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "enum": ["forge", "init_anchor", "agi_reason", "asi_critique", "apex_judge", "vault_seal"]
+                  },
+                  "arguments": {
+                    "type": "object"
+                  }
+                },
+                "required": ["name", "arguments"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful tool execution wrapped in RuntimeEnvelope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RuntimeEnvelope": {
+        "type": "object",
+        "properties": {
+          "ok": { "type": "boolean" },
+          "verdict": { "type": "string", "enum": ["SEAL", "VOID", "HOLD", "SABAR"] },
+          "session_id": { "type": "string" },
+          "metrics": {
+            "type": "object",
+            "properties": {
+              "dS": { "type": "number", "description": "Entropy Delta" },
+              "peace2": { "type": "number", "description": "Lyapunov Stability" },
+              "G_star": { "type": "number", "description": "Genius Index" }
+            }
+          },
+          "payload": { "type": "object" }
+        }
+      }
+    }
+  }
+}

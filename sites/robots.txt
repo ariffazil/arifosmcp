@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# AI Context Discovery
+Sitemap: https://arifosmcp.arif-fazil.com/sitemap.xml
+X-LLMS-TXT: https://arifosmcp.arif-fazil.com/llms.txt
+X-AI-MANIFEST: https://arifosmcp.arif-fazil.com/ai.json

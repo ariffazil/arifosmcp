@@ -1,0 +1,25 @@
+{
+  "verdict": "SEAL",
+  "stage": "999_SEAL",
+  "session_id": "npm-0.2.1-release-2026-02-28",
+  "vault_id": "V999-npm-0.2.",
+  "timestamp": "2026-02-28T21:40:00Z",
+  "ceremony": "999_SEAL",
+  "provenance": {
+    "npm_version": "0.2.1",
+    "npm_tag": "next",
+    "arifos_compat": ["2026.2.17", "2026.2.22", "2026.3.1"],
+    "e2e_tests": "6/6 passing",
+    "f12_defense": "verified",
+    "hmac_tokens": "verified",
+    "amanah_handshake": "verified"
+  },
+  "continuity_notes": [
+    "npm@0.2.1 published to @next tag for soak testing",
+    "E2E verification complete against live VPS endpoint",
+    "F12 injection defense confirmed working",
+    "Governance token HMAC-SHA256 chain verified",
+    "Ready for 1-2 day soak before promotion to latest"
+  ],
+  "motto": "Ditempa Bukan Diberi — Forged, Not Given"
+}

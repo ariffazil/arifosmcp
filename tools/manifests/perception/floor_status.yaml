@@ -1,0 +1,8 @@
+name: floor_status
+type: perception-tool
+authority: JUDGE
+description: Report the current state of constitutional floor enforcement.
+floors:
+  - F8: TABLIGH
+risk_tier: P2
+parameters: {}

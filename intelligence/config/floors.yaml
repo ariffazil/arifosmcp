@@ -1,0 +1,52 @@
+# arifosmcp.intelligence/config/floors.yaml
+# F1-F13 Constitutional Floor Threshold Configuration
+# Authority: ARIF FAZIL (Sovereign)
+# Version: 2026.02.22-FORGE-KERNEL-SEAL
+#
+# NOTE (Entropy Control):
+# - This file is a compatibility profile for ACLIP compute workflows.
+# - Canonical constitutional thresholds and floor classes live in:
+#   core/shared/floors.py
+# - If values differ, core is authoritative.
+
+thresholds:
+  F1: 0.95   # Amanah — reversibility
+  F2: 0.99   # Truth — factual fidelity
+  F3: 0.95   # Tri-Witness — consensus (H+A+E)
+  F4: 0.80   # Clarity — ΔS ≤ 0 (entropy reduction)
+  F5: 1.00   # Peace² ≥ 1.0 — de-escalation
+  F6: 0.95   # Empathy κᵣ — ASEAN/MY maruah preservation
+  F7: 0.80   # Humility Ω₀ ∈ [0.03, 0.15] — bounded uncertainty
+  F8: 0.80   # Genius G ≥ 0.80 — platform safety
+  F9: 1.00   # Anti-Hantu — no consciousness claims (HARD zero)
+  F10: 0.90  # Ontology — symbolic grounding
+  F11: 0.90  # Authority — human sovereignty
+  F12: 1.00  # Defense — injection guard (HARD zero)
+  F13: 0.80  # Curiosity — ≥ 3 options proposed
+
+# Severity-based overrides (stricter thresholds for high-risk ops)
+severity_overrides:
+  high:
+    F1: 0.98
+    F11: 0.95
+  irreversible:
+    F1: 1.00
+    F11: 1.00
+    F12: 1.00
+
+# Floor type classification
+floor_types:
+  HARD:  [F1, F2, F6, F7, F10, F11, F12]
+  SOFT:  [F3, F4, F5, F8, F9, F13]
+
+# Verdict thresholds (by pass rate)
+verdicts:
+  SEAL:    0.95   # ≥ 95% floors pass → SEAL
+  PARTIAL: 0.80   # 80-94% → PARTIAL (constrained proceed)
+  SABAR:   0.00   # < 80% → SABAR (cooling required)
+
+# Critical floors — any single failure → VOID immediately
+void_on_fail: [F9, F12]
+
+# Hold floors — failure triggers HOLD_888 (human ratification)
+hold_on_fail: [F1, F11]

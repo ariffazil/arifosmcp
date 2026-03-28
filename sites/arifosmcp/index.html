@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="arifOS MCP Server - The world's first production-grade Constitutional AI Governance System with 13 stationary floors (F1-F13) and Trinity Architecture (ΔΩΨ).">
+    <meta name="keywords" content="arifOS, MCP, Model Context Protocol, AI Governance, Constitutional AI, Trinity Architecture, F1-F13, ΔΩΨ, AGI, ASI, APEX">
+    <meta name="author" content="Muhammad Arif bin Fazil">
+    <meta name="version" content="2026.03.22-FORGE">
+    <meta name="ai-context" content="This is the arifOS MCP Server - A Constitutional AI Governance System. It provides 37 tools (11 mega-tool groups + routing aliases) enforcing 13 Constitutional Floors (F1-F13). Trinity Architecture (Δ Mind, Ω Heart, Ψ Soul). APEX score G† ≥ 0.80 required for all actions. Transport: streamable-http. MCP endpoint: /mcp. License: AGPL-3.0.">
+    <title>arifOS MCP Server | Constitutional AI Governance (ΔΩΨ)</title>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --accent-delta: #58a6ff;
+            --accent-omega: #f85149;
+            --accent-psi: #ffd700;
+            --accent-success: #238636;
+            --border: #30363d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, monospace;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--accent-delta), var(--accent-omega), var(--accent-psi));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        
+        .version-badge {
+            display: inline-block;
+            background: var(--accent-success);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .motto {
+            font-style: italic;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .trinity-symbols {
+            font-size: 2rem;
+            margin: 1rem 0;
+            letter-spacing: 1rem;
+        }
+        
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--bg-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .status.ok { border-color: var(--accent-success); }
+        .status.warn { border-color: var(--accent-psi); }
+        .status.error { border-color: var(--accent-omega); }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--accent-success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status.warn .status-dot { background: var(--accent-psi); }
+        .status.error .status-dot { background: var(--accent-omega); }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        
+        nav a {
+            color: var(--accent-delta);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+        
+        nav a:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-delta);
+        }
+        
+        .section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .status-item {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .status-item h4 {
+            color: var(--accent-delta);
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .status-item .value {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        .status-item .meta {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.3rem;
+        }
+        
+        h2 {
+            color: var(--accent-psi);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+        
+        h3 {
+            color: var(--accent-delta);
+            margin: 1.5rem 0 0.5rem;
+        }
+        
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .tool-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .tool-card:hover {
+            border-color: var(--accent-delta);
+            transform: translateY(-2px);
+        }
+        
+        .tool-card h4 {
+            color: var(--accent-delta);
+            margin-bottom: 0.5rem;
+        }
+        
+        .tool-card.agi { border-left: 3px solid var(--accent-delta); }
+        .tool-card.asi { border-left: 3px solid var(--accent-omega); }
+        .tool-card.apex { border-left: 3px solid var(--accent-psi); }
+        .tool-card.vault { border-left: 3px solid var(--accent-success); }
+        
+        .stage-badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            background: var(--bg-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .floors {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .floor-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        
+        .floor-card h4 {
+            color: var(--accent-psi);
+            margin-bottom: 0.5rem;
+        }
+        
+        code {
+            background: var(--bg-primary);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .endpoint {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            font-family: monospace;
+        }
+        
+        .method {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        
+        .method.get { background: var(--accent-success); color: white; }
+        .method.post { background: var(--accent-delta); color: white; }
+        
+        .quickstart {
+            background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));
+            border: 2px solid var(--accent-delta);
+        }
+        
+        pre {
+            background: var(--bg-primary);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .btn-primary {
+            background: var(--accent-delta);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: transparent;
+            border-color: var(--accent-delta);
+            color: var(--accent-delta);
+        }
+        
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-color: var(--border);
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--accent-psi);
+            color: var(--accent-psi);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+            color: var(--text-secondary);
+        }
+        
+        .ai-readable {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            h1 { font-size: 1.8rem; }
+            .tool-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">🔱</div>
+            <h1>arifOS MCP Server</h1>
+            <div class="version-badge" id="version-badge">Loading...</div>
+            <p class="motto">Ditempa Bukan Diberi — Forged, Not Given</p>
+            <div class="trinity-symbols">Δ Ω Ψ</div>
+            <div class="status ok" id="status-badge">
+                <span class="status-dot" id="status-dot"></span>
+                <span id="status-text">System Online — Loading live status</span>
+            </div>
+        </header>
+
+        <nav>
+            <a href="/">Home</a>
+            <a href="/tools">Tools API</a>
+            <a href="/health">Health</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/static-sites/arifosmcp/docs.html">Documentation</a>
+            <a href="https://github.com/ariffazil/arifosmcp" target="_blank">GitHub</a>
+            <a href="https://pypi.org/project/arifosmcp/" target="_blank">PyPI</a>
+        </nav>
+
+        <div class="section live-status">
+            <h2>📡 Live Intelligence Status</h2>
+            <p>Live data from <code>/health</code> and <code>check_vital</code>. Auto-refresh every 10 seconds.</p>
+            <div class="status-grid">
+                <div class="status-item">
+                    <h4>Version</h4>
+                    <div class="value" id="live-version">--</div>
+                    <div class="meta" id="live-transport">--</div>
+                </div>
+                <div class="status-item">
+                    <h4>Tools Loaded</h4>
+                    <div class="value" id="live-tools">--</div>
+                    <div class="meta" id="live-service">--</div>
+                </div>
+                <div class="status-item">
+                    <h4>Machine Status</h4>
+                    <div class="value" id="live-machine">--</div>
+                    <div class="meta" id="live-stage">--</div>
+                </div>
+                <div class="status-item">
+                    <h4>Verdict</h4>
+                    <div class="value" id="live-verdict">--</div>
+                    <div class="meta" id="live-latency">--</div>
+                </div>
+                <div class="status-item">
+                    <h4>Exploration</h4>
+                    <div class="value" id="live-exploration">--</div>
+                    <div class="meta" id="live-entropy">--</div>
+                </div>
+                <div class="status-item">
+                    <h4>Uncertainty</h4>
+                    <div class="value" id="live-uncertainty">--</div>
+                    <div class="meta" id="live-confidence">--</div>
+                </div>
+                <div class="status-item">
+                    <h4>Browserless</h4>
+                    <div class="value" id="live-browserless">--</div>
+                    <div class="meta" id="live-qdrant">--</div>
+                </div>
+                <div class="status-item">
+                    <h4>Insight</h4>
+                    <div class="value" id="live-insight">--</div>
+                    <div class="meta" id="live-decisions">--</div>
+                </div>
+            </div>
+            <p style="margin-top: 1rem; color: var(--text-secondary);" id="live-updated">Last update: --</p>
+        </div>
+
+        <div class="section quickstart">
+            <h2>🚀 Quick Start</h2>
+            <p>Install the world's first Constitutional AI Governance System in seconds:</p>
+            
+            <h3>Python (PyPI)</h3>
+            <pre><code>pip install arifosmcp==2026.3.14</code></pre>
+            
+            <h3>Node.js (npm)</h3>
+            <pre><code>npm install -g @arifos/mcp</code></pre>
+            
+            <h3>MCP Client Configuration</h3>
+            <pre><code>{
+  "mcpServers": {
+    "arifos": {
+      "command": "npx",
+      "args": ["-y", "@arifos/mcp"]
+    }
+  }
+}</code></pre>
+
+            <div class="cta-buttons">
+                <a href="https://pypi.org/project/arifosmcp/" class="btn btn-primary" target="_blank">📦 Install from PyPI</a>
+                <a href="https://github.com/ariffazil/arifosmcp" class="btn btn-secondary" target="_blank">📚 View Source</a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🧬 Trinity Architecture (ΔΩΨ)</h2>
+            <p>arifOS is not a wrapper—it is a <strong>governed intelligence organism</strong>. It metabolizes information through a Double Helix of specialized organs across three engines:</p>
+            
+            <div class="tool-grid" style="margin-top: 2rem;">
+                <div class="tool-card agi">
+                    <h4>🔷 Δ Delta — AGI Mind</h4>
+                    <p><strong>Stages:</strong> 000, 111, 222, 333, 444</p>
+                    <p><strong>Role:</strong> Reason, sense, ground</p>
+                    <p><strong>Floors:</strong> F2 (Truth), F4 (Clarity), F7 (Humility), F8 (Genius)</p>
+                </div>
+                
+                <div class="tool-card asi">
+                    <h4>🔴 Ω Omega — ASI Heart</h4>
+                    <p><strong>Stages:</strong> 555, 666</p>
+                    <p><strong>Role:</strong> Empathy, memory, ethics</p>
+                    <p><strong>Floors:</strong> F5 (Peace²), F6 (Empathy), F9 (Anti-Hantu)</p>
+                </div>
+                
+                <div class="tool-card apex">
+                    <h4>🟡 Ψ Psi — APEX Soul</h4>
+                    <p><strong>Stages:</strong> 777, 888, 999</p>
+                    <p><strong>Role:</strong> Forge, judge, seal</p>
+                    <p><strong>Floors:</strong> F1 (Amanah), F3 (Tri-Witness), F10-F13</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🛠️ 37 Tools (11 Mega-Tool Groups)</h2>
+            <p>37 tools organized into 11 mega-tool groups across the Trinity Architecture (Δ Mind, Ω Heart, Ψ Soul):</p>
+            
+            <h3>KERNEL Layer (6 tools)</h3>
+            <div class="tool-grid">
+                <div class="tool-card vault">
+                    <span class="stage-badge">000_INIT</span>
+                    <h4>init_anchor</h4>
+                    <p>Constitutional airlock—establish session jurisdiction</p>
+                </div>
+                <div class="tool-card vault">
+                    <span class="stage-badge">000_INIT</span>
+                    <h4>init_anchor_state</h4>
+                    <p>Legacy alias for init_anchor</p>
+                </div>
+                <div class="tool-card vault">
+                    <span class="stage-badge">000_INIT</span>
+                    <h4>revoke_anchor_state</h4>
+                    <p>Kill switch—invalidate governed session</p>
+                </div>
+                <div class="tool-card vault">
+                    <span class="stage-badge">000_INIT</span>
+                    <h4>register_tools</h4>
+                    <p>Tool surface declaration at boot</p>
+                </div>
+                <div class="tool-card vault">
+                    <span class="stage-badge">444_ROUTER</span>
+                    <h4>arifOS_kernel</h4>
+                    <p>Stage conductor—routes ΔΩΨ transitions</p>
+                </div>
+                <div class="tool-card vault">
+                    <span class="stage-badge">000_999</span>
+                    <h4>forge</h4>
+                    <p>Full pipeline trigger—INIT → SEAL in one call</p>
+                </div>
+            </div>
+
+            <h3>AGI Δ MIND Layer (6 tools)</h3>
+            <div class="tool-grid">
+                <div class="tool-card agi">
+                    <span class="stage-badge">111_SENSE</span>
+                    <h4>agi_reason</h4>
+                    <p>Governed reasoning under F2/F4/F7</p>
+                </div>
+                <div class="tool-card agi">
+                    <span class="stage-badge">333_INTEGRATE</span>
+                    <h4>agi_reflect</h4>
+                    <p>Metacognitive integration—checks own output</p>
+                </div>
+                <div class="tool-card agi">
+                    <span class="stage-badge">222_GROUND</span>
+                    <h4>reality_compass</h4>
+                    <p>Epistemic intake—grounds claims before reasoning</p>
+                </div>
+                <div class="tool-card agi">
+                    <span class="stage-badge">222_GROUND</span>
+                    <h4>reality_atlas</h4>
+                    <p>Structured evidence map across sources</p>
+                </div>
+                <div class="tool-card agi">
+                    <span class="stage-badge">222_GROUND</span>
+                    <h4>search_reality</h4>
+                    <p>Live web search—raw reality acquisition</p>
+                </div>
+                <div class="tool-card agi">
+                    <span class="stage-badge">222_GROUND</span>
+                    <h4>ingest_evidence</h4>
+                    <p>URL → normalized evidence artifact</p>
+                </div>
+            </div>
+
+            <h3>ASI Ω HEART/HAND Layer (4 tools)</h3>
+            <div class="tool-grid">
+                <div class="tool-card asi">
+                    <span class="stage-badge">555_ALIGN</span>
+                    <h4>asi_critique</h4>
+                    <p>Adversarial critique—safety and maruah check</p>
+                </div>
+                <div class="tool-card asi">
+                    <span class="stage-badge">555_ALIGN</span>
+                    <h4>asi_simulate</h4>
+                    <p>Consequence simulation before action</p>
+                </div>
+                <div class="tool-card asi">
+                    <span class="stage-badge">666_EXECUTE</span>
+                    <h4>agentzero_engineer</h4>
+                    <p>Code + env actions under F11 gate</p>
+                </div>
+                <div class="tool-card asi">
+                    <span class="stage-badge">444_MEMORY</span>
+                    <h4>agentzero_memory_query</h4>
+                    <p>Constitutional semantic recall from Vault</p>
+                </div>
+            </div>
+
+            <h3>APEX Ψ SOUL Layer (7 tools)</h3>
+            <div class="tool-grid">
+                <div class="tool-card apex">
+                    <span class="stage-badge">777_JUDGE</span>
+                    <h4>apex_judge</h4>
+                    <p>Tri-witness verdict engine</p>
+                </div>
+                <div class="tool-card apex">
+                    <span class="stage-badge">777_JUDGE</span>
+                    <h4>agentzero_validate</h4>
+                    <p>Output validation—ALLOW/HOLD/VOID</p>
+                </div>
+                <div class="tool-card apex">
+                    <span class="stage-badge">888_FLOOR</span>
+                    <h4>audit_rules</h4>
+                    <p>F1–F13 live inspection + scoring</p>
+                </div>
+                <div class="tool-card apex">
+                    <span class="stage-badge">888_FLOOR</span>
+                    <h4>agentzero_armor_scan</h4>
+                    <p>F12 injection guard—prefilter all inputs</p>
+                </div>
+                <div class="tool-card apex">
+                    <span class="stage-badge">888_HOLD</span>
+                    <h4>agentzero_hold_check</h4>
+                    <p>888_HOLD registry + human escalation bus</p>
+                </div>
+                <div class="tool-card apex">
+                    <span class="stage-badge">888_VITALS</span>
+                    <h4>check_vital</h4>
+                    <p>System health—ΔS, peace², Ω₀ telemetry</p>
+                </div>
+                <div class="tool-card apex">
+                    <span class="stage-badge">888_OBSERVE</span>
+                    <h4>open_apex_dashboard</h4>
+                    <p>Live floor scores + pipeline trace</p>
+                </div>
+            </div>
+
+            <h3>VAULT999 Layer (2 tools)</h3>
+            <div class="tool-grid">
+                <div class="tool-card vault">
+                    <span class="stage-badge">999_SEAL</span>
+                    <h4>vault_seal</h4>
+                    <p>Commit decision + telemetry to ledger</p>
+                </div>
+                <div class="tool-card vault">
+                    <span class="stage-badge">999_ATTEST</span>
+                    <h4>verify_vault_ledger</h4>
+                    <p>Merkle integrity check—tamper detection</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>⚖️ 13 Constitutional Floors</h2>
+            <p>These are non-negotiable structural laws enforced at every stage:</p>
+            
+            <div class="floors">
+                <div class="floor-card">
+                    <h4>F1 — Amanah (Integrity)</h4>
+                    <p>≥ 0.5 — Reversibility / audit mandate</p>
+                </div>
+                <div class="floor-card">
+                    <h4>F2 — Truth</h4>
+                    <p>≥ 0.99 — Anti-hallucination</p>
+                </div>
+                <div class="floor-card">
+                    <h4>F3 — Tri-Witness</h4>
+                    <p>≥ 0.95 — Human·AI·Earth consensus</p>
+                </div>
+                <div class="floor-card">
+                    <h4>F4 — ΔS Clarity</h4>
+                    <p>≤ 0 — Entropy reduction</p>
+                </div>
+                <div class="floor-card">
+                    <h4>F5 — Peace²</h4>
+                    <p>≥ 1.0 — Non-destructive power</p>
+                </div>
+                <div class="floor-card">
+                    <h4>F6 — κᵣ Empathy</h4>
+                    <p>≥ 0.70 — Serves weakest stakeholder</p>
+                </div>
+                <div class="floor-card">
+                    <h4>F7 — Ω₀ Humility</h4>
+                    <p>0.03–0.20 — Gödel uncertainty band</p>
+                </div>
+                <div class="floor-card">
+                    <h4>F8 — G Genius</h4>
+                    <p>≥ 0.80 — Internal coherence</p>
+                </div>
+                <div class="floor-card">
+                    <h4>F9 — C_dark</h4>
+                    <p>< 0.30 — Anti-Hantu limit</p>
+                </div>
+                <div class="floor-card">
+                    <h4>F10 — Ontology</h4>
+                    <p>LOCK — No consciousness claims</p>
+                </div>
+                <div class="floor-card">
+                    <h4>F11 — Command Auth</h4>
+                    <p>LOCK — Identity verification</p>
+                </div>
+                <div class="floor-card">
+                    <h4>F12 — Injection</h4>
+                    <p>< 0.85 — Block adversarial control</p>
+                </div>
+                <div class="floor-card">
+                    <h4>F13 — Sovereign</h4>
+                    <p>HUMAN — Human final authority</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔌 API Endpoints</h2>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/health</code>
+                <p>System health check—returns version, status, capability map</p>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/tools</code>
+                <p>List all 37 tools with JSONSchema parameters</p>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/dashboard</code>
+                <p>Live metabolic loop visualization</p>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <code>/mcp</code>
+                <p>MCP protocol endpoint (Streamable HTTP)</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📊 Validation Status</h2>
+            <p><strong>Production Status:</strong> <span style="color: var(--accent-success);">✅ RUNNING</span> — 2026-03-22-FORGE</p>
+            <ul style="margin-top: 1rem; margin-left: 1.5rem;">
+                <li>Tools Live: 37 tools (11 mega-tool groups) ✅</li>
+                <li>ML Floors: SBERT enabled ✅</li>
+                <li>Constitutional Floors: F1-F13 enforced ✅</li>
+                <li>Trinity Architecture: Δ Mind · Ω Heart · Ψ Soul ✅</li>
+                <li>Transport: Streamable HTTP (MCP 2025-11-25) ✅</li>
+                <li>Infrastructure: 16 containers running ✅</li>
+            </ul>
+        </div>
+
+        <footer>
+            <p><strong>Authority:</strong> 888 Judge — Muhammad Arif bin Fazil</p>
+            <p><strong>License:</strong> AGPL-3.0-only</p>
+            <p style="margin-top: 1rem; font-style: italic;">Ditempa Bukan Diberi — Forged, Not Given [ΔΩΨ | ARIF]</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">© 2026 arifOS Project</p>
+        </footer>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin.includes('localhost')
+            ? 'http://localhost:8080'
+            : window.location.origin;
+
+        function setStatusBadge(level, text) {
+            const badge = document.getElementById('status-badge');
+            const label = document.getElementById('status-text');
+            if (!badge || !label) return;
+            badge.classList.remove('ok', 'warn', 'error');
+            badge.classList.add(level);
+            label.textContent = text;
+        }
+
+        async function fetchJson(url, options) {
+            const response = await fetch(url, options);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            return response.json();
+        }
+
+        async function refreshLiveStatus() {
+            try {
+                const started = performance.now();
+                const [health, vital] = await Promise.all([
+                    fetchJson(`${API_BASE}/health`),
+                    fetchJson(`${API_BASE}/tools/check_vital`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({})
+                    })
+                ]);
+                const latencyMs = Math.round(performance.now() - started);
+                const result = vital && vital.result ? vital.result : {};
+                const intelligence = result.intelligence_state || {};
+                const services = result.payload && result.payload.intelligence_services
+                    ? result.payload.intelligence_services
+                    : {};
+
+                const version = health.version || '--';
+                const versionBadge = document.getElementById('version-badge');
+                if (versionBadge) versionBadge.textContent = `v${version}`;
+
+                const status = (health.status || '').toLowerCase();
+                if (status === 'healthy') {
+                    setStatusBadge('ok', `System Online — ${health.tools_loaded || '--'} Tools Active — 13 Floors Enforced`);
+                } else if (status) {
+                    setStatusBadge('warn', `System ${status.toUpperCase()} — Monitoring`);
+                }
+
+                const setText = (id, value) => {
+                    const el = document.getElementById(id);
+                    if (el) el.textContent = value;
+                };
+
+                setText('live-version', version);
+                setText('live-transport', health.transport ? `transport: ${health.transport}` : '--');
+                setText('live-tools', (health.tools_loaded ?? '--').toString());
+                setText('live-service', health.service ? `service: ${health.service}` : '--');
+                setText('live-machine', result.machine_status || '--');
+                setText('live-stage', result.stage ? `stage: ${result.stage}` : '--');
+                setText('live-verdict', result.verdict || '--');
+                setText('live-latency', `latency: ${latencyMs}ms`);
+                setText('live-exploration', intelligence.exploration || '--');
+                setText('live-entropy', intelligence.entropy ? `entropy: ${intelligence.entropy}` : '--');
+                setText('live-uncertainty', (intelligence.uncertainty_score ?? '--').toString());
+                setText('live-confidence', (intelligence.confidence ?? '--').toString());
+                setText('live-browserless', services.browserless ? services.browserless.status : '--');
+                setText('live-qdrant', services.qdrant ? `qdrant: ${services.qdrant.status}` : '--');
+                setText('live-insight', intelligence.insight || 'none');
+                setText('live-decisions', (intelligence.decision_required && intelligence.decision_required.length)
+                    ? `${intelligence.decision_required.length} pending`
+                    : 'none');
+
+                const updated = document.getElementById('live-updated');
+                if (updated) updated.textContent = `Last update: ${new Date().toLocaleTimeString()}`;
+
+                const metadata = document.getElementById('arifos-metadata');
+                if (metadata) {
+                    try {
+                        const parsed = JSON.parse(metadata.textContent);
+                        parsed.version = version;
+                        parsed.tools.total = health.tools_loaded ?? parsed.tools.total;
+                        metadata.textContent = JSON.stringify(parsed, null, 4);
+                    } catch (err) {
+                        // ignore metadata update errors
+                    }
+                }
+            } catch (error) {
+                setStatusBadge('error', 'System Degraded — Live status unavailable');
+            }
+        }
+
+        refreshLiveStatus();
+        setInterval(refreshLiveStatus, 10000);
+    </script>
+
+    <!-- AI-Readable Structured Data -->
+    <script type="application/json" id="arifos-metadata">
+    {
+        "name": "arifOS MCP Server",
+        "version": "2026.03.22-FORGE",
+        "description": "Production Constitutional AI Governance System — FastMCP streamable-http server",
+        "architecture": {
+            "type": "Trinity",
+            "engines": ["Delta (AGI Mind)", "Omega (ASI Heart)", "Psi (APEX Soul)"],
+            "symbols": "ΔΩΨ",
+            "pipeline": "000→999 metabolic stages",
+            "containers": 16,
+            "transport": "streamable-http",
+            "mcp_protocol": "2025-11-25"
+        },
+        "tools": {
+            "total": 37,
+            "mega_tool_groups": 11,
+            "mega_tools": ["init_anchor", "arifOS_kernel", "agi_mind", "asi_heart", "apex_soul", "physics_reality", "engineering_memory", "vault_ledger", "math_estimator", "code_engine", "architect_registry"],
+            "note": "37 tools total includes legacy routing aliases that delegate to mega-tools"
+        },
+        "constitutional_floors": [
+            {"id": "F1", "name": "Amanah", "type": "Hard", "threshold": "≥ 0.5", "enforces": "Reversibility"},
+            {"id": "F2", "name": "Truth", "type": "Hard", "threshold": "≥ 0.99", "enforces": "Anti-hallucination"},
+            {"id": "F3", "name": "Tri-Witness", "type": "Mirror", "threshold": "≥ 0.95", "enforces": "Human·AI·Earth consensus"},
+            {"id": "F4", "name": "ΔS Clarity", "type": "Hard", "threshold": "≤ 0", "enforces": "Entropy reduction"},
+            {"id": "F5", "name": "Peace²", "type": "Soft", "threshold": "≥ 1.0", "enforces": "Non-destructive power"},
+            {"id": "F6", "name": "κᵣ Empathy", "type": "Soft", "threshold": "≥ 0.70", "enforces": "Serves weakest stakeholder"},
+            {"id": "F7", "name": "Ω₀ Humility", "type": "Hard", "threshold": "0.03–0.20", "enforces": "Gödel uncertainty"},
+            {"id": "F8", "name": "G Genius", "type": "Mirror", "threshold": "≥ 0.80", "enforces": "Internal coherence"},
+            {"id": "F9", "name": "C_dark", "type": "Hard", "threshold": "< 0.30", "enforces": "Anti-Hantu limit"},
+            {"id": "F10", "name": "Ontology", "type": "Wall", "threshold": "LOCK", "enforces": "No consciousness claims"},
+            {"id": "F11", "name": "Command Auth", "type": "Hard", "threshold": "LOCK", "enforces": "Identity verification"},
+            {"id": "F12", "name": "Injection", "type": "Wall", "threshold": "< 0.85", "enforces": "Block adversarial control"},
+            {"id": "F13", "name": "Sovereign", "type": "Veto", "threshold": "HUMAN", "enforces": "Human final authority"}
+        ],
+        "metabolic_stages": ["000_INIT", "111_SENSE", "222_REALITY", "333_MIND", "444_ROUTER", "555_MEMORY", "666_HEART", "777_FORGE", "888_JUDGE", "999_VAULT"],
+        "verdicts": ["SEAL", "VOID", "SABAR", "PARTIAL", "HOLD_888"],
+        "connect": {
+            "mcp_endpoint": "https://arifosmcp.arif-fazil.com/mcp",
+            "mcp_config": "{\"mcpServers\":{\"arifOS\":{\"type\":\"http\",\"url\":\"https://arifosmcp.arif-fazil.com/mcp\"}}}",
+            "transport": "streamable-http"
+        },
+        "links": {
+            "github_body": "https://github.com/ariffazil/arifosmcp",
+            "github_mind": "https://github.com/ariffazil/arifOS",
+            "mcp_endpoint": "https://arifosmcp.arif-fazil.com/mcp",
+            "health": "https://arifosmcp.arif-fazil.com/health",
+            "tools": "https://arifosmcp.arif-fazil.com/tools",
+            "dashboard": "https://arifosmcp.arif-fazil.com/dashboard/",
+            "monitoring": "https://monitor.arifosmcp.arif-fazil.com",
+            "docs": "https://arifos.arif-fazil.com"
+        },
+        "production_state": {
+            "status": "RUNNING",
+            "date": "2026-03-22",
+            "version": "2026.03.22-FORGE",
+            "tools_loaded": 37,
+            "ml_floors": "SBERT enabled",
+            "containers": 16,
+            "license": "AGPL-3.0"
+        }
+    }
+    </script>
+</body>
+</html>

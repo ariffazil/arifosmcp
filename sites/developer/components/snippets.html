@@ -1,0 +1,295 @@
+<!-- Component: Trinity Logo SVG -->
+<!-- Use this for consistent logo across all pages -->
+<svg class="trinity-logo" viewBox="0 0 48 48" width="32" height="32" fill="none" aria-label="arifOS Trinity">
+  <line x1="24" y1="8" x2="24" y2="22" stroke="#ffd24a" stroke-width="3" stroke-linecap="round"/>
+  <line x1="24" y1="26" x2="11" y2="40" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+  <line x1="24" y1="26" x2="37" y2="40" stroke="#ff4d4f" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="24" cy="6" r="4" stroke="#ffd24a" stroke-width="1.5" fill="none"/>
+  <circle cx="9" cy="41" r="4" stroke="#2563eb" stroke-width="1.5" fill="none"/>
+  <circle cx="39" cy="41" r="4" stroke="#ff4d4f" stroke-width="1.5" fill="none"/>
+  <circle cx="24" cy="24" r="5" stroke="#2563eb" stroke-width="1.5" fill="#12121a"/>
+</svg>
+
+<!-- Component: Trinity Logo Large (Hero) -->
+<svg class="trinity-logo-lg" viewBox="0 0 200 200" width="100" height="100" fill="none">
+  <defs>
+    <filter id="glow-gold" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-blue" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-red" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <line x1="100" y1="104" x2="100" y2="22" stroke="#ffd24a" stroke-width="14" stroke-linecap="round" filter="url(#glow-gold)"/>
+  <circle cx="100" cy="18" r="10" fill="#ffd24a" filter="url(#glow-gold)"/>
+  <line x1="96" y1="112" x2="28" y2="163" stroke="#2563eb" stroke-width="14" stroke-linecap="round" filter="url(#glow-blue)"/>
+  <circle cx="24" cy="166" r="10" fill="#2563eb" filter="url(#glow-blue)"/>
+  <line x1="104" y1="112" x2="172" y2="163" stroke="#ff4d4f" stroke-width="14" stroke-linecap="round" filter="url(#glow-red)"/>
+  <circle cx="176" cy="166" r="10" fill="#ff4d4f" filter="url(#glow-red)"/>
+  <circle cx="100" cy="108" r="22" fill="#0a0a0f" stroke="#2563eb" stroke-width="2"/>
+  <polygon points="100,94 87,118 113,118" fill="none" stroke="#e8e8f0" stroke-width="3.5" stroke-linejoin="round"/>
+</svg>
+
+<!-- Component: Trinity Strip Navigation -->
+<div class="trinity-strip">
+  <a href="https://arif-fazil.com" class="trinity-node human">HUMAN</a>
+  <a href="https://apex.arif-fazil.com" class="trinity-node theory">THEORY</a>
+  <a href="https://arifosmcp.arif-fazil.com" class="trinity-node apps active">APPS</a>
+</div>
+
+<!-- Component: Main Navigation -->
+<nav class="main-nav">
+  <a href="../index.html" class="nav-logo">
+    <!-- Include trinity-logo component here -->
+    <span class="nav-title">arifOS<span class="nav-mcp">MCP</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="overview.html">Documentation</a>
+    <a href="tools.html">Tools</a>
+    <a href="integrations.html">Integrations</a>
+    <a href="changelog.html">Changelog</a>
+  </div>
+  <div class="nav-right">
+    <span class="version-badge">v2026.03.14</span>
+    <a href="https://github.com/ariffazil/arifosmcp" class="btn btn-sm btn-secondary" target="_blank">GitHub</a>
+  </div>
+  <button class="nav-hamburger" aria-label="Menu">☰</button>
+</nav>
+
+<!-- Component: Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-search">
+    <input type="text" placeholder="Search docs…" aria-label="Search documentation">
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title"><span class="chevron">▼</span>Getting Started</div>
+    <div class="sidebar-group-items">
+      <a href="getting-started.html" class="sidebar-link">Installation</a>
+      <a href="getting-started.html#quick-start" class="sidebar-link">Quick Start</a>
+      <a href="getting-started.html#env-vars" class="sidebar-link">Environment Variables</a>
+      <a href="getting-started.html#docker" class="sidebar-link">Docker Deployment</a>
+    </div>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title"><span class="chevron">▼</span>Core Concepts</div>
+    <div class="sidebar-group-items">
+      <a href="overview.html" class="sidebar-link">Overview</a>
+      <a href="overview.html#metabolic-loop" class="sidebar-link">Metabolic Loop</a>
+      <a href="overview.html#trinity-engines" class="sidebar-link">Trinity Engines</a>
+      <a href="floors.html" class="sidebar-link">13 Floors</a>
+    </div>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title"><span class="chevron">▼</span>API Reference</div>
+    <div class="sidebar-group-items">
+      <a href="tools.html" class="sidebar-link">All Tools</a>
+      <a href="tools.html#arifos-kernel" class="sidebar-link">arifOS_kernel</a>
+      <a href="tools.html#reality-tools" class="sidebar-link">Reality Tools</a>
+      <a href="tools.html#memory-tools" class="sidebar-link">Memory Tools</a>
+      <a href="tools.html#governance-tools" class="sidebar-link">Governance Tools</a>
+    </div>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title"><span class="chevron">▼</span>Integrations</div>
+    <div class="sidebar-group-items">
+      <a href="integrations.html" class="sidebar-link">Overview</a>
+      <a href="integrations.html#claude" class="sidebar-link">Claude Desktop</a>
+      <a href="integrations.html#cursor" class="sidebar-link">Cursor</a>
+      <a href="integrations.html#vscode" class="sidebar-link">VS Code</a>
+      <a href="integrations.html#python" class="sidebar-link">Python SDK</a>
+    </div>
+  </div>
+
+  <div class="sidebar-divider"></div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title"><span class="chevron">▼</span>Resources</div>
+    <div class="sidebar-group-items">
+      <a href="changelog.html" class="sidebar-link">Changelog</a>
+      <a href="https://github.com/ariffazil/arifosmcp" class="sidebar-link" target="_blank">GitHub</a>
+      <a href="https://pypi.org/project/arifosmcp" class="sidebar-link" target="_blank">PyPI</a>
+    </div>
+  </div>
+</aside>
+
+<!-- Component: Table of Contents -->
+<nav class="toc" aria-label="On this page">
+  <div class="toc-title">On this page</div>
+  <a href="#introduction">Introduction</a>
+  <a href="#installation">Installation</a>
+  <a href="#quick-start">Quick Start</a>
+  <a href="#configuration">Configuration</a>
+  <a href="#docker">Docker</a>
+  <a href="#next-steps">Next Steps</a>
+</nav>
+
+<!-- Component: Callout Boxes -->
+<!-- Info Callout -->
+<div class="callout callout-info">
+  <div class="callout-title">ℹ️ Information</div>
+  <p>This is an informational callout. Use it for tips, notes, and helpful context.</p>
+</div>
+
+<!-- Warning Callout -->
+<div class="callout callout-warning">
+  <div class="callout-title">⚠️ Warning</div>
+  <p>This is a warning callout. Use it for important cautions and potential issues.</p>
+</div>
+
+<!-- Error/Danger Callout -->
+<div class="callout callout-error">
+  <div class="callout-title">🚫 Critical</div>
+  <p>This is a critical callout. Use it for dangerous operations that could cause harm.</p>
+</div>
+
+<!-- Success Callout -->
+<div class="callout callout-success">
+  <div class="callout-title">✅ Success</div>
+  <p>This is a success callout. Use it for confirmations and positive outcomes.</p>
+</div>
+
+<!-- Component: Code Block with Copy Button -->
+<div class="code-block">
+  <div class="code-block-header">
+    <span>bash</span>
+    <button class="copy-btn">Copy</button>
+  </div>
+  <pre><code># Your code here
+pip install arifosmcp</code></pre>
+</div>
+
+<!-- Component: Badge Variants -->
+<span class="badge badge-version">v2026.03.14</span>
+<span class="badge badge-status">● Operational</span>
+<span class="badge badge-warning">Deprecated</span>
+<span class="badge badge-error">VOID</span>
+<span class="badge badge-info">Experimental</span>
+<span class="badge badge-trinity">ΔΩΨ</span>
+
+<!-- Component: Card -->
+<div class="card">
+  <div class="card-icon">🚀</div>
+  <h3 class="card-title">Card Title</h3>
+  <p class="card-description">Card description text goes here. Keep it concise and informative.</p>
+</div>
+
+<!-- Component: Interactive Card (Clickable) -->
+<a href="#" class="card card-interactive">
+  <h3 class="card-title">Interactive Card</h3>
+  <p class="card-description">This card is clickable and has hover effects.</p>
+  <span class="card-link">Learn more →</span>
+</a>
+
+<!-- Component: Floor Card -->
+<div class="floor-card">
+  <div class="floor-id">F2</div>
+  <div class="floor-info">
+    <h4>Truth</h4>
+    <div class="floor-name-alt">Anti-hallucination</div>
+    <p>Information fidelity ≥ 0.99</p>
+  </div>
+  <div class="floor-meta">
+    <div class="floor-threshold">≥ 0.99</div>
+    <div class="floor-void yes">VOID on fail</div>
+  </div>
+</div>
+
+<!-- Component: Tool Card -->
+<div class="tool-card" id="tool-name">
+  <div class="tool-header">
+    <span class="tool-name">arifOS_kernel</span>
+    <div class="tool-badges">
+      <span class="badge badge-version">Stage 444</span>
+      <span class="badge badge-status">Router</span>
+    </div>
+  </div>
+  <p class="tool-description">Full metabolic pipeline — routes all governed work through the constitutional system.</p>
+</div>
+
+<!-- Component: Timeline Entry -->
+<div class="timeline-entry">
+  <div class="timeline-dot"></div>
+  <div class="timeline-date">March 14, 2026</div>
+  <div class="timeline-version">v2026.03.14-FORGED</div>
+  <ul class="timeline-list">
+    <li>Major feature added</li>
+    <li>Bug fixes</li>
+  </ul>
+</div>
+
+<!-- Component: Footer -->
+<footer class="site-footer">
+  <div class="footer-line">© 2026 Muhammad Arif bin Fazil · arifOS MCP</div>
+  <div class="footer-line">Ditempa Bukan Diberi — Forged, Not Given</div>
+  <div class="footer-line mt-4">
+    <a href="https://github.com/ariffazil/arifosmcp" target="_blank">GitHub</a> ·
+    <a href="https://pypi.org/project/arifosmcp" target="_blank">PyPI</a> ·
+    <a href="docs/getting-started.html">Documentation</a>
+  </div>
+</footer>
+
+<!-- Component: Doc Layout Template -->
+<!-- Use this as the base structure for all documentation pages -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAGE_TITLE — arifOS MCP Docs</title>
+  <meta name="description" content="PAGE_DESCRIPTION">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+  <!-- Trinity Strip -->
+  <div class="trinity-strip">
+    <a href="https://arif-fazil.com" class="trinity-node human">HUMAN</a>
+    <a href="https://apex.arif-fazil.com" class="trinity-node theory">THEORY</a>
+    <a href="https://arifosmcp.arif-fazil.com" class="trinity-node apps active">APPS</a>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="main-nav">
+    <!-- Nav content -->
+  </nav>
+
+  <!-- Sidebar Overlay (mobile) -->
+  <div class="sidebar-overlay"></div>
+
+  <!-- Main Layout -->
+  <div class="doc-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <!-- Sidebar content -->
+    </aside>
+
+    <!-- Main Content -->
+    <main class="doc-content">
+      <h1>Page Title</h1>
+      <p class="doc-subtitle">Page subtitle description</p>
+      
+      <!-- Content goes here -->
+    </main>
+
+    <!-- Table of Contents -->
+    <nav class="toc" aria-label="On this page">
+      <!-- TOC content -->
+    </nav>
+  </div>
+
+  <script src="../app.js"></script>
+</body>
+</html>

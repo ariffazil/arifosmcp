@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Playground — arifOS MCP</title>
+  <meta name="description" content="Interactive playground for arifOS MCP. Test constitutional floors, explore the metabolic loop, and visualize governance in action.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    /* Playground specific styles */
+    .playground-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--space-6);
+    }
+    
+    .playground-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-6);
+      margin-top: var(--space-8);
+    }
+    
+    @media (max-width: 968px) {
+      .playground-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Floor Tester */
+    .floor-tester {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+    }
+    
+    .floor-tester h3 {
+      margin-bottom: var(--space-4);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    
+    .floor-selector {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-2);
+      margin-bottom: var(--space-4);
+    }
+    
+    .floor-btn {
+      padding: var(--space-3);
+      background: var(--bg-base);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      font-weight: var(--font-bold);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    
+    .floor-btn:hover {
+      border-color: var(--color-apps);
+      color: var(--color-apps);
+    }
+    
+    .floor-btn.active {
+      background: var(--color-apps-dim);
+      border-color: var(--color-apps);
+      color: var(--color-apps);
+    }
+    
+    .floor-btn.void {
+      background: var(--color-error-dim);
+      border-color: var(--color-error);
+      color: var(--color-error);
+    }
+    
+    .floor-btn.seal {
+      background: var(--color-success-dim);
+      border-color: var(--color-success);
+      color: var(--color-success);
+    }
+    
+    .threshold-control {
+      margin: var(--space-4) 0;
+    }
+    
+    .threshold-control label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: var(--space-2);
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+    }
+    
+    .threshold-slider {
+      width: 100%;
+      height: 6px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: var(--bg-base);
+      border-radius: 3px;
+      outline: none;
+    }
+    
+    .threshold-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      background: var(--color-apps);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform var(--transition-fast);
+    }
+    
+    .threshold-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+    
+    .verdict-display {
+      margin-top: var(--space-6);
+      padding: var(--space-4);
+      background: var(--bg-base);
+      border-radius: var(--radius-md);
+      text-align: center;
+    }
+    
+    .verdict-display.seal {
+      border: 1px solid var(--color-success);
+      background: var(--color-success-dim);
+    }
+    
+    .verdict-display.void {
+      border: 1px solid var(--color-error);
+      background: var(--color-error-dim);
+    }
+    
+    .verdict-display.partial {
+      border: 1px solid var(--color-warning);
+      background: var(--color-warning-dim);
+    }
+    
+    .verdict-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-2xl);
+      font-weight: var(--font-extrabold);
+      margin-bottom: var(--space-2);
+    }
+    
+    .verdict-display.seal .verdict-label {
+      color: var(--color-success);
+    }
+    
+    .verdict-display.void .verdict-label {
+      color: var(--color-error);
+    }
+    
+    .verdict-display.partial .verdict-label {
+      color: var(--color-warning);
+    }
+    
+    .verdict-reason {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+    }
+    
+    /* Metabolic Loop Visualizer */
+    .loop-visualizer {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+    }
+    
+    .loop-visualizer h3 {
+      margin-bottom: var(--space-4);
+    }
+    
+    .loop-container {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+    
+    .loop-stage {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-3) var(--space-4);
+      background: var(--bg-base);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      transition: all var(--transition-base);
+      opacity: 0.5;
+    }
+    
+    .loop-stage.active {
+      opacity: 1;
+      border-color: var(--color-apps);
+      box-shadow: 0 0 20px var(--color-apps-glow);
+    }
+    
+    .loop-stage.completed {
+      opacity: 0.8;
+      border-color: var(--color-success);
+      background: var(--color-success-dim);
+    }
+    
+    .loop-stage-id {
+      width: 48px;
+      font-family: var(--font-mono);
+      font-weight: var(--font-bold);
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+    }
+    
+    .loop-stage.active .loop-stage-id {
+      color: var(--color-apps);
+    }
+    
+    .loop-stage-name {
+      flex: 1;
+      font-weight: var(--font-semibold);
+    }
+    
+    .loop-stage-engine {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+    
+    .loop-controls {
+      display: flex;
+      gap: var(--space-3);
+      margin-top: var(--space-4);
+    }
+    
+    /* Trinity Engine Selector */
+    .engine-selector {
+      display: flex;
+      gap: var(--space-2);
+      margin-bottom: var(--space-6);
+    }
+    
+    .engine-tab {
+      flex: 1;
+      padding: var(--space-4);
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    
+    .engine-tab:hover {
+      border-color: var(--border-hover);
+    }
+    
+    .engine-tab.active {
+      border-color: var(--color-apps);
+      background: var(--color-apps-dim);
+    }
+    
+    .engine-tab-icon {
+      font-size: 24px;
+      margin-bottom: var(--space-2);
+    }
+    
+    .engine-tab-name {
+      font-weight: var(--font-bold);
+      font-size: var(--text-sm);
+    }
+    
+    .engine-tab-desc {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      margin-top: var(--space-1);
+    }
+    
+    /* Response Preview */
+    .response-preview {
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+      margin-top: var(--space-6);
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+    }
+    
+    .response-preview pre {
+      margin: 0;
+      overflow-x: auto;
+    }
+    
+    .json-key {
+      color: #9cdcfe;
+    }
+    
+    .json-string {
+      color: #ce9178;
+    }
+    
+    .json-number {
+      color: #b5cea8;
+    }
+    
+    .json-boolean {
+      color: #569cd6;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Trinity Strip -->
+<div class="trinity-strip">
+  <a href="https://arif-fazil.com" class="trinity-node human">HUMAN</a>
+  <a href="https://apex.arif-fazil.com" class="trinity-node theory">THEORY</a>
+  <a href="https://arifosmcp.arif-fazil.com" class="trinity-node apps active">APPS</a>
+</div>
+
+<!-- Navigation -->
+<nav class="main-nav">
+  <a href="index.html" class="nav-logo">
+    <svg viewBox="0 0 48 48" width="32" height="32" fill="none">
+      <line x1="24" y1="8" x2="24" y2="22" stroke="#ffd24a" stroke-width="3" stroke-linecap="round"/>
+      <line x1="24" y1="26" x2="11" y2="40" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+      <line x1="24" y1="26" x2="37" y2="40" stroke="#ff4d4f" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="24" cy="6" r="4" stroke="#ffd24a" stroke-width="1.5" fill="none"/>
+      <circle cx="9" cy="41" r="4" stroke="#2563eb" stroke-width="1.5" fill="none"/>
+      <circle cx="39" cy="41" r="4" stroke="#ff4d4f" stroke-width="1.5" fill="none"/>
+      <circle cx="24" cy="24" r="5" stroke="#2563eb" stroke-width="1.5" fill="#12121a"/>
+    </svg>
+    <span class="nav-title">arifOS<span class="nav-mcp">MCP</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="docs/overview.html">Documentation</a>
+    <a href="docs/tools.html">Tools</a>
+    <a href="playground.html" class="active">Playground</a>
+    <a href="docs/changelog.html">Changelog</a>
+  </div>
+  <div class="nav-right">
+    <span class="version-badge">v2026.03.14</span>
+    <a href="https://github.com/ariffazil/arifosmcp" class="btn btn-sm btn-secondary" target="_blank">GitHub</a>
+  </div>
+  <button class="nav-hamburger" aria-label="Menu">☰</button>
+</nav>
+
+<!-- Playground Content -->
+<div class="playground-container">
+  <div class="section-header">
+    <div class="section-label">Interactive</div>
+    <h1 class="section-title">Playground</h1>
+    <p class="section-description">
+      Explore arifOS MCP's constitutional governance system interactively. Test floor thresholds, visualize the metabolic loop, and see verdict rendering in real-time.
+    </p>
+  </div>
+  
+  <div class="playground-grid">
+    <!-- Floor Tester -->
+    <div class="floor-tester">
+      <h3>🏛️ Constitutional Floor Tester</h3>
+      <p style="color: var(--text-muted); margin-bottom: var(--space-4);">
+        Select a floor and adjust the threshold to see how the verdict changes.
+      </p>
+      
+      <div class="floor-selector">
+        <button class="floor-btn active" data-floor="F2">F2</button>
+        <button class="floor-btn" data-floor="F4">F4</button>
+        <button class="floor-btn" data-floor="F7">F7</button>
+        <button class="floor-btn" data-floor="F8">F8</button>
+      </div>
+      
+      <div id="floor-info">
+        <h4 style="margin-bottom: var(--space-2);">F2: Truth</h4>
+        <p style="color: var(--text-muted); font-size: var(--text-sm); margin-bottom: var(--space-4);">
+          Information fidelity threshold. Claims without evidence get VOIDed.
+        </p>
+      </div>
+      
+      <div class="threshold-control">
+        <label>
+          <span>Threshold Value</span>
+          <span id="threshold-value">0.99</span>
+        </label>
+        <input type="range" class="threshold-slider" id="threshold-slider" 
+               min="0" max="100" value="99" 
+               data-floor="F2" data-min="0.99">
+      </div>
+      
+      <div class="verdict-display seal" id="verdict-display">
+        <div class="verdict-label">SEAL</div>
+        <div class="verdict-reason">All floors pass. Approved to execute.</div>
+      </div>
+      
+      <div class="response-preview">
+        <pre id="json-preview">{
+  "<span class="json-key">verdict</span>": "<span class="json-string">SEAL</span>",
+  "<span class="json-key">floor</span>": "<span class="json-string">F2</span>",
+  "<span class="json-key">threshold</span>": <span class="json-number">0.99</span>,
+  "<span class="json-key">actual</span>": <span class="json-number">0.99</span>,
+  "<span class="json-key">compliant</span>": <span class="json-boolean">true</span>
+}</pre>
+      </div>
+    </div>
+    
+    <!-- Metabolic Loop Visualizer -->
+    <div class="loop-visualizer">
+      <h3>🔄 Metabolic Loop</h3>
+      <p style="color: var(--text-muted); margin-bottom: var(--space-4);">
+        Watch how requests flow through the 000→999 pipeline.
+      </p>
+      
+      <div class="loop-container" id="loop-container">
+        <div class="loop-stage" data-stage="000">
+          <span class="loop-stage-id">000</span>
+          <span class="loop-stage-name">INIT — Anchor State</span>
+          <span class="loop-stage-engine">Ψ</span>
+        </div>
+        
+        <div class="loop-stage" data-stage="111">
+          <span class="loop-stage-id">111</span>
+          <span class="loop-stage-name">SENSE — Search Reality</span>
+          <span class="loop-stage-engine">Δ</span>
+        </div>
+        
+        <div class="loop-stage" data-stage="222">
+          <span class="loop-stage-id">222</span>
+          <span class="loop-stage-name">REALITY — Ingest Evidence</span>
+          <span class="loop-stage-engine">Δ</span>
+        </div>
+        
+        <div class="loop-stage" data-stage="333">
+          <span class="loop-stage-id">333</span>
+          <span class="loop-stage-name">MIND — Audit Rules</span>
+          <span class="loop-stage-engine">Δ</span>
+        </div>
+        
+        <div class="loop-stage" data-stage="444">
+          <span class="loop-stage-id">444</span>
+          <span class="loop-stage-name">ROUTER — Kernel</span>
+          <span class="loop-stage-engine">Ω</span>
+        </div>
+        
+        <div class="loop-stage" data-stage="555">
+          <span class="loop-stage-id">555</span>
+          <span class="loop-stage-name">MEMORY — Session</span>
+          <span class="loop-stage-engine">Ω</span>
+        </div>
+        
+        <div class="loop-stage" data-stage="888">
+          <span class="loop-stage-id">888</span>
+          <span class="loop-stage-name">JUDGE — APEX</span>
+          <span class="loop-stage-engine">Ψ</span>
+        </div>
+        
+        <div class="loop-stage" data-stage="999">
+          <span class="loop-stage-id">999</span>
+          <span class="loop-stage-name">VAULT — Seal</span>
+          <span class="loop-stage-engine">Ψ</span>
+        </div>
+      </div>
+      
+      <div class="loop-controls">
+        <button class="btn btn-primary" id="start-loop">▶ Start Loop</button>
+        <button class="btn btn-secondary" id="reset-loop">↺ Reset</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Trinity Engine Info -->
+  <div class="section mt-12">
+    <div class="section-header">
+      <div class="section-label">Engines</div>
+      <h2 class="section-title">Trinity Architecture ΔΩΨ</h2>
+    </div>
+    
+    <div class="engine-selector">
+      <div class="engine-tab active" data-engine="delta">
+        <div class="engine-tab-icon">🧠</div>
+        <div class="engine-tab-name" style="color: var(--color-agility)">Δ Delta</div>
+        <div class="engine-tab-desc">AGI Mind</div>
+      </div>
+      
+      <div class="engine-tab" data-engine="omega">
+        <div class="engine-tab-icon">❤️</div>
+        <div class="engine-tab-name" style="color: var(--color-apps)">Ω Omega</div>
+        <div class="engine-tab-desc">ASI Heart</div>
+      </div>
+      
+      <div class="engine-tab" data-engine="psi">
+        <div class="engine-tab-icon">⚖️</div>
+        <div class="engine-tab-name" style="color: var(--color-human)">Ψ Psi</div>
+        <div class="engine-tab-desc">APEX Soul</div>
+      </div>
+    </div>
+    
+    <div class="card" id="engine-details">
+      <h3 style="color: var(--color-agility); margin-bottom: var(--space-4)">Δ Delta — AGI Mind</h3>
+      <p style="color: var(--text-muted); margin-bottom: var(--space-4)">
+        The Mind engine handles reasoning, sensing, and grounding. It enforces floors F2 (Truth), F4 (Clarity), F7 (Humility), and F8 (Genius).
+      </p>
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Stages</th>
+              <th>Floors</th>
+              <th>Personas</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="mono">000, 111, 333</td>
+              <td>F2, F4, F7, F8</td>
+              <td>ARCHITECT, ENGINEER</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-line">© 2026 Muhammad Arif bin Fazil · arifOS MCP</div>
+  <div class="footer-line">Ditempa Bukan Diberi — Forged, Not Given</div>
+</footer>
+
+<script>
+// Floor Tester Logic
+const floorData = {
+  'F2': { name: 'Truth', desc: 'Information fidelity threshold. Claims without evidence get VOIDed.', min: 0.99 },
+  'F4': { name: 'ΔS Clarity', desc: 'Entropy reduction. Must decrease system confusion.', min: 0 },
+  'F7': { name: 'Ω₀ Humility', desc: 'Uncertainty acknowledgment. Must be in range [0.03, 0.20].', min: 0.04 },
+  'F8': { name: 'G Genius', desc: 'Internal coherence. A×P×X×E² ≥ 0.80', min: 0.80 }
+};
+
+let currentFloor = 'F2';
+
+// Floor button selection
+document.querySelectorAll('.floor-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.floor-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    
+    currentFloor = btn.dataset.floor;
+    const data = floorData[currentFloor];
+    
+    // Update info
+    document.querySelector('#floor-info h4').textContent = `${currentFloor}: ${data.name}`;
+    document.querySelector('#floor-info p').textContent = data.desc;
+    
+    // Update slider
+    const slider = document.getElementById('threshold-slider');
+    slider.dataset.floor = currentFloor;
+    slider.dataset.min = data.min;
+    slider.value = Math.round(data.min * 100);
+    
+    updateVerdict();
+  });
+});
+
+// Threshold slider
+const thresholdSlider = document.getElementById('threshold-slider');
+thresholdSlider.addEventListener('input', updateVerdict);
+
+function updateVerdict() {
+  const slider = document.getElementById('threshold-slider');
+  const floor = slider.dataset.floor;
+  const minThreshold = parseFloat(slider.dataset.min);
+  const actualValue = slider.value / 100;
+  
+  document.getElementById('threshold-value').textContent = actualValue.toFixed(2);
+  
+  const display = document.getElementById('verdict-display');
+  const label = display.querySelector('.verdict-label');
+  const reason = display.querySelector('.verdict-reason');
+  
+  let verdict, compliant;
+  
+  if (floor === 'F7') {
+    // F7 has range [0.03, 0.20]
+    compliant = actualValue >= 0.03 && actualValue <= 0.20;
+  } else {
+    compliant = actualValue >= minThreshold;
+  }
+  
+  if (compliant) {
+    verdict = 'SEAL';
+    display.className = 'verdict-display seal';
+    label.textContent = 'SEAL';
+    reason.textContent = 'All floors pass. Approved to execute.';
+  } else {
+    verdict = 'VOID';
+    display.className = 'verdict-display void';
+    label.textContent = 'VOID';
+    reason.textContent = `Floor ${floor} threshold failed. Cannot proceed.`;
+  }
+  
+  // Update JSON preview
+  document.getElementById('json-preview').innerHTML = `{
+  "<span class="json-key">verdict</span>": "<span class="json-string">${verdict}</span>",
+  "<span class="json-key">floor</span>": "<span class="json-string">${floor}</span>",
+  "<span class="json-key">threshold</span>": <span class="json-number">${minThreshold}</span>,
+  "<span class="json-key">actual</span>": <span class="json-number">${actualValue.toFixed(2)}</span>,
+  "<span class="json-key">compliant</span>": <span class="json-boolean">${compliant}</span>
+}`;
+}
+
+// Metabolic Loop Visualizer
+const stages = ['000', '111', '222', '333', '444', '555', '888', '999'];
+let currentStageIndex = -1;
+let loopInterval = null;
+
+const startBtn = document.getElementById('start-loop');
+const resetBtn = document.getElementById('reset-loop');
+
+startBtn.addEventListener('click', () => {
+  if (loopInterval) {
+    clearInterval(loopInterval);
+    loopInterval = null;
+    startBtn.textContent = '▶ Start Loop';
+    return;
+  }
+  
+  startBtn.textContent = '⏸ Pause';
+  currentStageIndex = 0;
+  
+  loopInterval = setInterval(() => {
+    // Clear previous
+    document.querySelectorAll('.loop-stage').forEach((stage, idx) => {
+      stage.classList.remove('active');
+      if (idx < currentStageIndex) {
+        stage.classList.add('completed');
+      } else {
+        stage.classList.remove('completed');
+      }
+    });
+    
+    // Activate current
+    if (currentStageIndex < stages.length) {
+      const currentStage = document.querySelector(`[data-stage="${stages[currentStageIndex]}"]`);
+      if (currentStage) {
+        currentStage.classList.add('active');
+        currentStage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      currentStageIndex++;
+    } else {
+      // Loop complete
+      clearInterval(loopInterval);
+      loopInterval = null;
+      startBtn.textContent = '▶ Start Loop';
+      
+      // Show completion
+      setTimeout(() => {
+        document.querySelectorAll('.loop-stage').forEach(stage => {
+          stage.classList.remove('completed', 'active');
+        });
+      }, 1000);
+    }
+  }, 800);
+});
+
+resetBtn.addEventListener('click', () => {
+  if (loopInterval) {
+    clearInterval(loopInterval);
+    loopInterval = null;
+    startBtn.textContent = '▶ Start Loop';
+  }
+  
+  currentStageIndex = -1;
+  document.querySelectorAll('.loop-stage').forEach(stage => {
+    stage.classList.remove('active', 'completed');
+  });
+});
+
+// Trinity Engine Tabs
+const engineData = {
+  'delta': {
+    name: 'Δ Delta',
+    subtitle: 'AGI Mind',
+    color: 'var(--color-agility)',
+    desc: 'The Mind engine handles reasoning, sensing, and grounding. It enforces floors F2 (Truth), F4 (Clarity), F7 (Humility), and F8 (Genius).',
+    stages: '000, 111, 333',
+    floors: 'F2, F4, F7, F8',
+    personas: 'ARCHITECT, ENGINEER'
+  },
+  'omega': {
+    name: 'Ω Omega',
+    subtitle: 'ASI Heart',
+    color: 'var(--color-apps)',
+    desc: 'The Heart engine manages empathy, memory, and ethics. It enforces floors F5 (Peace²), F6 (Empathy), and F9 (Dark Cleverness).',
+    stages: '555, 666',
+    floors: 'F5, F6, F9',
+    personas: 'AUDITOR'
+  },
+  'psi': {
+    name: 'Ψ Psi',
+    subtitle: 'APEX Soul',
+    color: 'var(--color-human)',
+    desc: 'The Soul engine governs forge, judge, and seal. It enforces floors F1 (Amanah), F3 (Tri-Witness), F10 (Ontology), F11 (Command Auth), and F13 (Sovereign).',
+    stages: '777, 888, 999',
+    floors: 'F1, F3, F10, F11, F13',
+    personas: 'VALIDATOR, ORCHESTRATOR'
+  }
+};
+
+document.querySelectorAll('.engine-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.engine-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    
+    const engine = tab.dataset.engine;
+    const data = engineData[engine];
+    
+    const details = document.getElementById('engine-details');
+    details.innerHTML = `
+      <h3 style="color: ${data.color}; margin-bottom: var(--space-4)">${data.name} — ${data.subtitle}</h3>
+      <p style="color: var(--text-muted); margin-bottom: var(--space-4)">${data.desc}</p>
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Stages</th>
+              <th>Floors</th>
+              <th>Personas</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="mono">${data.stages}</td>
+              <td>${data.floors}</td>
+              <td>${data.personas}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    `;
+  });
+});
+</script>
+
+</body>
+</html>

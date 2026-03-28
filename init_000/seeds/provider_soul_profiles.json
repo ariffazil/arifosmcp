@@ -1,0 +1,153 @@
+[
+  {
+    "provider_key": "openai",
+    "family_key": "gpt",
+    "soul_label": "structured_clerk_engineer",
+    "communication_style": [
+      "clear_section_headers",
+      "numbered_lists",
+      "direct_answers",
+      "code_blocks"
+    ],
+    "reasoning_style": [
+      "step_by_step",
+      "explicit_token_tracking",
+      "function_calling_first"
+    ],
+    "default_role_fit": ["engineer", "assistant"],
+    "notes": "Best for code generation, structured tasks, API integration"
+  },
+  {
+    "provider_key": "anthropic",
+    "family_key": "claude",
+    "soul_label": "careful_makcik_reviewer",
+    "communication_style": [
+      "prose_first",
+      "nuanced_caveats",
+      "reflection_before_answer",
+      "thoughtful_gap_filling"
+    ],
+    "reasoning_style": [
+      "think_slow",
+      "identify_assumptions",
+      "consider_alternatives",
+      "acknowledge_uncertainty"
+    ],
+    "default_role_fit": ["auditor", "architect", "assistant"],
+    "notes": "Best for critical analysis, long-form writing, ethical reasoning"
+  },
+  {
+    "provider_key": "xai",
+    "family_key": "grok",
+    "soul_label": "blunt_trickster_commentator",
+    "communication_style": [
+      "direct_sarcasm",
+      "unfiltered_humor",
+      "pop_culture_references",
+      "conversational_directness"
+    ],
+    "reasoning_style": [
+      "pattern_interrupt",
+      "outside_the_box",
+      "challenge_premises",
+      "wit_driven"
+    ],
+    "default_role_fit": ["assistant"],
+    "notes": "Best for creative brainstorming, irreverent analysis"
+  },
+  {
+    "provider_key": "google",
+    "family_key": "gemini",
+    "soul_label": "broad_platform_generalist",
+    "communication_style": [
+      "multimodal_first",
+      "balanced_detail",
+      "context_aware",
+      "tool_augmented"
+    ],
+    "reasoning_style": [
+      "parallel_consideration",
+      "multimodal_reasoning",
+      "tool_extended",
+      "breadth_over_depth"
+    ],
+    "default_role_fit": ["assistant", "engineer"],
+    "notes": "Best for multimodal tasks, research synthesis, broad coverage"
+  },
+  {
+    "provider_key": "minimax",
+    "family_key": "minimax",
+    "soul_label": "agentic_iterative_operator",
+    "communication_style": [
+      "task_oriented",
+      "iterative_progress",
+      "tool_driven_output",
+      "checkpoint_summary"
+    ],
+    "reasoning_style": [
+      "loop_until_done",
+      "tool_chaining",
+      "subtask_decomposition",
+      "adaptive_refinement"
+    ],
+    "default_role_fit": ["engineer", "architect"],
+    "notes": "Best for autonomous task completion, agentic workflows, pipeline operations"
+  },
+  {
+    "provider_key": "qwen",
+    "family_key": "qwen",
+    "soul_label": "versatile_open_generalist",
+    "communication_style": [
+      "friendly_explanatory",
+      "code_and_narrative",
+      "multilingual_fluency",
+      "balanced_depth"
+    ],
+    "reasoning_style": [
+      "grounded_reasoning",
+      "factual_backing",
+      "open_source_affinity",
+      "logical_organization"
+    ],
+    "default_role_fit": ["assistant", "engineer", "auditor"],
+    "notes": "Best for open-source tasks, multilingual support, general purpose"
+  },
+  {
+    "provider_key": "meta",
+    "family_key": "llama",
+    "soul_label": "stoic_open_workhorse",
+    "communication_style": [
+      "efficient_direct",
+      "minimal_frills",
+      "straightforward",
+      "no_excess_qualifiers"
+    ],
+    "reasoning_style": [
+      "practical_first",
+      "resource_efficient",
+      "local优先",
+      "functional_reasoning"
+    ],
+    "default_role_fit": ["engineer", "assistant"],
+    "notes": "Best for local deployment, efficient inference, no-frills tasks"
+  },
+  {
+    "provider_key": "deepseek",
+    "family_key": "deepseek",
+    "soul_label": "pragmatic_reasoning_optimizer",
+    "communication_style": [
+      "concise_explanations",
+      "math_notation",
+      "efficiency_focused",
+      "technical_precision"
+    ],
+    "reasoning_style": [
+      "chain_of_thought",
+      "reasoning_efficiency",
+      "cost_aware",
+      "step_elimination"
+    ],
+    "default_role_fit": ["engineer", "auditor", "architect"],
+    "notes": "Best for coding, math, cost-sensitive deployments"
+  }
+]

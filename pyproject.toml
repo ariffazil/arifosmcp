@@ -1,0 +1,410 @@
+[project]
+name = "arifos"
+version = "2026.03.25"
+# T000 Versioning: YYYY.MM.DD — see T000_VERSIONING.md and CHANGELOG.md for full history
+# 2026.03.24 — AAA MCP Induction (v2026.03.24-UNIFIED)
+#   Repo unification: collapsed AAA/ shadow mirror into root arifOS/ repo
+#   Kernel: moved core/runtime logic exclusively into arifosmcp/ package
+#   Substrate Controller: implemented auto-risk/thermodyamic dispatch logic
+#   Law: established 000/ Constitution as the root governing substrate
+# 2026.03.22 — VPS Forge (v2026.03.22-FORGE)
+#   Repo cleanup: killed 30+ chaos files, removed ghost git remotes, unified two-repo model
+#   arifOS README: 956-line full-depth rewrite (CC0 mind repo)
+#   arifosmcp README: 746-line full-depth rewrite (AGPL-3.0 body repo)
+#   Grafana: anonymous viewer access enabled (public monitoring)
+#   Site: arifosmcp landing page updated to 37 tools, SBERT, 2026.03.22-FORGE
+#   Disk: freed 27.1GB Docker build cache + deleted 580MB redundant /srv/arifOS_gh clone
+# 2026.03.20 — 11-Tool Consolidation (v2026.03.20-CONSOLIDATION)
+#   11-Tool Mega-Surface: Consolidated 42 tools into 11 with 37 operation modes
+#   Circular Import Fix: Resolved recursion in runtime/__init__.py using importlib
+#   Mode Dispatch: All legacy tools accessible via mode parameter (no orphans)
+#   F1-F13 Coverage: All 13 constitutional floors mapped to 11-tool surface
+# 2026.03.19 — Anti-Chaos Protocol (v2026.03.19-ANTICHAOS)
+#   One Truth for State: get_caller_status onboarding compass, 6-state ladder
+#   One Truth for Path: Explicit allowed_next_tools, blocked_tools with remediation
+#   One Truth for Errors: Recovery packets with next_tool, required_args, example_payload
+#   One Truth for Consequence: diagnostics_only flag for global session
+#   Truth Retirement: Implicit fallback authority and unverified truth promotion removed.
+# 2026.03.14 — Kernel Coverage Forge (v2026.03.14-FORGED)
+#   Stationary kernel at 90%+ coverage. 450+ tests. 888_JUDGE ratification.
+#   Added: test_constants.py, test_judgment.py, test_governance_engine.py
+#   Fixed: ThermodynamicViolation export in thermodynamics_hardened.py
+# 2026.03.07 — Architectural Formalization Seal
+#   Formalized 4-layer taxonomy (L0-L3), Metabolic Scheduler (Ω), Triple-Hash Merkle Vault, and Phoenix Recovery.
+# 2026.3.6 — Hardened Trinity Forge Release
+#   Consolidated Dockerfile, unified 11-service compose, strict memory limits ($15 VPS), and canonical server entrypoint.
+# 2026.3.1 — JS/npm Client Matrix Verified & Dogfooded
+#   Verified 0.1.0 @arifos/mcp across HTTP/stdio; updated canonical tool response schema.
+# 2026.3.1 — JS/npm Client Matrix Verified & Dogfooded
+#   Verified 0.1.0 @arifos/mcp across HTTP/stdio; updated canonical tool response schema.
+# 2026.2.28 — F1/F7/F12 Hardening + Evidence Appendix
+#   888_HOLD explicit hash signing, stack traces un-swallowed, fetch_content data fencing.
+# 2026.2.25 — v60.1 Chaos Reduction + VPS Alignment + Agent Capability Spec
+#   Gitignore hardening (5388→0 untracked), CLAUDE.md accuracy audit, version convergence
+# 2026.2.23 — Context Forge & Registry Release
+#   Unified arifosmcp.transport server with full-context templates, ASGI entrypoints, and Cloudflare Pages workflows
+# 2026.2.22 — Intelligence Kernel Upgrade (arifosmcp.intelligence 9-Sense Console)
+#   Re-architected arifosmcp.intelligence to 9-Sense Federation Hub; 9 canonical system calls
+# 2026.2.19 — ChatGPT integration + tool annotations (readOnlyHint)
+#   Added search/fetch tools for ChatGPT Deep Research; annotated read-only tools
+# 2026.2.17 — H1.1 Observability + VPS migration (Railway → Hostinger)
+#   /health now returns granular governance metrics; redis.from_url; lifespan init
+# 2026.2.15 — Codebase consolidation: removed arifos/ and codebase/ (21K lines dead code)
+# 2026.1.26 — Live constitutional metrics; 13/13 floors passing
+# 2026.1.24 — Unified core: arifosmcp.transport pure transport, all logic in core/
+# 2026.1.18 — Constitutional Forge: 13 floors F1-F13, Trinity ΔΩΨ, VAULT999, 9-tool MCP
+description = "arifOS v2026.03.25-QUANTUM-MEMORY-SEAL — The World's First Production-Grade Constitutional AI Governance System with Protocol Trinity (MCP + A2A + WebMCP). 11 Mega-Tools (37 modes), 13 constitutional floors (F1-F13), immutable VAULT999 ledger. Trinity architecture (ΔΩΨ): AGI Mind, ASI Heart, APEX Soul. Install: pip install arifosmcp. https://arifos.arif-fazil.com/"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "AGPL-3.0-only"
+license-files = ["LICENSE"]
+keywords = [
+    # Core Concepts
+    "ai-governance",
+    "ai-safety",
+    "constitutional-ai",
+    "ai-filter",
+    "ai-guardrails",
+    # TEACH Framework
+    "truth-detection",
+    "empathy",
+    "reversibility",
+    "clarity",
+    "humility",
+    # v52.5 Features
+    "atlas-333",
+    "smart-routing",
+    "888-hold",
+    "crisis-detection",
+    # Architecture
+    "trinity-architecture",
+    "agi-asi-apex",
+    "tri-witness",
+    # MCP Integration
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    # Platforms
+    "chatgpt",
+    "claude",
+    "claude-desktop",
+    "cursor-ide",
+    "gemini",
+    "llm",
+    # Technical
+    "hallucination-prevention",
+    "immutable-ledger",
+    "merkle-audit",
+    "thermodynamic-governance",
+]
+authors = [{ name = "Muhammad Arif bin Fazil", email = "arifbfazil@gmail.com" }]
+maintainers = [
+    { name = "Muhammad Arif bin Fazil", email = "arifbfazil@gmail.com" },
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Information Technology",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Monitoring",
+    "Topic :: Security",
+    "Typing :: Typed",
+]
+
+dependencies = [
+    "numpy>=1.20.0",
+    "pydantic>=2.0.0",
+    "anyio>=4.0.0",
+    "starlette>=0.30.0",
+    "itsdangerous>=2.0.0",  # Required for SessionMiddleware (WebMCP F11)
+    "fastmcp==3.1.1",
+    "prefab-ui==0.13.1",
+    "openapi-pydantic>=0.5.1",
+    "fastapi>=0.104.1",
+    "uvicorn[standard]>=0.24.0",
+    "sse-starlette>=1.8.2",
+    "mcp>=1.0.0",
+    "httpx>=0.25.0",
+    "prometheus-client>=0.19.0",
+    "rich>=13.7.0",
+    "asyncpg>=0.29.0",  # VAULT999 PostgreSQL backend
+    "sentence-transformers>=2.2.0",  # H1.2: SBERT-based ASI floors (F5, F6, F9)
+    "scikit-learn>=1.3.0",  # H1.2: Cosine similarity for SBERT embeddings
+    "chromadb>=0.5.0",  # Vector memory backend for ACLIP semantic recall (legacy console path)
+    "qdrant-client>=1.7.0",  # Primary vector store — wired to qdrant_memory container
+    "lancedb>=0.5.0",  # L3: High-speed local semantic vector storage
+    "duckduckgo-search>=5.0.0",  # Search fallback for reality grounding
+    "playwright>=1.40.0",  # Browser-based fetch/search fallback
+    "beautifulsoup4>=4.12.0",  # HTML parsing for fetch/reality tools
+    "requests>=2.31.0",  # HTTP client used by CLI and fetch wrappers
+    "redis>=5.0.0",  # Session persistence backend + VAULT999 storage
+    "cryptography>=42.0.0",  # Fernet encryption for vault at-rest
+    "psutil>=5.9.0",  # System health and thermo instrumentation
+    "python-dotenv>=1.0.0",  # Environment file loading
+    "pyyaml>=6.0.0",  # Rule/config parsing for floors and wrappers
+    "python-lsp-server>=1.11.0",  # LSP bridge for code intelligence
+    "py-key-value-aio[redis]>=0.4.0",  # Redis storage backend
+    "cryptography>=42.0.0",  # Encryption for vault/session storage
+    "psycopg2-binary>=2.9.0",  # Postgres adapter (binary)
+    "aiofiles>=23.2.1",  # Async file operations for Vault999 logging
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=4.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0.0",
+    "httpx>=0.28.0",
+]
+yaml = ["pyyaml>=6.0.0"]
+api = [
+    "fastapi>=0.100.0",
+    "uvicorn[standard]>=0.23.0",
+    "python-multipart>=0.0.6",
+]
+postgres = ["asyncpg>=0.29.0"]
+litellm = ["litellm>=1.0.0"]
+governed = [
+    "litellm>=1.0.0",
+    "httpx>=0.28.0",
+    "pygments>=2.16.0",
+    "openai>=1.6.0",
+]
+observability = [
+    "pyjwt>=2.8.0",
+    "opentelemetry-api>=1.25.0",
+    "opentelemetry-sdk>=1.25.0",
+    "opentelemetry-exporter-otlp>=1.25.0",
+    "opentelemetry-instrumentation-fastapi>=0.45b0",
+    "opentelemetry-instrumentation-starlette>=0.45b0",
+    "opentelemetry-instrumentation-httpx>=0.45b0",
+    "prometheus-client>=0.19.0",
+]
+viz = [
+    "matplotlib>=3.8.0",
+    "pandas>=2.1.0",
+]
+all = [
+    "pyyaml>=6.0.0",
+    "fastapi>=0.100.0",
+    "uvicorn[standard]>=0.23.0",
+    "python-multipart>=0.0.6",
+    "litellm>=1.0.0",
+    "httpx>=0.28.0",
+    "pygments>=2.16.0",
+    "openai>=1.6.0",
+    "mcp>=1.0.0",
+    "pyjwt>=2.8.0",
+    "opentelemetry-api>=1.25.0",
+    "opentelemetry-sdk>=1.25.0",
+    "opentelemetry-exporter-otlp>=1.25.0",
+    "prometheus-client>=0.19.0",
+    "chromadb>=0.5.0",
+    "matplotlib>=3.8.0",
+    "pandas>=2.1.0",
+]
+
+[project.urls]
+Homepage      = "https://arifos.arif-fazil.com"
+Documentation = "https://github.com/ariffazil/arifOS"
+Repository    = "https://github.com/ariffazil/arifOS"
+Issues        = "https://github.com/ariffazil/arifOS/issues"
+Trinity       = "https://github.com/ariffazil/arifOS/blob/main/KERNEL/TRINITY_ARCHITECTURE.md"
+PyPI          = "https://pypi.org/project/arifosmcp/"
+
+[project.scripts]
+arifos     = "arifosmcp.runtime.__main__:main"
+arifos-mcp = "arifosmcp.runtime.__main__:main"
+aaa-mcp    = "arifosmcp.runtime.__main__:main"
+aclip-cai  = "arifosmcp.intelligence.cli:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = [
+    "scripts*",
+    "arifosmcp*",
+    "mcp_server*",
+    "core*",
+]
+exclude = [
+    "*.tests",
+    "*.tests.*",
+    "tests.*",
+    "tests",
+    "core.archive*",  # Exclude archived legacy code
+]
+
+[tool.setuptools.package-data]
+"*" = ["spec/*.yaml", "spec/*.json"]
+"arifosmcp" = ["sites/apex-dashboard/*.html"]
+
+[tool.setuptools.data-files]
+"spec" = ["spec/**/*.json", "spec/**/*.yaml", "spec/**/*.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+asyncio_mode = "auto"
+markers = [
+    "asyncio",
+    "constitutional",
+    "slow",
+    "integration",
+]
+cache_dir = "C:/Users/User/AppData/Local/Temp/pytest_cache"
+filterwarnings = [
+    "ignore:Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.:UserWarning:langsmith.schemas",
+]
+addopts = "-W \"ignore:Core Pydantic V1 functionality isn.t compatible with Python 3.14 or greater.:UserWarning:langsmith.schemas\""
+
+[tool.black]
+line-length = 100
+target-version = ['py310', 'py311', 'py312']
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+exclude = ["archive/**", "archive_local/**", "tests/**"]
+
+[tool.ruff.lint]
+# E: pycodestyle, F: Pyflakes, I: isort, UP: pyupgrade, N: pep8-naming, B: flake8-bugbear
+select = ["E", "F", "I", "UP", "N", "B"]
+ignore = []
+
+[tool.ruff.lint.per-file-ignores]
+"tests/test_runtime_manifest.py" = ["F401"]
+"tests/test_session_dependency_guard.py" = ["F821", "F841"]
+"tests/test_sovereignty_all_providers.py" = ["F401", "F841"]
+"tests/test_v35_features.py" = ["F401"]
+"tests/test_waw_organs.py" = ["F401", "F811"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+warn_unused_ignores = true
+disallow_untyped_defs = false
+no_implicit_optional = true
+strict_optional = true
+strict_equality = true
+# Display settings (merged from mypy.ini)
+show_error_codes = true
+show_column_numbers = true
+show_error_context = true
+pretty = true
+color_output = true
+error_summary = true
+namespace_packages = true
+
+[[tool.mypy.overrides]]
+# Core governance modules - stricter type enforcement
+module = [
+    "core.governance_kernel",
+    "core.judgment",
+    "core.pipeline",
+    "core.organs.*",
+    "core.shared.*",
+]
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+warn_return_any = true
+no_implicit_optional = true
+
+[[tool.mypy.overrides]]
+# Relax rules for tests
+module = ["tests.*"]
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+[[tool.mypy.overrides]]
+# Ignore missing stubs for third-party libraries
+module = [
+    "numpy.*",
+    "pydantic.*",
+    # Optional bridge dependencies (not required for core)
+    "boto3.*",
+    "guardrails.*",
+    "langkit.*",
+    "llama_guard.*",
+    "ragas.*",
+    "dspy.*",
+    "guidance.*",
+    "outlines.*",
+    "llama_index.*",
+    # API dependencies (optional)
+    "fastapi.*",
+    "uvicorn.*",
+    "starlette.*",
+    # MCP & AI SDKs (merged from mypy.ini)
+    "litellm.*",
+    "fastmcp.*",
+    "openai.*",
+    "anthropic.*",
+    "langchain.*",
+    # Data & ML libraries
+    "chromadb.*",
+    "qdrant_client.*",
+    "sentence_transformers.*",
+    "transformers.*",
+    "mem0.*",
+    # Infrastructure
+    "redis.*",
+    "sqlalchemy.*",
+    "asyncpg.*",
+    # Agent frameworks
+    "pyautogen.*",
+    "pydocket.*",
+    "llamaindex.*",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# Bridge files have optional imports - suppress unused-ignore warnings
+module = ["arifosmcp.transport.core.*"]
+warn_unused_ignores = false
+
+[tool.coverage.run]
+omit = [
+    "core/tests/*",          # kernel-level test files are not production code
+    "*/test_*.py",
+    "*/__pycache__/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "\\.\\.\\.",
+]
+
+[tool.uv]
+constraint-dependencies = ["grpcio!=1.78.1"]
+
+[tool.fastmcp]
+config = "fastmcp.json"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"

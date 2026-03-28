@@ -1,0 +1,11 @@
+name: vault_ledger
+type: mega-tool
+authority: VAULT_KEEPER
+description: Interface to the immutable VAULT999 ledger for auditing and outcome recording.
+floors:
+  - F1: AMANAH
+  - F8: TABLIGH (Reporting)
+risk_tier: P1
+parameters:
+  claim: object
+  outcome: object

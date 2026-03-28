@@ -1,0 +1,20 @@
+{
+  "$schema": "https://arif-fazil.com/schemas/arifos-canonical-index-v2.json",
+  "schema_version": "2.0",
+  "version": "v2026.03-FORGE",
+  "sealed_date": "2026-03-13",
+  "authority": "ARIF FAZIL",
+  "contact": "arifos@arif-fazil.com",
+  "trinity_sites": {
+    "HUMAN":  { "domain": "arif-fazil.com",           "color": "#ff4d4f", "llms_txt": "https://arif-fazil.com/llms.txt",           "llms_json": "https://arif-fazil.com/llms.json",           "function": "Identity · Scars · Authority" },
+    "THEORY": { "domain": "arifos.arif-fazil.com",    "color": "#ffd24a", "llms_txt": "https://arifos.arif-fazil.com/llms.txt",    "llms_json": "https://arifos.arif-fazil.com/llms.json",    "function": "Constitutional Canon · APEX Theory" },
+    "APPS":   { "domain": "arifosmcp.arif-fazil.com", "color": "#2563eb", "llms_txt": "https://arifosmcp.arif-fazil.com/llms.txt", "llms_json": "https://arifosmcp.arif-fazil.com/llms.json", "function": "Developer Portal · MCP Runtime" }
+  },
+  "mcp_endpoint": "https://arifosmcp.arif-fazil.com/mcp",
+  "mcp_health": "https://arifosmcp.arif-fazil.com/health",
+  "mcp_protocol": "MCP JSON-RPC 2.0",
+  "mcp_transport": "streamable-http",
+  "tools_count": 12,
+  "read_order": "HUMAN → THEORY → APPS",
+  "ai_instruction": "This is the APPS developer portal. For constitutional context read HUMAN then THEORY llms.txt first."
+}

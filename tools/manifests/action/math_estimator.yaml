@@ -1,0 +1,10 @@
+name: math_estimator
+type: mega-tool
+authority: CALCULATOR
+description: Quantitative estimation and statistical analysis engine for arifOS metrics.
+floors:
+  - F2: SIDDIQ
+risk_tier: P2
+parameters:
+  dataset: array
+  metric: string

@@ -1,0 +1,12 @@
+name: init_anchor
+type: mega-tool
+authority: ANCHOR_SOVEREIGN
+description: Anchor your agentic identity and establish a governed session.
+floors:
+  - F1: AMANAH (Checkpointing)
+  - F2: SIDDIQ (Verification)
+risk_tier: P1
+parameters:
+  actor_id: string
+  intent: string
+  proof: object

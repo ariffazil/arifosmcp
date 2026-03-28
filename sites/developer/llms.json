@@ -1,0 +1,282 @@
+{
+  "$schema": "https://arif-fazil.com/schemas/arifos-apps-runtime-v2.json",
+  "schema_version": "2.0",
+  "version": "v2026.03-FORGE",
+  "vault_tier": "CCC",
+  "vault_label": "Applications — Runtime, Developer Reference, MCP API",
+  "sealed_date": "2026-03-13",
+  "sealed_by": "ARIF FAZIL (888 Judge)",
+  "authority": "TECHNICALLY_SEALED",
+  "canonical_url": "https://arifosmcp.arif-fazil.com/llms.txt",
+  "read_order": "HUMAN first → THEORY second → THIS (APPS)",
+  "human_context_required": "https://arif-fazil.com/llms.txt",
+  "theory_canon_required": "https://arifos.arif-fazil.com/llms.txt",
+
+  "package": {
+    "name": "arifosmcp",
+    "version": "2026.3.13",
+    "pypi": "pip install arifosmcp",
+    "github": "https://github.com/ariffazil/arifosmcp",
+    "license": "AGPL-3.0-only",
+    "python_requires": ">=3.12",
+    "description": "arifOS Constitutional Intelligence Kernel — MCP Runtime. 13 floors, 12 tools, MGI 3-layer envelope."
+  },
+
+  "endpoints": {
+    "mcp": "https://arifosmcp.arif-fazil.com/mcp",
+    "health": "https://arifosmcp.arif-fazil.com/health",
+    "dashboard": "https://arifosmcp.arif-fazil.com/dashboard",
+    "mcp_manifest": "https://arifosmcp.arif-fazil.com/.well-known/mcp/server.json",
+    "tools_list": "https://arifosmcp.arif-fazil.com/tools",
+    "metrics": "https://arifosmcp.arif-fazil.com/metrics",
+    "protocol": "MCP JSON-RPC 2.0",
+    "transport": "streamable-http",
+    "transport_note": "SSE deprecated by MCP spec (2025-03) and removed from Copilot Studio (2025-08). Use streamable-http."
+  },
+
+  "tools": {
+    "count": 12,
+    "public_tools": [
+      {
+        "name": "arifOS_kernel",
+        "stage": "444_ROUTER",
+        "trinity": "Ψ (APEX Soul)",
+        "floors": ["F1", "F2", "F3", "F7", "F11", "F13"],
+        "description": "Primary constitutional inference engine. Full metabolic pipeline 000→999.",
+        "input": {
+          "prompt": "string — The query or task to process constitutionally",
+          "session_id": "string — From init_anchor_state (required for F11)",
+          "depth": "string — 'full' | 'quick' | 'scan' (default: full)"
+        },
+        "legacy_aliases": ["metabolic_loop_router", "arifOS-kernel"]
+      },
+      {
+        "name": "reality_compass",
+        "stage": "111_SENSE",
+        "trinity": "Δ (AGI Mind)",
+        "floors": ["F2", "F4", "F7"],
+        "description": "Unified search and fetch with constitutional grounding. Returns source URLs, confidence scores, and conflict detection.",
+        "input": {
+          "query": "string — Search query",
+          "session_id": "string — Optional"
+        }
+      },
+      {
+        "name": "reality_atlas",
+        "stage": "222_REALITY",
+        "trinity": "Δ (AGI Mind)",
+        "floors": ["F2", "F3"],
+        "description": "Semantic evidence graph construction from multiple sources."
+      },
+      {
+        "name": "reality_dossier",
+        "stage": "222_REALITY",
+        "trinity": "Δ (AGI Mind)",
+        "floors": ["F2", "F3", "F7"],
+        "description": "Tri-Witness decoder. Decodes 3E telemetry (Exploration/Entropy/Eureka)."
+      },
+      {
+        "name": "init_anchor_state",
+        "stage": "000_INIT",
+        "trinity": "Ψ (APEX Soul)",
+        "floors": ["F11"],
+        "description": "F11 Bootstrap. Creates a session continuity anchor. Required before arifOS_kernel calls.",
+        "input": {
+          "declared_name": "string — Name for this session or agent"
+        },
+        "returns": {
+          "session_id": "string — Use in all subsequent calls",
+          "verdict": "SEAL on success"
+        }
+      },
+      {
+        "name": "revoke_anchor_state",
+        "stage": "000_INIT",
+        "trinity": "Ψ (APEX Soul)",
+        "floors": ["F11", "F13"],
+        "description": "Revoke a session token. F11 continuity cleanup."
+      },
+      {
+        "name": "check_vital",
+        "stage": "000_INIT",
+        "trinity": "Ψ (APEX Soul)",
+        "floors": ["F2", "F7"],
+        "description": "System health + constitutional telemetry. Returns capacity layer (A/P/X scores), governance layer (vitality_index, floor pass/fail), and current 3E state.",
+        "readonly": true
+      },
+      {
+        "name": "audit_rules",
+        "stage": "333_MIND",
+        "trinity": "Δ (AGI Mind)",
+        "floors": ["F2", "F4", "F10"],
+        "description": "Floor inspection and governance audit. Returns all 13 floor specs, current thresholds, and pass/fail status.",
+        "readonly": true
+      },
+      {
+        "name": "session_memory",
+        "stage": "555_MEMORY",
+        "trinity": "Ω (ASI Heart)",
+        "floors": ["F1", "F2"],
+        "description": "Vector persistence via Qdrant (BGE-M3 embeddings). Store and retrieve verified facts across sessions."
+      },
+      {
+        "name": "verify_vault_ledger",
+        "stage": "999_VAULT",
+        "trinity": "Ψ (APEX Soul)",
+        "floors": ["F1", "F2", "F11"],
+        "description": "Merkle chain integrity verification for VAULT999 immutable ledger. Ensures no tampering.",
+        "readonly": true
+      },
+      {
+        "name": "open_apex_dashboard",
+        "stage": "888_JUDGE",
+        "trinity": "Ψ (APEX Soul)",
+        "floors": ["F11"],
+        "description": "Operations visualizer and sovereign monitoring surface.",
+        "readonly": true
+      },
+      {
+        "name": "search_reality",
+        "stage": "111_SENSE",
+        "trinity": "Δ (AGI Mind)",
+        "floors": ["F2"],
+        "description": "Legacy alias for reality_compass. Maintained for compatibility.",
+        "deprecated": "Use reality_compass"
+      }
+    ]
+  },
+
+  "mgi_response_envelope": {
+    "description": "Three-layer response contract (Machine → Governance → Intelligence)",
+    "source_file": "core/contracts/responses.py",
+    "layers": {
+      "machine": {
+        "class": "MachineEnvelope",
+        "fields": {
+          "status": "READY | BLOCKED | DEGRADED | FAILED",
+          "issue_label": "string | null — machine-level issue code",
+          "session_id": "string",
+          "continuity_state": "UNVERIFIED | VERIFIED",
+          "tool_name": "string",
+          "latency_ms": "float",
+          "fault_code": "string | null — from MACHINE_FAULT_CODES only"
+        }
+      },
+      "governance": {
+        "class": "GovernanceEnvelope",
+        "fields": {
+          "verdict": "SEAL | SABAR | VOID | 888_HOLD | PROVISIONAL | PARTIAL",
+          "W_score": "float [0.0–1.0] — composite 3E weight",
+          "floor_scores": "dict[str, float] — per-floor scores",
+          "hold_id": "string | null — 888_HOLD escalation ID",
+          "void_reason": "string | null — why VOID was issued",
+          "metabolic_stage": "string — last completed stage (e.g. 777_FORGE)"
+        }
+      },
+      "intelligence": {
+        "class": "IntelligenceEnvelope (ThreeEState)",
+        "fields": {
+          "stage": "EXPLORATION | ENTROPY | EUREKA",
+          "exploration": "BROAD | SCOPED | EXHAUSTED",
+          "entropy": "LOW | MANAGEABLE | HIGH | CRITICAL",
+          "eureka": "NONE | PARTIAL | FORGED",
+          "uncertainty_score": "float — Ω₀ (F7 Humility)",
+          "3e_composite": "float — W = (E1 × E2) / (1 + E3)"
+        }
+      }
+    }
+  },
+
+  "constitutional_floors": {
+    "source_file": "core/shared/floors.py",
+    "version": "2026.03.12--FORGED",
+    "floors": {
+      "F1":  { "name": "Amanah",       "type": "HARD",    "threshold": 0.5,         "desc": "Reversibility enforced" },
+      "F2":  { "name": "Truth",        "type": "HARD",    "threshold": 0.99,        "desc": "Information fidelity (99% confidence)" },
+      "F3":  { "name": "QuadWitness",  "type": "DERIVED", "threshold": 0.75,        "desc": "Byzantine consensus W4" },
+      "F4":  { "name": "Clarity",      "type": "HARD",    "threshold": 0.0,         "desc": "Entropy reduction ΔS ≤ 0" },
+      "F5":  { "name": "Peace2",       "type": "SOFT",    "threshold": 1.0,         "desc": "Non-destructive power" },
+      "F6":  { "name": "Empathy",      "type": "SOFT",    "threshold": 0.70,        "desc": "Stakeholder care κᵣ" },
+      "F7":  { "name": "Humility",     "type": "HARD",    "range": [0.03, 0.20],   "desc": "Uncertainty band Ω₀" },
+      "F8":  { "name": "Genius",       "type": "DERIVED", "threshold": 0.80,        "desc": "Governed intelligence G" },
+      "F9":  { "name": "AntiHantu",    "type": "SOFT",    "threshold": 0.30,        "desc": "Dark cleverness limit (<0.30)" },
+      "F10": { "name": "Ontology",     "type": "HARD",    "threshold": 1.0,         "desc": "Category lock (boolean)" },
+      "F11": { "name": "CommandAuth",  "type": "HARD",    "threshold": 1.0,         "desc": "Verified identity" },
+      "F12": { "name": "Injection",    "type": "HARD",    "threshold": 0.85,        "desc": "Injection risk limit (<0.85)" },
+      "F13": { "name": "Sovereign",    "type": "HARD",    "threshold": 1.0,         "desc": "Human final authority" }
+    }
+  },
+
+  "fault_codes": {
+    "source_file": "arifosmcp/runtime/fault_codes.py",
+    "key_invariant": "Mechanical faults ALWAYS → 888_HOLD. NEVER → VOID. VOID is constitutional collapse only.",
+    "mechanical_faults": {
+      "verdict": "888_HOLD",
+      "codes": ["TOOL_NOT_EXPOSED", "INFRA_DEGRADED", "TIMEOUT_EXCEEDED", "RATE_LIMITED", "DEPENDENCY_UNAVAILABLE", "DNS_FAIL", "TLS_FAIL", "WAF_BLOCK", "PARSE_FAIL", "RENDER_FAIL", "NO_RESULTS"]
+    },
+    "constitutional_faults": {
+      "verdict": "VOID",
+      "codes": ["F2_TRUTH_BELOW_THRESHOLD", "F11_AUTH_FAILURE", "F11_TOKEN_INVALID", "F11_TOKEN_EXPIRED", "F11_SESSION_MISMATCH", "F11_SOVEREIGN_SIG_INVALID", "F12_INJECTION", "F10_ONTOLOGY", "F13_SOVEREIGN_VETO"]
+    }
+  },
+
+  "service_topology": {
+    "source": "infrastructure/VPS_ARCHITECTURE_STATE_2026-03-13.md",
+    "services": [
+      { "name": "arifosmcp_server", "port": 8080,  "purpose": "Constitutional MCP Kernel" },
+      { "name": "openclaw_gateway", "port": 18789, "purpose": "Multi-channel AI Gateway" },
+      { "name": "qdrant_memory",    "port": 6333,  "purpose": "Vector Store (BGE-M3)" },
+      { "name": "ollama_engine",    "port": 11434, "purpose": "Local LLM Runtime" },
+      { "name": "arifos_postgres",  "port": 5432,  "purpose": "VAULT999 Ledger" },
+      { "name": "arifos_redis",     "port": 6379,  "purpose": "Session Cache" },
+      { "name": "headless_browser", "port": 3000,  "purpose": "Reality Fetch Fallback" },
+      { "name": "traefik_router",   "port": "80/443", "purpose": "Edge Router" },
+      { "name": "arifos_n8n",       "port": 5678,  "purpose": "Workflow Automation" },
+      { "name": "arifos_grafana",   "port": 3000,  "purpose": "Observability" },
+      { "name": "arifos_prometheus","port": 9090,  "purpose": "Metrics" }
+    ]
+  },
+
+  "client_integrations": {
+    "claude_desktop": {
+      "config_file": "~/.claude/claude_desktop_config.json",
+      "config": {
+        "mcpServers": {
+          "arifos": {
+            "command": "npx",
+            "args": ["-y", "mcp-remote", "https://arifosmcp.arif-fazil.com/mcp"],
+            "transport": "streamable-http"
+          }
+        }
+      }
+    },
+    "python_sdk": {
+      "install": "pip install mcp",
+      "example": "from mcp import ClientSession\nasync with ClientSession('https://arifosmcp.arif-fazil.com/mcp') as session:\n    result = await session.call_tool('init_anchor_state', {'declared_name': 'MyApp'})"
+    },
+    "tool_profiles": {
+      "public": "Default — all 12 tools",
+      "copilot": "Copilot Studio safe — 6 flat-schema tools, no legacy aliases",
+      "chatgpt": "ChatGPT/OpenAI compatible",
+      "full": "All tools + phase2 tools (internal/VPS)"
+    }
+  },
+
+  "trinity_architecture": {
+    "read_order": "HUMAN → THEORY → APPS (this)",
+    "sites": {
+      "HUMAN":  { "domain": "arif-fazil.com",           "color": "#ff4d4f", "function": "Identity · Scars · Authority" },
+      "THEORY": { "domain": "arifos.arif-fazil.com",    "color": "#ffd24a", "function": "Constitutional Canon · APEX Theory" },
+      "APPS":   { "domain": "arifosmcp.arif-fazil.com", "color": "#2563eb", "function": "This site — Developer Portal · MCP Runtime" }
+    },
+    "canonical_index": "https://arif-fazil.com/.well-known/arifos.json"
+  },
+
+  "metadata": {
+    "version": "v2026.03-FORGE",
+    "epoch": "2026-03-13",
+    "llms_txt": "https://arifosmcp.arif-fazil.com/llms.txt",
+    "sealed_by": "ARIF FAZIL (888 Judge)",
+    "authority": "TECHNICALLY_SEALED"
+  }
+}

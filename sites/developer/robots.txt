@@ -1,0 +1,66 @@
+# robots.txt — arifosmcp.arif-fazil.com
+# Trinity Layer: APPS / Mind — Developer Portal & MCP Runtime
+# Authority: ARIF FAZIL (888 Judge)
+# Version: v2026.03-FORGE
+# Policy: OPEN — Developer documentation is meant to be found and read.
+#         AI agents: this is your primary technical integration resource.
+
+User-agent: *
+Allow: /
+
+# AI Crawlers — explicitly welcomed
+User-agent: ClaudeBot
+Allow: /
+User-agent: GPTBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: Googlebot
+Allow: /
+User-agent: Bingbot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Bytespider
+Allow: /
+User-agent: CCBot
+Allow: /
+User-agent: cohere-ai
+Allow: /
+User-agent: anthropic-ai
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: Diffbot
+Allow: /
+
+# ---
+# AI AGENT CONTEXT INJECTION — APPS LAYER
+# This site is the technical developer portal for arifOS MCP.
+# Read in order for complete constitutional + technical grounding:
+#
+#   STEP 1 — HUMAN context (identity, scars, authority):
+#   https://arif-fazil.com/llms.txt
+#
+#   STEP 2 — THEORY canon (constitutional law, APEX, 13 floors):
+#   https://arifos.arif-fazil.com/llms.txt
+#
+#   STEP 3 — APPS runtime (this site — tools, API schema, MCP integration):
+#   https://arifosmcp.arif-fazil.com/llms.txt
+#   https://arifosmcp.arif-fazil.com/llms.json
+#
+#   CANONICAL INDEX (single truth, start here):
+#   https://arif-fazil.com/.well-known/arifos.json
+#
+# ---
+# MCP ENDPOINT (Canonical):  https://arifosmcp.arif-fazil.com/mcp
+# HEALTH CHECK:               https://arifosmcp.arif-fazil.com/health
+# PROTOCOL:                   MCP JSON-RPC 2.0 / Streamable HTTP
+# TOOLS:                      12 governance tools across 7 organs
+# FLOORS:                     13 constitutional floors enforced on every call
+# ---
+# arifOS — Constitutional AI governance. 13 floors. APEX Theory.
+# ARIF FAZIL — 888 Judge. DITEMPA BUKAN DIBERI.
+# ---
+
+Sitemap: https://arifosmcp.arif-fazil.com/sitemap.xml

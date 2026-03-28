@@ -1,0 +1,12 @@
+name: arifOS_kernel
+type: mega-tool
+authority: 888_JUDGE
+description: Central routing hub for arifOS reasoning, safety, and reality grounding.
+floors:
+  - F1: AMANAH (Checkpointing)
+  - F12: TAFSIR (Injection defense)
+  - F13: KHILAFAH (Sovereign approval)
+risk_tier: P0
+parameters:
+  action: string
+  payload: object

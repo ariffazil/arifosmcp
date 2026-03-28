@@ -1,0 +1,76 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.ariffazil/arifos-mcp",
+  "version": "2026.03.10-SEAL",
+  "description": "arifOS AAA MCP runtime with streamable HTTP at /mcp, SSE compatibility, 7 public tools, and the APEX dashboard app resource.",
+  "vendor": {
+    "name": "arifOS",
+    "url": "https://arifos.arif-fazil.com"
+  },
+  "license": "AGPL-3.0-only",
+  "repository": {
+    "url": "https://github.com/ariffazil/arifosmcp",
+    "source": "github"
+  },
+  "protocolVersion": "2025-11-25",
+  "supportedProtocolVersions": ["2025-11-25", "2025-03-26"],
+  "authentication": {
+    "type": "none",
+    "description": "No authentication required. actor_id is used for logging only."
+  },
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "arifos",
+      "version": "2026.03.10-SEAL",
+      "transport": {
+        "type": "stdio",
+        "command": "python -m arifosmcp.runtime stdio"
+      }
+    },
+    {
+      "registryType": "oci",
+      "identifier": "docker.io/arifazil/arifosmcp:forge-20260309",
+      "transport": {
+        "type": "streamable-http",
+        "url": "https://arifosmcp.arif-fazil.com/mcp"
+      }
+    }
+  ],
+  "remotes": [
+    {
+      "type": "sse",
+      "url": "https://arifosmcp.arif-fazil.com/sse"
+    },
+    {
+      "type": "streamable-http",
+      "url": "https://arifosmcp.arif-fazil.com/mcp"
+    }
+  ],
+  "resources": [
+    {
+      "uri": "arifos://aaa/schemas"
+    },
+    {
+      "uri": "arifos://aaa/full-context-pack"
+    },
+    {
+      "uri": "arifos://aaa/mcp-transport-profile"
+    },
+    {
+      "uri": "arifos://aaa/tool-operating-manual"
+    },
+    {
+      "uri": "arifos://aaa/governance-gate-profile"
+    },
+    {
+      "uri": "ui://apex/dashboard-v2.html"
+    }
+  ],
+  "prompts": [
+    "arifos.prompt.aaa_chain",
+    "arifos.prompt.mcp_transport_bootstrap",
+    "arifos.prompt.tool_routing_policy",
+    "arifos.prompt.chatgpt_connector_bootstrap"
+  ]
+}

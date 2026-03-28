@@ -1,0 +1,96 @@
+# arifosmcp.intelligence/config/mcp_tools.yaml
+# Canonical 11 Mega-Tool Specifications
+# Authority: ARIF FAZIL (Sovereign)
+# Version: 2026.03.20-SOVEREIGN11
+
+tools:
+  # ⚖️ GOVERNANCE LAYER
+  - name: init_anchor
+    description: "000_INIT: Establish, revoke, or refresh a governed session identity. Required before all other actions."
+    stage: "000_INIT"
+    layer: "GOVERNANCE"
+    trinity: "PSI Ψ"
+    modes: ["init", "revoke", "refresh"]
+    floors: ["F11", "F12", "F13"]
+    
+  - name: arifOS_kernel
+    description: "444_ROUTER: Primary metabolic conductor. Processes complex queries through the 000-999 pipe."
+    stage: "444_ROUTER"
+    layer: "GOVERNANCE"
+    trinity: "DELTA/PSI"
+    modes: ["kernel", "status"]
+    floors: ["F4", "F11"]
+    
+  - name: apex_soul
+    description: "888_JUDGE: Final authority for verdicts and defense."
+    stage: "888_JUDGE"
+    layer: "GOVERNANCE"
+    trinity: "PSI Ψ"
+    modes: ["judge", "rules", "validate", "hold", "armor", "notify", "probe"]
+    floors: ["F3", "F12", "F13"]
+    
+  - name: vault_ledger
+    description: "999_VAULT: Permanent decision recording and integrity."
+    stage: "999_VAULT"
+    layer: "GOVERNANCE"
+    trinity: "PSI Ψ"
+    modes: ["seal", "verify"]
+    floors: ["F1", "F13"]
+    
+  # 🧠 INTELLIGENCE LAYER
+  - name: agi_mind
+    description: "333_MIND: Core reasoning and synthesis engine."
+    stage: "333_MIND"
+    layer: "INTELLIGENCE"
+    trinity: "DELTA Δ"
+    modes: ["reason", "reflect", "forge"]
+    floors: ["F2", "F4", "F7", "F8"]
+    
+  - name: asi_heart
+    description: "666_HEART: Safety, empathy, and consequence modeling."
+    stage: "666_HEART"
+    layer: "INTELLIGENCE"
+    trinity: "OMEGA Ω"
+    modes: ["critique", "simulate"]
+    floors: ["F5", "F6", "F9"]
+    
+  - name: engineering_memory
+    description: "555_MEMORY: Governed autonomous engineering and recall."
+    stage: "555_MEMORY"
+    layer: "INTELLIGENCE"
+    trinity: "OMEGA Ω"
+    modes: ["engineer", "query", "recall", "write", "generate"]
+    floors: ["F11", "F2"]
+    
+  # ⚙️ MACHINE LAYER
+  - name: physics_reality
+    description: "111_SENSE: Earth-Witness fact acquisition and mapping."
+    stage: "111_SENSE"
+    layer: "MACHINE"
+    trinity: "DELTA Δ"
+    modes: ["search", "ingest", "compass", "atlas"]
+    floors: ["F2", "F3"]
+    
+  - name: math_estimator
+    description: "Quantitative health and metabolic estimation."
+    stage: "444_ROUTER"
+    layer: "MACHINE"
+    trinity: "DELTA Δ"
+    modes: ["cost", "health", "vitals"]
+    floors: ["F4", "F5"]
+    
+  - name: code_engine
+    description: "System-level hygiene and observation."
+    stage: "M-3_EXEC"
+    layer: "MACHINE"
+    trinity: "ALL"
+    modes: ["fs", "process", "net", "tail", "replay"]
+    floors: []
+    
+  - name: architect_registry
+    description: "Tool and resource discovery."
+    stage: "M-4_ARCH"
+    layer: "MACHINE"
+    trinity: "DELTA Δ"
+    modes: ["register", "list", "read"]
+    floors: []

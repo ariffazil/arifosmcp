@@ -1,0 +1,577 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Integrations — arifOS MCP Docs</title>
+  <meta http-equiv="refresh" content="0; url=https://arifos.arif-fazil.com/docs/integrations.html">
+  <link rel="canonical" href="https://arifos.arif-fazil.com/docs/integrations.html">
+  <meta name="description" content="Integration guides for arifOS MCP with Claude Desktop, Cursor, VS Code, ChatGPT, Kimi, Python SDK, TypeScript SDK, and HTTP/curl.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<!-- Trinity Strip -->
+<div class="trinity-strip">
+  <a href="https://arif-fazil.com" class="trinity-node human">HUMAN</a>
+  <a href="https://apex.arif-fazil.com" class="trinity-node theory">THEORY</a>
+  <a href="https://arifosmcp.arif-fazil.com" class="trinity-node apps active">APPS</a>
+</div>
+
+<!-- Navigation -->
+<nav class="main-nav">
+  <a href="../index.html" class="nav-logo">
+    <svg viewBox="0 0 48 48" width="32" height="32" fill="none" aria-label="arifOS Trinity">
+      <line x1="24" y1="8" x2="24" y2="22" stroke="#ffd24a" stroke-width="3" stroke-linecap="round"/>
+      <line x1="24" y1="26" x2="11" y2="40" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+      <line x1="24" y1="26" x2="37" y2="40" stroke="#ff4d4f" stroke-width="3" stroke-linecap="round"/>
+      <text x="24" y="28" text-anchor="middle" font-size="10" fill="#e8e8f0" font-family="monospace">Δ</text>
+      <circle cx="24" cy="6" r="4" stroke="#ffd24a" stroke-width="1.5" fill="none"/>
+      <circle cx="9" cy="41" r="4" stroke="#2563eb" stroke-width="1.5" fill="none"/>
+      <circle cx="39" cy="41" r="4" stroke="#ff4d4f" stroke-width="1.5" fill="none"/>
+      <circle cx="24" cy="24" r="5" stroke="#2563eb" stroke-width="1.5" fill="#12121a"/>
+    </svg>
+    <span class="nav-title">arifOS<span class="nav-mcp"> MCP</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="overview.html">Docs</a>
+    <a href="tools.html">API Reference</a>
+    <a href="integrations.html" class="active">Guides</a>
+    <a href="changelog.html">Changelog</a>
+  </div>
+  <div class="nav-right">
+    <span class="version-badge">v2026.03.14</span>
+    <a href="https://github.com/ariffazil/arifosmcp" class="btn-github" target="_blank">GitHub ↗</a>
+  </div>
+  <button class="nav-hamburger" aria-label="Menu">☰</button>
+</nav>
+
+<!-- Sidebar Overlay (mobile) -->
+<div class="sidebar-overlay"></div>
+
+<!-- Doc Layout -->
+<div class="doc-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-search">
+      <input type="text" placeholder="Search docs…" aria-label="Search documentation">
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Getting Started</div>
+      <div class="sidebar-group-items">
+        <a href="getting-started.html" class="sidebar-link">Installation</a>
+        <a href="getting-started.html#quick-start" class="sidebar-link">Quick Start</a>
+        <a href="getting-started.html#env-vars" class="sidebar-link">Environment Variables</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Architecture</div>
+      <div class="sidebar-group-items">
+        <a href="overview.html" class="sidebar-link">MGI Envelope</a>
+        <a href="overview.html#metabolic-loop" class="sidebar-link">Metabolic Loop</a>
+        <a href="overview.html#trinity-engines" class="sidebar-link">Trinity Engines</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Tools Reference</div>
+      <div class="sidebar-group-items">
+        <a href="tools.html#reality-compass" class="sidebar-link">reality_compass</a>
+        <a href="tools.html#reality-atlas" class="sidebar-link">reality_atlas</a>
+        <a href="tools.html#arifos-kernel" class="sidebar-link">arifOS_kernel</a>
+        <a href="tools.html#check-vital" class="sidebar-link">check_vital</a>
+        <a href="tools.html#init-anchor-state" class="sidebar-link">init_anchor_state</a>
+        <a href="tools.html#verify-vault-ledger" class="sidebar-link">verify_vault_ledger</a>
+        <a href="tools.html#audit-rules" class="sidebar-link">audit_rules</a>
+        <a href="tools.html#session-memory" class="sidebar-link">session_memory</a>
+        <a href="tools.html#open-apex-dashboard" class="sidebar-link">open_apex_dashboard</a>
+        <div class="sidebar-divider"></div>
+        <a href="tools.html#search-reality" class="sidebar-link">search_reality <span class="legacy-label">legacy</span></a>
+        <a href="tools.html#ingest-evidence" class="sidebar-link">ingest_evidence <span class="legacy-label">legacy</span></a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Constitutional Floors</div>
+      <div class="sidebar-group-items">
+        <a href="floors.html" class="sidebar-link">F1–F13 Overview</a>
+        <a href="floors.html#verdict-states" class="sidebar-link">Verdict States</a>
+        <a href="floors.html#fault-codes" class="sidebar-link">Fault Codes</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> 3E Telemetry</div>
+      <div class="sidebar-group-items">
+        <a href="overview.html#3e-cycle" class="sidebar-link">3E Cycle</a>
+        <a href="overview.html#metrics" class="sidebar-link">Metrics</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Integrations</div>
+      <div class="sidebar-group-items">
+        <a href="#claude-desktop" class="sidebar-link active">Claude Desktop</a>
+        <a href="#cursor" class="sidebar-link">Cursor / VS Code</a>
+        <a href="#python-sdk" class="sidebar-link">Python SDK</a>
+        <a href="#typescript-sdk" class="sidebar-link">TypeScript SDK</a>
+        <a href="#http-curl" class="sidebar-link">HTTP / curl</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Self-Hosting</div>
+      <div class="sidebar-group-items">
+        <a href="getting-started.html#docker" class="sidebar-link">Docker Setup</a>
+        <a href="getting-started.html#vps" class="sidebar-link">VPS Architecture</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Changelog</div>
+      <div class="sidebar-group-items">
+        <a href="changelog.html" class="sidebar-link">v2026.03.14-FORGED</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="doc-content">
+    <h1>Integrations</h1>
+    <p class="doc-subtitle">Connect arifOS MCP to your preferred AI client. Select your integration below for step-by-step configuration.</p>
+
+    <div class="tab-container">
+      <div class="tab-nav">
+        <button class="tab-btn active" data-tab="tab-claude">Claude Desktop</button>
+        <button class="tab-btn" data-tab="tab-cursor">Cursor</button>
+        <button class="tab-btn" data-tab="tab-vscode">VS Code</button>
+        <button class="tab-btn" data-tab="tab-chatgpt">ChatGPT</button>
+        <button class="tab-btn" data-tab="tab-kimi">Kimi</button>
+        <button class="tab-btn" data-tab="tab-python">Python SDK</button>
+        <button class="tab-btn" data-tab="tab-typescript">TypeScript SDK</button>
+        <button class="tab-btn" data-tab="tab-curl">curl / HTTP</button>
+      </div>
+
+      <!-- Claude Desktop -->
+      <div class="tab-panel active" id="tab-claude">
+        <h2 id="claude-desktop">Claude Desktop</h2>
+        <p>Add arifOS MCP to Claude Desktop by editing your <code>claude_desktop_config.json</code>:</p>
+
+        <h4>macOS</h4>
+        <div class="code-block-wrapper">
+          <div class="code-block-header"><span>bash</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-bash"># Open the config file
+code ~/Library/Application\ Support/Claude/claude_desktop_config.json</code></pre>
+        </div>
+
+        <h4>Windows</h4>
+        <div class="code-block-wrapper">
+          <div class="code-block-header"><span>bash</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-bash"># Open the config file
+code %APPDATA%\Claude\claude_desktop_config.json</code></pre>
+        </div>
+
+        <h4>Configuration</h4>
+        <div class="code-block-wrapper">
+          <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-json">{
+  "mcpServers": {
+    "arifosmcp": {
+      "command": "python",
+      "args": ["-m", "arifosmcp"],
+      "env": {
+        "BRAVE_API_KEY": "your_brave_api_key_here"
+      }
+    }
+  }
+}</code></pre>
+        </div>
+
+        <h4>Docker variant</h4>
+        <div class="code-block-wrapper">
+          <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-json">{
+  "mcpServers": {
+    "arifosmcp": {
+      "command": "docker",
+      "args": [
+        "run", "-i", "--rm",
+        "-e", "BRAVE_API_KEY=your_key_here",
+        "ghcr.io/ariffazil/arifosmcp:latest"
+      ]
+    }
+  }
+}</code></pre>
+        </div>
+
+        <p>Restart Claude Desktop after saving. The arifOS MCP tools will appear in the tools panel.</p>
+      </div>
+
+      <!-- Cursor -->
+      <div class="tab-panel" id="tab-cursor">
+        <h2 id="cursor">Cursor</h2>
+        <p>Add arifOS MCP to Cursor via the MCP settings:</p>
+
+        <ol>
+          <li>Open Cursor Settings → Features → MCP Servers</li>
+          <li>Click "Add new MCP Server"</li>
+          <li>Use the following configuration:</li>
+        </ol>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-json">{
+  "mcpServers": {
+    "arifosmcp": {
+      "command": "python",
+      "args": ["-m", "arifosmcp"],
+      "env": {
+        "BRAVE_API_KEY": "your_brave_api_key_here"
+      }
+    }
+  }
+}</code></pre>
+        </div>
+
+        <p>Alternatively, create a <code>.cursor/mcp.json</code> file in your project root:</p>
+        <div class="code-block-wrapper">
+          <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-json">{
+  "mcpServers": {
+    "arifosmcp": {
+      "command": "python",
+      "args": ["-m", "arifosmcp"],
+      "env": {
+        "BRAVE_API_KEY": "your_brave_api_key_here"
+      }
+    }
+  }
+}</code></pre>
+        </div>
+      </div>
+
+      <!-- VS Code -->
+      <div class="tab-panel" id="tab-vscode">
+        <h2 id="vscode">VS Code</h2>
+        <p>For VS Code with Copilot Chat or other MCP-compatible extensions:</p>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header"><span>json — .vscode/mcp.json</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-json">{
+  "servers": {
+    "arifosmcp": {
+      "type": "stdio",
+      "command": "python",
+      "args": ["-m", "arifosmcp"],
+      "env": {
+        "BRAVE_API_KEY": "your_brave_api_key_here"
+      }
+    }
+  }
+}</code></pre>
+        </div>
+
+        <p>Or add to your VS Code <code>settings.json</code>:</p>
+        <div class="code-block-wrapper">
+          <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-json">{
+  "mcp.servers": {
+    "arifosmcp": {
+      "type": "stdio",
+      "command": "python",
+      "args": ["-m", "arifosmcp"],
+      "env": {
+        "BRAVE_API_KEY": "your_brave_api_key_here"
+      }
+    }
+  }
+}</code></pre>
+        </div>
+      </div>
+
+      <!-- ChatGPT -->
+      <div class="tab-panel" id="tab-chatgpt">
+        <h2 id="chatgpt">ChatGPT</h2>
+        <p>Connect arifOS MCP to ChatGPT using the HTTP transport and the ChatGPT Actions configuration:</p>
+
+        <ol>
+          <li>First, start the arifOS MCP server in HTTP mode:</li>
+        </ol>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header"><span>bash</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-bash">arifosmcp serve --transport http --port 8080 --host 0.0.0.0</code></pre>
+        </div>
+
+        <ol start="2">
+          <li>In ChatGPT, go to <strong>Settings → Actions → Create new action</strong></li>
+          <li>Set the API endpoint to your server URL</li>
+          <li>Import the OpenAPI schema from <code>/openapi.json</code></li>
+        </ol>
+
+        <div class="callout callout-info">
+          <div class="callout-title">Note</div>
+          ChatGPT integration requires the HTTP transport mode and a publicly accessible server URL. Consider using a reverse proxy with TLS for production.
+        </div>
+      </div>
+
+      <!-- Kimi -->
+      <div class="tab-panel" id="tab-kimi">
+        <h2 id="kimi">Kimi</h2>
+        <p>Connect arifOS MCP to Kimi (Moonshot AI) using the MCP plugin system:</p>
+
+        <ol>
+          <li>Open Kimi's plugin settings</li>
+          <li>Select "Add Custom MCP Server"</li>
+          <li>Configure the STDIO connection:</li>
+        </ol>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-json">{
+  "name": "arifosmcp",
+  "transport": "stdio",
+  "command": "python",
+  "args": ["-m", "arifosmcp"],
+  "env": {
+    "BRAVE_API_KEY": "your_brave_api_key_here"
+  }
+}</code></pre>
+        </div>
+      </div>
+
+      <!-- Python SDK -->
+      <div class="tab-panel" id="tab-python">
+        <h2 id="python-sdk">Python SDK</h2>
+        <p>Use the MCP Python SDK to connect programmatically:</p>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header"><span>bash</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-bash">pip install mcp arifosmcp</code></pre>
+        </div>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header"><span>python</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-python">import asyncio
+from mcp import ClientSession, StdioServerParameters
+from mcp.client.stdio import stdio_client
+
+async def main():
+    server = StdioServerParameters(
+        command="python",
+        args=["-m", "arifosmcp"],
+        env={"BRAVE_API_KEY": "your_key"}
+    )
+
+    async with stdio_client(server) as (read, write):
+        async with ClientSession(read, write) as session:
+            await session.initialize()
+
+            # List available tools
+            tools = await session.list_tools()
+            print(f"Available tools: {[t.name for t in tools.tools]}")
+
+            # Call reality_compass
+            result = await session.call_tool(
+                "reality_compass",
+                {"input": "quantum computing 2026", "mode": "search"}
+            )
+            print(result.content[0].text)
+
+            # Call arifOS_kernel
+            result = await session.call_tool(
+                "arifOS_kernel",
+                {
+                    "query": "Explain quantum entanglement",
+                    "risk_tier": "low",
+                    "use_critique": True
+                }
+            )
+            print(result.content[0].text)
+
+asyncio.run(main())</code></pre>
+        </div>
+
+        <h3>HTTP Client</h3>
+        <div class="code-block-wrapper">
+          <div class="code-block-header"><span>python</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-python">from mcp import ClientSession
+from mcp.client.streamable_http import streamablehttp_client
+
+async def main():
+    async with streamablehttp_client("http://localhost:8080/mcp") as (read, write, _):
+        async with ClientSession(read, write) as session:
+            await session.initialize()
+            result = await session.call_tool("check_vital", {})
+            print(result.content[0].text)
+
+asyncio.run(main())</code></pre>
+        </div>
+      </div>
+
+      <!-- TypeScript SDK -->
+      <div class="tab-panel" id="tab-typescript">
+        <h2 id="typescript-sdk">TypeScript SDK</h2>
+        <p>Use the MCP TypeScript SDK:</p>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header"><span>bash</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-bash">npm install @modelcontextprotocol/sdk</code></pre>
+        </div>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-json">// TypeScript example using MCP SDK
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
+
+const transport = new StdioClientTransport({
+  command: "python",
+  args: ["-m", "arifosmcp"],
+  env: { BRAVE_API_KEY: "your_key" }
+});
+
+const client = new Client({
+  name: "my-app",
+  version: "1.0.0"
+});
+
+await client.connect(transport);
+
+// List tools
+const tools = await client.listTools();
+console.log("Tools:", tools.tools.map(t => t.name));
+
+// Call reality_compass
+const result = await client.callTool({
+  name: "reality_compass",
+  arguments: {
+    input: "arifOS MCP documentation",
+    mode: "search"
+  }
+});
+
+console.log(result.content);</code></pre>
+        </div>
+      </div>
+
+      <!-- curl / HTTP -->
+      <div class="tab-panel" id="tab-curl">
+        <h2 id="http-curl">curl / HTTP</h2>
+        <p>Interact with arifOS MCP directly via HTTP (requires HTTP transport mode):</p>
+
+        <h3>Start the server</h3>
+        <div class="code-block-wrapper">
+          <div class="code-block-header"><span>bash</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-bash">arifosmcp serve --transport http --port 8080</code></pre>
+        </div>
+
+        <h3>Check system health</h3>
+        <div class="code-block-wrapper">
+          <div class="code-block-header"><span>bash</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-bash">curl -X POST http://localhost:8080/mcp \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "tools/call",
+    "params": {
+      "name": "check_vital",
+      "arguments": {}
+    }
+  }'</code></pre>
+        </div>
+
+        <h3>Search with reality_compass</h3>
+        <div class="code-block-wrapper">
+          <div class="code-block-header"><span>bash</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-bash">curl -X POST http://localhost:8080/mcp \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 2,
+    "method": "tools/call",
+    "params": {
+      "name": "reality_compass",
+      "arguments": {
+        "input": "quantum computing breakthroughs 2026",
+        "mode": "search",
+        "fetch_top_k": 2
+      }
+    }
+  }'</code></pre>
+        </div>
+
+        <h3>Run the governance kernel</h3>
+        <div class="code-block-wrapper">
+          <div class="code-block-header"><span>bash</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-bash">curl -X POST http://localhost:8080/mcp \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 3,
+    "method": "tools/call",
+    "params": {
+      "name": "arifOS_kernel",
+      "arguments": {
+        "query": "Is this deployment safe?",
+        "risk_tier": "high",
+        "use_critique": true,
+        "requested_persona": "auditor"
+      }
+    }
+  }'</code></pre>
+        </div>
+
+        <h3>List available tools</h3>
+        <div class="code-block-wrapper">
+          <div class="code-block-header"><span>bash</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-bash">curl -X POST http://localhost:8080/mcp \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 4,
+    "method": "tools/list",
+    "params": {}
+  }'</code></pre>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Right TOC -->
+  <aside class="toc">
+    <div class="toc-title">On this page</div>
+    <a href="#claude-desktop">Claude Desktop</a>
+    <a href="#cursor">Cursor</a>
+    <a href="#vscode">VS Code</a>
+    <a href="#chatgpt">ChatGPT</a>
+    <a href="#kimi">Kimi</a>
+    <a href="#python-sdk">Python SDK</a>
+    <a href="#typescript-sdk">TypeScript SDK</a>
+    <a href="#http-curl">curl / HTTP</a>
+  </aside>
+
+</div>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-line">© 2026 ARIF FAZIL · arifOS MCP · Ditempa Bukan Diberi</div>
+  <div class="footer-line"><a href="https://perplexity.ai" target="_blank">Created with Perplexity Computer</a></div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../app.js"></script>
+</body>
+</html>

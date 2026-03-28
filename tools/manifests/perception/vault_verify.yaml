@@ -1,0 +1,9 @@
+name: vault_verify
+type: perception-tool
+authority: AUDITOR
+description: Verify the integrity of a session seal in VAULT999.
+floors:
+  - F2: SIDDIQ
+risk_tier: P2
+parameters:
+  seal_id: string

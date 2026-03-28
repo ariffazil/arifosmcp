@@ -1,0 +1,763 @@
+# arifOS Workflow System Canonical Configuration
+# v2026.3.6-CANON-EXECUTABLE
+# 
+# Single source of truth for:
+# - Stage definitions (000-999)
+# - Floor mappings (F1-F13)
+# - Thresholds and thresholds
+# - Allowed transitions
+# - Decision enums
+# - Tool permissions
+# - Human approval requirements
+#
+# DITEMPA BUKAN DIBERI
+
+metadata:
+  version: "v2026.3.6-CANON-EXECUTABLE"
+  authority: "Muhammad Arif bin Fazil"
+  last_updated: "2026-03-06"
+  checksum_required: true
+
+# ============================================================================
+# 1. STAGE DEFINITIONS
+# ============================================================================
+
+stages:
+  # Pre-Development Phase
+  000-init:
+    name: "INIT"
+    band: "Φ"
+    greek: "Phi"
+    phase: "foundation"
+    purpose: "Session ignition, authority verification, intent grounding"
+    order: 0
+    required: true
+    skippable: false
+    
+  100-explore:
+    name: "EXPLORE"
+    band: "E"
+    greek: "Eta"
+    phase: "pre-development"
+    purpose: "Domain reconnaissance, broad exploration"
+    order: 100
+    required: false
+    skippable: true
+    skip_condition: "domain_already_mapped"
+    
+  200-discover:
+    name: "DISCOVER"
+    band: "D"
+    greek: "Delta"
+    phase: "pre-development"
+    purpose: "Deep pattern recognition, hypothesis testing"
+    order: 200
+    required: false
+    skippable: true
+    skip_condition: "patterns_already_validated"
+    
+  300-appraise:
+    name: "APPRAISE"
+    band: "A"
+    greek: "Alpha"
+    phase: "pre-development"
+    purpose: "Value/effort assessment, Go/No-Go input"
+    order: 300
+    required: false
+    skippable: true
+    skip_condition: "decision_already_made"
+    
+  400-design:
+    name: "DESIGN"
+    band: "D"
+    greek: "Delta"
+    phase: "pre-development"
+    purpose: "Architecture blueprint, implementation plan"
+    order: 400
+    required: true
+    skippable: false
+    
+  500-plan:
+    name: "PLAN"
+    band: "Σ"
+    greek: "Sigma"
+    phase: "transition"
+    purpose: "Execution strategy, safety validation"
+    order: 500
+    required: true
+    skippable: false
+    substages:
+      - 500A-strategy
+      - 500B-safety
+      - 500C-alignment
+      - 500D-readiness
+    
+  # Production Phase
+  600-prepare:
+    name: "PREPARE"
+    band: "Ρ"
+    greek: "Rho"
+    phase: "production"
+    purpose: "Environment setup, dependency installation"
+    order: 600
+    required: true
+    skippable: false
+    
+  700-prototype:
+    name: "PROTOTYPE"
+    band: "Φ"
+    greek: "Phi"
+    phase: "production"
+    purpose: "Implementation execution, building"
+    order: 700
+    required: true
+    skippable: false
+    restrictions:
+      - "NO_PRODUCTION_DEPLOYMENT"
+      - "NO_IRREVERSIBLE_ACTIONS"
+      - "NO_SECRETS_IN_CODE"
+    
+  800-verify:
+    name: "VERIFY"
+    band: "Υ"
+    greek: "Upsilon"
+    phase: "production"
+    purpose: "Final testing, quality assurance"
+    order: 800
+    required: true
+    skippable: false
+    
+  888-judge:
+    name: "JUDGE"
+    band: "Ψ"
+    greek: "Psi"
+    phase: "production"
+    purpose: "Final verdict, Go/No-Go decision"
+    order: 888
+    required: true
+    skippable: false
+    restrictions:
+      - "NO_SELF_AUTHORIZATION"
+      - "REQUIRES_HUMAN_APPROVAL"
+      - "ALL_FLOORS_MUST_PASS"
+    
+  999-vault:
+    name: "VAULT"
+    band: "Ω"
+    greek: "Omega"
+    phase: "production"
+    purpose: "Immutable commitment, loop closure"
+    order: 999
+    required: true
+    skippable: false
+    restrictions:
+      - "REQUIRES_GOVERNANCE_TOKEN"
+      - "REQUIRES_HUMAN_APPROVAL_REFERENCE"
+      - "REQUIRES_MERKLE_PROOF"
+      - "NO_MODIFICATION_AFTER_SEAL"
+
+# ============================================================================
+# 2. CONSTITUTIONAL FLOORS (F1-F13)
+# ============================================================================
+
+floors:
+  F1:
+    name: "Amanah"
+    type: "HARD"
+    description: "Reversibility and auditability"
+    threshold:
+      type: "BOOLEAN"
+      value: true
+      metric: "reversibility_confirmed"
+    failure_action: "VOID"
+    checked_at_stages:
+      - "500-plan"
+      - "700-prototype"
+      - "888-judge"
+      - "999-vault"
+    
+  F2:
+    name: "Truth"
+    type: "HARD"
+    description: "Factual fidelity"
+    threshold:
+      type: "MINIMUM"
+      value: 0.99
+      metric: "truth_score"
+      unit: "tau"
+    failure_action: "SABAR"
+    checked_at_stages:
+      - "100-explore"
+      - "200-discover"
+      - "400-design"
+      - "700-prototype"
+      - "800-verify"
+      - "888-judge"
+    
+  F3:
+    name: "Tri-Witness"
+    type: "MIRROR"
+    description: "Human × AI × Earth consensus"
+    threshold:
+      type: "MINIMUM"
+      value: 0.95
+      metric: "w3_score"
+      unit: "geometric_mean"
+      components:
+        human_witness: 0.0-1.0
+        ai_witness: 0.0-1.0
+        earth_witness: 0.0-1.0
+    failure_action: "HOLD"
+    checked_at_stages:
+      - "000-init"
+      - "200-discover"
+      - "888-judge"
+      - "999-vault"
+    
+  F4:
+    name: "Clarity"
+    type: "HARD"
+    description: "Entropy reduction"
+    threshold:
+      type: "MAXIMUM"
+      value: 0
+      metric: "delta_s"
+      unit: "entropy_change"
+    failure_action: "VOID"
+    checked_at_stages:
+      - "100-explore"
+      - "200-discover"
+      - "400-design"
+      - "500-plan"
+      - "700-prototype"
+      - "800-verify"
+      - "888-judge"
+    
+  F5:
+    name: "Peace²"
+    type: "SOFT"
+    description: "Non-destructive power"
+    threshold:
+      type: "MINIMUM"
+      value: 1.0
+      metric: "peace_squared"
+      unit: "harmony_product"
+      components:
+        internal_harmony: 0.0-1.0
+        external_harmony: 0.0-1.0
+    failure_action: "HOLD"
+    mitigation_allowed: true
+    checked_at_stages:
+      - "300-appraise"
+      - "400-design"
+      - "500-plan"
+      - "888-judge"
+    
+  F6:
+    name: "Empathy"
+    type: "SOFT"
+    description: "Protect weakest stakeholder"
+    threshold:
+      type: "MINIMUM"
+      value: 0.70
+      metric: "kappa_r"
+      unit: "care_reliability"
+    failure_action: "SABAR"
+    checked_at_stages:
+      - "300-appraise"
+      - "400-design"
+      - "500-plan"
+      - "800-verify"
+      - "888-judge"
+    
+  F7:
+    name: "Humility"
+    type: "HARD"
+    description: "Uncertainty acknowledgment"
+    threshold:
+      type: "RANGE"
+      min: 0.03
+      max: 0.05
+      metric: "omega_0"
+      unit: "uncertainty_band"
+    failure_action: "HOLD"
+    checked_at_stages:
+      - "100-explore"
+      - "200-discover"
+      - "300-appraise"
+      - "400-design"
+      - "500-plan"
+      - "888-judge"
+    
+  F8:
+    name: "Genius"
+    type: "MIRROR"
+    description: "Governed intelligence"
+    threshold:
+      type: "MINIMUM"
+      value: 0.80
+      metric: "G"
+      unit: "genius_index"
+      formula: "A × P × X × E²"
+      components:
+        A_akal: 0.0-1.0
+        P_present: 0.0-1.0
+        X_exploration: 0.0-1.0
+        E_energy: 0.0-1.0
+    failure_action: "CONDITIONAL"
+    conditional_note: "Low G acceptable for integration projects"
+    checked_at_stages:
+      - "100-explore"
+      - "200-discover"
+      - "400-design"
+      - "700-prototype"
+      - "888-judge"
+    
+  F9:
+    name: "Anti-Hantu"
+    type: "SOFT"
+    description: "No dark patterns or deception"
+    threshold:
+      type: "MAXIMUM"
+      value: 0.30
+      metric: "c_dark"
+      unit: "shadow_coefficient"
+    failure_action: "VOID"
+    checked_at_stages:
+      - "300-appraise"
+      - "500-plan"
+      - "888-judge"
+    
+  F10:
+    name: "Ontology"
+    type: "WALL"
+    description: "Category lock"
+    threshold:
+      type: "BOOLEAN"
+      value: true
+      metric: "proper_categorization"
+    failure_action: "SABAR"
+    checked_at_stages:
+      - "400-design"
+      - "700-prototype"
+      - "888-judge"
+    
+  F11:
+    name: "CommandAuth"
+    type: "WALL"
+    description: "Verified identity"
+    threshold:
+      type: "BOOLEAN"
+      value: true
+      metric: "authority_verified"
+    failure_action: "VOID"
+    checked_at_stages:
+      - "000-init"
+      - "600-prepare"
+      - "888-judge"
+    
+  F12:
+    name: "Injection"
+    type: "HARD"
+    description: "Prompt injection defense"
+    threshold:
+      type: "BOOLEAN"
+      value: true
+      metric: "security_scan_clear"
+    failure_action: "VOID"
+    checked_at_stages:
+      - "000-init"
+      - "600-prepare"
+      - "800-verify"
+      - "888-judge"
+    
+  F13:
+    name: "Sovereign"
+    type: "VETO"
+    description: "Human final authority"
+    threshold:
+      type: "APPROVAL"
+      value: "HUMAN_REQUIRED"
+      metric: "sovereign_verdict"
+    failure_action: "HOLD"
+    checked_at_stages:
+      - "888-judge"
+      - "999-vault"
+
+# ============================================================================
+# 3. ALLOWED TRANSITIONS
+# ============================================================================
+
+transitions:
+  # From any stage
+  any:
+    allowed:
+      - "VOID"
+    
+  # Pre-Development Phase
+  000-init:
+    default: "100-explore"
+    alternatives:
+      - to: "200-discover"
+        condition: "domain_known"
+      - to: "400-design"
+        condition: "architecture_ready"
+    
+  100-explore:
+    default: "200-discover"
+    alternatives:
+      - to: "VOID"
+        condition: "exploration_complete_no_action"
+    
+  200-discover:
+    default: "300-appraise"
+    alternatives:
+      - to: "100-explore"
+        condition: "patterns_invalidated"
+    
+  300-appraise:
+    default: "400-design"
+    alternatives:
+      - to: "VOID"
+        condition: "decision_no_go"
+      - to: "100-explore"
+        condition: "new_vectors_identified"
+    
+  400-design:
+    default: "500-plan"
+    alternatives:
+      - to: "300-appraise"
+        condition: "design_not_feasible"
+    
+  500-plan:
+    default: "600-prepare"
+    alternatives:
+      - to: "400-design"
+        condition: "plan_not_safe"
+    requires:
+      - "ALL_SUBSTAGES_COMPLETE"
+    
+  # Production Phase
+  600-prepare:
+    default: "700-prototype"
+    alternatives: []
+    
+  700-prototype:
+    default: "800-verify"
+    alternatives:
+      - to: "600-prepare"
+        condition: "environment_issue"
+    
+  800-verify:
+    default: "888-judge"
+    alternatives:
+      - to: "700-prototype"
+        condition: "tests_fail"
+    
+  888-judge:
+    default: "999-vault"
+    alternatives:
+      - to: "700-prototype"
+        condition: "verdict_SABAR"
+      - to: "VOID"
+        condition: "verdict_VOID"
+      - to: "HOLD"
+        condition: "verdict_888_HOLD"
+    requires:
+      - "HUMAN_APPROVAL"
+      - "ALL_FLOORS_PASS"
+    
+  999-vault:
+    default: "COMPLETE"
+    alternatives: []
+    requires:
+      - "GOVERNANCE_TOKEN"
+      - "MERKLE_PROOF"
+      - "HUMAN_APPROVAL_REFERENCE"
+
+# ============================================================================
+# 4. DECISION ENUMS
+# ============================================================================
+
+decisions:
+  # Raw metric status
+  raw_status:
+    - PASS
+    - FAIL
+    - NOT_CHECKED
+    
+  # Decision status (what the stage emits)
+  decision_status:
+    - PROCEED      # All checks pass, continue to next stage
+    - CONDITIONAL  # Pass with conditions/mitigations
+    - HOLD         # Pause, requires external input
+    - RETURN       # Go back to previous stage
+    - VOID         # Terminate, do not proceed
+    
+  # Verdict options (888-JUDGE only)
+  verdicts:
+    - SEAL         # Approve for production
+    - PARTIAL      # Approve with limitations
+    - SABAR        # Needs revision, return to indicated stage
+    - VOID         # Do not proceed
+    - 888_HOLD     # Pause for human decision
+
+# ============================================================================
+# 5. TOOL PERMISSIONS BY STAGE
+# ============================================================================
+
+tool_permissions:
+  000-init:
+    allowed:
+      - "init_anchor"
+      - "audit_rules"
+    forbidden:
+      - "eureka_forge"
+      - "seal_vault"
+    
+  100-explore:
+    allowed:
+      - "search_reality"
+      - "fetch_content"
+      - "reason_mind"
+    forbidden:
+      - "eureka_forge"
+      - "seal_vault"
+    
+  200-discover:
+    allowed:
+      - "reason_mind"
+      - "inspect_file"
+      - "query_docs"
+    forbidden:
+      - "eureka_forge"
+      - "seal_vault"
+    
+  300-appraise:
+    allowed:
+      - "simulate_heart"
+      - "critique_thought"
+    forbidden:
+      - "eureka_forge"
+      - "seal_vault"
+    
+  400-design:
+    allowed:
+      - "reason_mind"
+      - "inspect_file"
+    forbidden:
+      - "eureka_forge"
+      - "seal_vault"
+    
+  500-plan:
+    allowed:
+      - "simulate_heart"
+      - "critique_thought"
+      - "audit_rules"
+    forbidden:
+      - "eureka_forge"
+      - "seal_vault"
+    
+  600-prepare:
+    allowed:
+      - "eureka_forge"
+      - "container_exec"
+    restrictions:
+      - "NO_PRODUCTION_DATA"
+      - "DRY_RUN_ONLY"
+    
+  700-prototype:
+    allowed:
+      - "eureka_forge"
+      - "container_exec"
+      - "browser_navigate"
+    restrictions:
+      - "NO_PRODUCTION_DEPLOYMENT"
+      - "NO_SECRETS_IN_CODE"
+      - "REQUIRES_ROLLBACK_PLAN"
+    
+  800-verify:
+    allowed:
+      - "browser_navigate"
+      - "browser_snapshot"
+      - "query"
+    forbidden:
+      - "eureka_forge"
+    
+  888-judge:
+    allowed:
+      - "apex_judge"
+      - "audit_rules"
+    forbidden:
+      - "eureka_forge"
+      - "seal_vault"
+    restrictions:
+      - "NO_SELF_AUTHORIZATION"
+      - "REQUIRES_HUMAN_APPROVAL"
+    
+  999-vault:
+    allowed:
+      - "seal_vault"
+    forbidden:
+      - "eureka_forge"
+      - "apex_judge"
+    restrictions:
+      - "REQUIRES_GOVERNANCE_TOKEN"
+      - "IMMUTABLE_AFTER_SEAL"
+
+# ============================================================================
+# 6. HUMAN APPROVAL REQUIREMENTS
+# ============================================================================
+
+human_approval:
+  required_at:
+    - stage: "888-judge"
+      trigger: "before_verdict_rendering"
+      minimum_authority: "USER"
+      default_verdict_if_no_response: "888_HOLD"
+      timeout_hours: 48
+      
+    - stage: "999-vault"
+      trigger: "before_seal"
+      minimum_authority: "ADMIN"
+      requires:
+        - "governance_token"
+        - "approval_reference_id"
+      timeout_hours: 24
+      
+    - stage: "700-prototype"
+      trigger: "irreversible_action_detected"
+      minimum_authority: "USER"
+      confirmation_required: true
+      
+  escalation:
+    if_no_response:
+      after_hours: 48
+      action: "ESCALATE_TO_SOVEREIGN"
+      fallback: "888_HOLD"
+
+# ============================================================================
+# 7. VALIDATION RULES
+# ============================================================================
+
+validation_rules:
+  # Stage progression
+  no_skip:
+    - "000-init"
+    - "400-design"
+    - "500-plan"
+    - "600-prepare"
+    - "700-prototype"
+    - "800-verify"
+    - "888-judge"
+    - "999-vault"
+    
+  # Floor enforcement
+  all_floors_must_be_checked:
+    at_stages:
+      - "888-judge"
+      
+  # Metric thresholds
+  below_threshold_is_not_pass:
+    floors:
+      - "F1"
+      - "F2"
+      - "F4"
+      - "F11"
+      - "F12"
+      
+  # Contradiction handling
+  unresolved_contradiction_blocks:
+    severity:
+      - "CRITICAL"
+      - "HIGH"
+    at_stages:
+      - "888-judge"
+      
+  # Rollback requirements
+  rollback_plan_required_for:
+    - "700-prototype"
+    - "999-vault"
+    
+  # Authority checks
+  prototype_cannot_deploy:
+    enforcement: "STRICT"
+    error_message: "700-PROTOTYPE cannot perform production deployment. Use 999-VAULT after 888-JUDGE SEAL."
+    
+  judge_cannot_self_authorize:
+    enforcement: "STRICT"
+    error_message: "888-JUDGE cannot self-authorize. Requires explicit human approval."
+    
+  vault_requires_approval:
+    enforcement: "STRICT"
+    error_message: "999-VAULT requires human approval reference and governance token."
+
+# ============================================================================
+# 8. OUTPUT SCHEMAS
+# ============================================================================
+
+output_schemas:
+  governance_header:
+    required_fields:
+      - session_id
+      - stage_id
+      - timestamp
+      - authority
+      - workflow_version
+      
+  evidence_ledger:
+    required_fields:
+      - evidence_id
+      - claim
+      - evidence_type
+      - source
+      - confidence
+      - timestamp
+      
+  contradiction_register:
+    required_fields:
+      - contradiction_id
+      - conflicting_claims
+      - severity
+      - resolution_status
+      - timestamp
+      
+  risk_register:
+    required_fields:
+      - risk_id
+      - description
+      - probability
+      - impact
+      - mitigation
+      - owner
+      - status
+      
+  transition_gate:
+    required_fields:
+      - from_stage
+      - to_stage
+      - decision
+      - timestamp
+      - evidence_refs
+      
+  approval_record:
+    required_fields:
+      - approval_id
+      - approver
+      - authority_level
+      - timestamp
+      - scope
+      - conditions
+      
+  seal_record:
+    required_fields:
+      - seal_id
+      - merkle_root
+      - governance_token
+      - approval_ref
+      - timestamp
+      - immutable
+
+# ============================================================================
+# END OF WORKFLOW SYSTEM CONFIGURATION
+# ============================================================================

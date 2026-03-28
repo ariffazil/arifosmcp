@@ -1,0 +1,11 @@
+name: code_engine
+type: mega-tool
+authority: FORGER
+description: Real-time code analysis, generation, and static verification engine.
+floors:
+  - F1: AMANAH
+  - F12: TAFSIR
+risk_tier: P1
+parameters:
+  code: string
+  operation: string

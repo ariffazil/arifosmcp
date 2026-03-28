@@ -1,0 +1,323 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Overview &amp; Architecture — arifOS MCP Docs</title>
+  <meta http-equiv="refresh" content="0; url=https://arifos.arif-fazil.com/docs/overview.html">
+  <link rel="canonical" href="https://arifos.arif-fazil.com/docs/overview.html">
+  <meta name="description" content="Architecture overview of arifOS MCP — MGI Envelope, Metabolic Loop, Trinity Engines, VAULT999, and constitutional governance.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<!-- Trinity Strip -->
+<div class="trinity-strip">
+  <a href="https://arif-fazil.com" class="trinity-node human">HUMAN</a>
+  <a href="https://apex.arif-fazil.com" class="trinity-node theory">THEORY</a>
+  <a href="https://arifosmcp.arif-fazil.com" class="trinity-node apps active">APPS</a>
+</div>
+
+<!-- Navigation -->
+<nav class="main-nav">
+  <a href="../index.html" class="nav-logo">
+    <svg viewBox="0 0 48 48" width="32" height="32" fill="none" aria-label="arifOS Trinity">
+      <line x1="24" y1="8" x2="24" y2="22" stroke="#ffd24a" stroke-width="3" stroke-linecap="round"/>
+      <line x1="24" y1="26" x2="11" y2="40" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+      <line x1="24" y1="26" x2="37" y2="40" stroke="#ff4d4f" stroke-width="3" stroke-linecap="round"/>
+      <text x="24" y="28" text-anchor="middle" font-size="10" fill="#e8e8f0" font-family="monospace">Δ</text>
+      <circle cx="24" cy="6" r="4" stroke="#ffd24a" stroke-width="1.5" fill="none"/>
+      <circle cx="9" cy="41" r="4" stroke="#2563eb" stroke-width="1.5" fill="none"/>
+      <circle cx="39" cy="41" r="4" stroke="#ff4d4f" stroke-width="1.5" fill="none"/>
+      <circle cx="24" cy="24" r="5" stroke="#2563eb" stroke-width="1.5" fill="#12121a"/>
+    </svg>
+    <span class="nav-title">arifOS<span class="nav-mcp"> MCP</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="overview.html" class="active">Docs</a>
+    <a href="tools.html">API Reference</a>
+    <a href="integrations.html">Guides</a>
+    <a href="changelog.html">Changelog</a>
+  </div>
+  <div class="nav-right">
+    <span class="version-badge">v2026.03.14</span>
+    <a href="https://github.com/ariffazil/arifosmcp" class="btn-github" target="_blank">GitHub ↗</a>
+  </div>
+  <button class="nav-hamburger" aria-label="Menu">☰</button>
+</nav>
+
+<!-- Sidebar Overlay (mobile) -->
+<div class="sidebar-overlay"></div>
+
+<!-- Doc Layout -->
+<div class="doc-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-search">
+      <input type="text" placeholder="Search docs…" aria-label="Search documentation">
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Getting Started</div>
+      <div class="sidebar-group-items">
+        <a href="getting-started.html" class="sidebar-link">Installation</a>
+        <a href="getting-started.html#quick-start" class="sidebar-link">Quick Start</a>
+        <a href="getting-started.html#env-vars" class="sidebar-link">Environment Variables</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Architecture</div>
+      <div class="sidebar-group-items">
+        <a href="overview.html" class="sidebar-link active">MGI Envelope</a>
+        <a href="overview.html#metabolic-loop" class="sidebar-link">Metabolic Loop</a>
+        <a href="overview.html#trinity-engines" class="sidebar-link">Trinity Engines</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Tools Reference</div>
+      <div class="sidebar-group-items">
+        <a href="tools.html#reality-compass" class="sidebar-link">reality_compass</a>
+        <a href="tools.html#reality-atlas" class="sidebar-link">reality_atlas</a>
+        <a href="tools.html#arifos-kernel" class="sidebar-link">arifOS_kernel</a>
+        <a href="tools.html#check-vital" class="sidebar-link">check_vital</a>
+        <a href="tools.html#init-anchor-state" class="sidebar-link">init_anchor_state</a>
+        <a href="tools.html#verify-vault-ledger" class="sidebar-link">verify_vault_ledger</a>
+        <a href="tools.html#audit-rules" class="sidebar-link">audit_rules</a>
+        <a href="tools.html#session-memory" class="sidebar-link">session_memory</a>
+        <a href="tools.html#open-apex-dashboard" class="sidebar-link">open_apex_dashboard</a>
+        <div class="sidebar-divider"></div>
+        <a href="tools.html#search-reality" class="sidebar-link">search_reality <span class="legacy-label">legacy</span></a>
+        <a href="tools.html#ingest-evidence" class="sidebar-link">ingest_evidence <span class="legacy-label">legacy</span></a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Constitutional Floors</div>
+      <div class="sidebar-group-items">
+        <a href="floors.html" class="sidebar-link">F1–F13 Overview</a>
+        <a href="floors.html#verdict-states" class="sidebar-link">Verdict States</a>
+        <a href="floors.html#fault-codes" class="sidebar-link">Fault Codes</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> 3E Telemetry</div>
+      <div class="sidebar-group-items">
+        <a href="overview.html#3e-cycle" class="sidebar-link">3E Cycle</a>
+        <a href="overview.html#metrics" class="sidebar-link">Metrics</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Integrations</div>
+      <div class="sidebar-group-items">
+        <a href="integrations.html#claude-desktop" class="sidebar-link">Claude Desktop</a>
+        <a href="integrations.html#cursor" class="sidebar-link">Cursor / VS Code</a>
+        <a href="integrations.html#python-sdk" class="sidebar-link">Python SDK</a>
+        <a href="integrations.html#typescript-sdk" class="sidebar-link">TypeScript SDK</a>
+        <a href="integrations.html#http-curl" class="sidebar-link">HTTP / curl</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Self-Hosting</div>
+      <div class="sidebar-group-items">
+        <a href="getting-started.html#docker" class="sidebar-link">Docker Setup</a>
+        <a href="getting-started.html#vps" class="sidebar-link">VPS Architecture</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Changelog</div>
+      <div class="sidebar-group-items">
+        <a href="changelog.html" class="sidebar-link">v2026.03.14-FORGED</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="doc-content">
+    <h1>Overview &amp; Architecture</h1>
+    <p class="doc-subtitle">arifOS MCP is a constitutional AI governance system that wraps every AI response in a 13-floor verification envelope, powered by Trinity ΔΩΨ engines and an immutable VAULT999 ledger.</p>
+
+    <h2 id="what-is-arifos">What is arifOS?</h2>
+    <p>arifOS is a <strong>constitutional governance layer</strong> for AI systems. It implements the Model Context Protocol (MCP) to provide any AI client with verified, truth-anchored responses. Every query passes through a metabolic pipeline of 13 constitutional floors before a verdict is issued.</p>
+    <p>The system is designed by ARIF FAZIL under the principle <em>"Ditempa Bukan Diberi"</em> (Forged, Not Given) — meaning every answer must be earned through constitutional verification, never rubber-stamped.</p>
+
+    <div class="callout callout-info">
+      <div class="callout-title">Core Principle</div>
+      arifOS enforces that AI responses meet epistemic, ethical, and execution standards. If a response cannot pass all 13 floors, it receives a HOLD or VOID verdict — never a false SEAL of approval.
+    </div>
+
+    <h2 id="mgi-envelope">MGI Envelope</h2>
+    <p>The <strong>Metabolic Governance Intelligence (MGI) Envelope</strong> wraps every AI response in a governance structure. Think of it as a constitutional membrane — nothing leaves the system without being verified.</p>
+
+    <div class="arch-diagram">
+      <div class="arch-row">
+        <div class="arch-box blue">CLIENT REQUEST</div>
+      </div>
+      <div class="arch-arrow-down">↓</div>
+      <div class="arch-row">
+        <div class="arch-box gold">000_INIT</div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box gold">111_SENSE</div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box gold">222_REALITY</div>
+      </div>
+      <div class="arch-arrow-down">↓</div>
+      <div class="arch-row">
+        <div class="arch-box purple">333_MIND</div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box purple">444_ROUTER</div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box purple">555_MEMORY</div>
+      </div>
+      <div class="arch-arrow-down">↓</div>
+      <div class="arch-row">
+        <div class="arch-box red">666_HEART</div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box red">777_CRITIQUE</div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box red">888_JUDGE</div>
+      </div>
+      <div class="arch-arrow-down">↓</div>
+      <div class="arch-row">
+        <div class="arch-box green">999_VAULT</div>
+      </div>
+      <div class="arch-arrow-down">↓</div>
+      <div class="arch-row">
+        <div class="arch-box green">SEALED RESPONSE</div>
+      </div>
+    </div>
+
+    <h2 id="metabolic-loop">Metabolic Loop</h2>
+    <p>Every query traverses a 10-stage metabolic loop, from initialization to immutable sealing:</p>
+
+    <table class="doc-table">
+      <thead>
+        <tr><th>Stage</th><th>Code</th><th>Function</th><th>Engine</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>000_INIT</code></td><td>000</td><td>Anchor state initialization, identity binding</td><td>Δ</td></tr>
+        <tr><td><code>111_SENSE</code></td><td>111</td><td>Reality sensing — search, URL fetch, evidence gathering</td><td>Δ</td></tr>
+        <tr><td><code>222_REALITY</code></td><td>222</td><td>Reality construction — evidence graph, vector storage</td><td>Δ</td></tr>
+        <tr><td><code>333_MIND</code></td><td>333</td><td>Cognitive processing — audit, rule checking</td><td>Δ</td></tr>
+        <tr><td><code>444_ROUTER</code></td><td>444</td><td>Full governance kernel — routes through all floors</td><td>ΔΩΨ</td></tr>
+        <tr><td><code>555_MEMORY</code></td><td>555</td><td>Session memory — store, retrieve, forget</td><td>Ω</td></tr>
+        <tr><td><code>666_HEART</code></td><td>666</td><td>Ethical evaluation — compassion, harm assessment</td><td>Ω</td></tr>
+        <tr><td><code>777_CRITIQUE</code></td><td>777</td><td>Self-critique — challenge assumptions, adversarial check</td><td>Ω</td></tr>
+        <tr><td><code>888_JUDGE</code></td><td>888</td><td>Final judgment — APEX dashboard, verdict assignment</td><td>Ψ</td></tr>
+        <tr><td><code>999_VAULT</code></td><td>999</td><td>Immutable seal — SHA-256 Merkle chain, VAULT999</td><td>Ψ</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="trinity-engines">Trinity Engines</h2>
+    <p>Three engines power the metabolic loop, each responsible for different aspects of governance:</p>
+
+    <h3 id="delta-engine">Δ (Delta) — Epistemic Engine</h3>
+    <p>The <strong>knowledge engine</strong>. Handles reality sensing, evidence gathering, search operations, and cognitive processing. Δ answers: <em>"Is this true? What evidence supports it?"</em></p>
+    <ul>
+      <li>Drives <code>reality_compass</code>, <code>reality_atlas</code>, <code>audit_rules</code></li>
+      <li>Covers stages 000–333 and participates in 444</li>
+      <li>Focus: truth, evidence, epistemic rigor</li>
+    </ul>
+
+    <h3 id="omega-engine">Ω (Omega) — Ethical Engine</h3>
+    <p>The <strong>wisdom engine</strong>. Manages session memory, ethical evaluation, and self-critique. Ω answers: <em>"Is this right? Does it serve human wellbeing?"</em></p>
+    <ul>
+      <li>Drives <code>session_memory</code>, <code>check_vital</code></li>
+      <li>Covers stages 555–777 and participates in 444</li>
+      <li>Focus: ethics, memory, compassion, self-correction</li>
+    </ul>
+
+    <h3 id="psi-engine">Ψ (Psi) — Execution Engine</h3>
+    <p>The <strong>judgment engine</strong>. Renders final verdicts and seals responses into the immutable ledger. Ψ answers: <em>"Should this be executed? Is it safe?"</em></p>
+    <ul>
+      <li>Drives <code>open_apex_dashboard</code>, <code>verify_vault_ledger</code></li>
+      <li>Covers stages 888–999 and participates in 444</li>
+      <li>Focus: judgment, sealing, immutability</li>
+    </ul>
+
+    <h2 id="key-concepts">Key Concepts</h2>
+
+    <h3 id="vault999">VAULT999</h3>
+    <p>An immutable SHA-256 Merkle chain that records every governance decision. Once a verdict is sealed into VAULT999, it cannot be altered. This provides a complete audit trail of every AI response that passed through the system.</p>
+
+    <h3 id="seal-hold-void">SEAL / HOLD / VOID</h3>
+    <p>The three primary verdict categories:</p>
+    <ul>
+      <li><strong style="color:#22c55e">SEAL</strong> — Fully verified. The response passed all 13 constitutional floors.</li>
+      <li><strong style="color:#f59e0b">HOLD</strong> — Temporarily held. The response needs more evidence or has mechanical issues (not constitutional violations).</li>
+      <li><strong style="color:#ef4444">VOID</strong> — Constitutional violation detected. The response is rejected and cannot be issued.</li>
+    </ul>
+
+    <div class="callout callout-danger">
+      <div class="callout-title">Verdict Invariant</div>
+      VOID is ONLY for constitutional violations. Mechanical failures (timeouts, parsing errors, network issues) always produce HOLD, never VOID. This invariant is enforced at the kernel level and cannot be overridden.
+    </div>
+
+    <h2 id="3e-cycle">3E Telemetry Cycle</h2>
+    <p>Every governance decision emits telemetry across three dimensions:</p>
+    <ul>
+      <li><strong>Epistemic (E₁)</strong> — Truth confidence, evidence quality, source reliability</li>
+      <li><strong>Ethical (E₂)</strong> — Harm assessment, fairness check, compassion score</li>
+      <li><strong>Execution (E₃)</strong> — Latency, resource usage, thermodynamic budget</li>
+    </ul>
+    <p>The 3E cycle provides real-time observability into the governance pipeline, allowing operators to monitor truth quality, ethical compliance, and system performance simultaneously.</p>
+
+    <h2 id="metrics">System Metrics</h2>
+    <p>Key metrics exposed by the <code>check_vital</code> tool:</p>
+    <table class="doc-table">
+      <thead>
+        <tr><th>Metric</th><th>Description</th><th>Engine</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>thermodynamic_budget</code></td><td>Remaining compute/token budget for the session</td><td>Ω</td></tr>
+        <tr><td><code>floor_pass_rate</code></td><td>Percentage of floors passed in last N queries</td><td>Δ</td></tr>
+        <tr><td><code>vault_integrity</code></td><td>Merkle chain integrity status (intact/broken)</td><td>Ψ</td></tr>
+        <tr><td><code>evidence_graph_size</code></td><td>Number of nodes in the Qdrant evidence store</td><td>Δ</td></tr>
+        <tr><td><code>session_memory_count</code></td><td>Number of stored memory artifacts</td><td>Ω</td></tr>
+        <tr><td><code>seal_rate</code></td><td>Percentage of queries receiving SEAL verdict</td><td>Ψ</td></tr>
+      </tbody>
+    </table>
+  </main>
+
+  <!-- Right TOC -->
+  <aside class="toc">
+    <div class="toc-title">On this page</div>
+    <a href="#what-is-arifos">What is arifOS?</a>
+    <a href="#mgi-envelope">MGI Envelope</a>
+    <a href="#metabolic-loop">Metabolic Loop</a>
+    <a href="#trinity-engines">Trinity Engines</a>
+    <a href="#delta-engine" class="toc-h3">Δ Delta — Epistemic</a>
+    <a href="#omega-engine" class="toc-h3">Ω Omega — Ethical</a>
+    <a href="#psi-engine" class="toc-h3">Ψ Psi — Execution</a>
+    <a href="#key-concepts">Key Concepts</a>
+    <a href="#vault999" class="toc-h3">VAULT999</a>
+    <a href="#seal-hold-void" class="toc-h3">SEAL / HOLD / VOID</a>
+    <a href="#3e-cycle">3E Telemetry Cycle</a>
+    <a href="#metrics">System Metrics</a>
+  </aside>
+
+</div>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-line">© 2026 ARIF FAZIL · arifOS MCP · Ditempa Bukan Diberi</div>
+  <div class="footer-line"><a href="https://perplexity.ai" target="_blank">Created with Perplexity Computer</a></div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../app.js"></script>
+</body>
+</html>

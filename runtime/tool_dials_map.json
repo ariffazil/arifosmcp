@@ -1,0 +1,157 @@
+{
+  "model": "APEX_G",
+  "formula": "G_star ~= A * P * X * E^2",
+  "dials": {
+    "A": "Akal (truth/clarity)",
+    "P": "Present (stability/governance now)",
+    "X": "Exploration (novelty/option-space)",
+    "E": "Energy (resource feasibility)"
+  },
+  "tools": {
+    "init_anchor": {
+      "contribution": [
+        "P",
+        "E"
+      ],
+      "weights": {
+        "A": 0.2,
+        "P": 0.8,
+        "X": 0.2,
+        "E": 0.6
+      }
+    },
+    "reason_mind": {
+      "contribution": [
+        "A",
+        "X"
+      ],
+      "weights": {
+        "A": 0.9,
+        "P": 0.4,
+        "X": 0.8,
+        "E": 0.3
+      }
+    },
+    "vector_memory": {
+      "contribution": [
+        "A",
+        "P"
+      ],
+      "weights": {
+        "A": 0.7,
+        "P": 0.7,
+        "X": 0.3,
+        "E": 0.3
+      }
+    },
+    "simulate_heart": {
+      "contribution": [
+        "P",
+        "X"
+      ],
+      "weights": {
+        "A": 0.4,
+        "P": 0.9,
+        "X": 0.7,
+        "E": 0.4
+      }
+    },
+    "critique_thought": {
+      "contribution": [
+        "A",
+        "P",
+        "X"
+      ],
+      "weights": {
+        "A": 0.8,
+        "P": 0.7,
+        "X": 0.7,
+        "E": 0.4
+      }
+    },
+    "apex_judge": {
+      "contribution": [
+        "P",
+        "A"
+      ],
+      "weights": {
+        "A": 0.8,
+        "P": 1.0,
+        "X": 0.4,
+        "E": 0.5
+      }
+    },
+    "eureka_forge": {
+      "contribution": [
+        "E",
+        "P"
+      ],
+      "weights": {
+        "A": 0.4,
+        "P": 0.8,
+        "X": 0.4,
+        "E": 1.0
+      }
+    },
+    "seal_vault": {
+      "contribution": [
+        "P",
+        "A"
+      ],
+      "weights": {
+        "A": 0.7,
+        "P": 0.8,
+        "X": 0.2,
+        "E": 0.4
+      }
+    },
+    "search_reality": {
+      "contribution": [
+        "A",
+        "X"
+      ],
+      "weights": {
+        "A": 0.8,
+        "P": 0.3,
+        "X": 0.7,
+        "E": 0.3
+      }
+    },
+    "ingest_evidence": {
+      "contribution": [
+        "A",
+        "E"
+      ],
+      "weights": {
+        "A": 0.85,
+        "P": 0.3,
+        "X": 0.4,
+        "E": 0.6
+      }
+    },
+    "audit_rules": {
+      "contribution": [
+        "A",
+        "P"
+      ],
+      "weights": {
+        "A": 0.8,
+        "P": 0.7,
+        "X": 0.3,
+        "E": 0.3
+      }
+    },
+    "check_vital": {
+      "contribution": [
+        "E",
+        "P"
+      ],
+      "weights": {
+        "A": 0.3,
+        "P": 0.8,
+        "X": 0.2,
+        "E": 0.9
+      }
+    }
+  }
+}

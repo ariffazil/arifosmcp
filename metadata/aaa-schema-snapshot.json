@@ -1,0 +1,125 @@
+{
+  "version": "2026.03.07-QUADWITNESS-SEAL",
+  "witness_protocol": "quad-witness-bft",
+  "spec_compliance": "95%",
+  "tools": {
+    "init_anchor": {
+      "hash": "8cfeeb87a5ad40a0",
+      "description_hash": "9402c15b627170fe",
+      "stage": "000",
+      "band": "A"
+    },
+    "reason_mind": {
+      "hash": "79de200c33e90108",
+      "description_hash": "950e5dd2bf13d7a7",
+      "stage": "111-333",
+      "band": "R"
+    },
+    "vector_memory": {
+      "hash": "a1b2c3d4e5f60001",
+      "description_hash": "a1b2c3d4e5f60002",
+      "stage": "555",
+      "band": "I",
+      "note": "Replaces retired recall_memory \u2014 BGE-M3 1024-dim Qdrant"
+    },
+    "simulate_heart": {
+      "hash": "9ae47e97155fe02a",
+      "description_hash": "db78fedb08cb1ee6",
+      "stage": "555-666",
+      "band": "I"
+    },
+    "critique_thought": {
+      "hash": "qw4shadow00000001",
+      "description_hash": "qw4shadow00000002",
+      "stage": "666",
+      "band": "I",
+      "updated": "2026.03.07-QUADWITNESS-SEAL",
+      "note": "Now uses PsiShadow adversarial analysis \u2014 attack_proposal(), find_contradictions(), simulate_injection(), model_casualty_chain()"
+    },
+    "apex_judge": {
+      "hash": "qw4judge000000001",
+      "description_hash": "qw4judge000000002",
+      "stage": "888",
+      "band": "F",
+      "updated": "2026.03.07-QUADWITNESS-SEAL",
+      "note": "Upgraded from tri_witness (W3) to quad_witness (W4 = H*A*E*V >= 0.75)"
+    },
+    "eureka_forge": {
+      "hash": "84ed741d4ffe8eb2",
+      "description_hash": "3b24182380b346dc",
+      "stage": "777",
+      "band": "F"
+    },
+    "seal_vault": {
+      "hash": "b4af0933a9030b71",
+      "description_hash": "99398527ca7a9705",
+      "stage": "999",
+      "band": "F"
+    },
+    "search_reality": {
+      "hash": "a695cd4f1f3ff6d6",
+      "description_hash": "eab5bc0c2f92b44b",
+      "stage": "222",
+      "band": "R"
+    },
+    "ingest_evidence": {
+      "hash": "ie0000000000001a",
+      "description_hash": "ie0000000000001b",
+      "stage": "222",
+      "band": "R",
+      "note": "Consolidates retired fetch_content + inspect_file"
+    },
+    "audit_rules": {
+      "hash": "2d0749c960d44fe6",
+      "description_hash": "e0e44cbda0be1d70",
+      "stage": "000",
+      "band": "R"
+    },
+    "check_vital": {
+      "hash": "3885511e3834de6e",
+      "description_hash": "000586f2309e1e3c",
+      "stage": "000",
+      "band": "I"
+    },
+    "metabolic_loop": {
+      "hash": "ml0000000000001a",
+      "description_hash": "ml0000000000001b",
+      "stage": "000-999",
+      "band": "O",
+      "note": "Full 000-999 pipeline orchestrator"
+    }
+  },
+  "retired_tools": [
+    "recall_memory",
+    "fetch_content",
+    "inspect_file",
+    "trinity_forge",
+    "query_openclaw",
+    "visualize_governance"
+  ],
+  "resources": {
+    "arifos://aaa/schemas": {
+      "hash": "6c2d39d21568e4f3"
+    },
+    "arifos://aaa/full-context-pack": {
+      "hash": "cceb16b4c9dc54d2"
+    }
+  },
+  "prompts": {
+    "arifos.prompt.aaa_chain": {
+      "hash": "dad2c1db2e91ec28"
+    }
+  },
+  "quad_witness": {
+    "formula": "W4 = (H x A x E x V)^(1/4)",
+    "threshold": 0.75,
+    "bft": "n=4 f=1",
+    "witnesses": {
+      "H": "human \u2014 authority continuity + approval",
+      "A": "ai \u2014 F2 truth score + coherence",
+      "E": "earth \u2014 grounding + precedents + health",
+      "V": "verifier \u2014 PsiShadow adversarial attack result"
+    }
+  },
+  "allow_new_tools": []
+}

@@ -1,0 +1,782 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>arifOS MCP Server - Constitutional AI Governance System</title>
+    <style>
+      :root {
+        --primary: #2563eb;
+        --secondary: #7c3aed;
+        --dark: #1e293b;
+        --light: #f8fafc;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+          sans-serif;
+        line-height: 1.6;
+        color: var(--dark);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      .header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 3rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .logo-icon {
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+        font-weight: bold;
+      }
+
+      .logo-text h1 {
+        font-size: 2.5rem;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.5rem;
+      }
+
+      .logo-text p {
+        color: #64748b;
+        font-size: 1.1rem;
+      }
+
+      .tagline {
+        font-size: 1.25rem;
+        color: #475569;
+        margin-bottom: 2rem;
+        line-height: 1.8;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      }
+
+      .card h3 {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .card h3 i {
+        font-style: normal;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .endpoint-list {
+        list-style: none;
+      }
+
+      .endpoint-item {
+        padding: 0.75rem;
+        margin-bottom: 0.5rem;
+        background: rgba(248, 250, 252, 0.8);
+        border-radius: 8px;
+        border-left: 4px solid var(--primary);
+      }
+
+      .endpoint-method {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-right: 0.75rem;
+        text-transform: uppercase;
+      }
+
+      .method-get {
+        background: #d1fae5;
+        color: #065f46;
+      }
+      .method-post {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+      .method-put {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      .method-delete {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+
+      .endpoint-path {
+        font-family: "SF Mono", "Monaco", "Inconsolata", monospace;
+        font-size: 0.9rem;
+        color: var(--dark);
+      }
+
+      .endpoint-desc {
+        font-size: 0.875rem;
+        color: #64748b;
+        margin-top: 0.25rem;
+        margin-left: calc(0.75rem + 4px);
+      }
+
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-left: 0.5rem;
+      }
+
+      .status-live {
+        background: #d1fae5;
+        color: #065f46;
+      }
+      .status-beta {
+        background: #fef3c7;
+        color: #92400e;
+      }
+
+      .live-status {
+        margin-top: 1.5rem;
+      }
+
+      .live-meta {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        color: #64748b;
+        font-size: 0.85rem;
+      }
+
+      .live-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 0.75rem;
+      }
+
+      .live-item {
+        background: rgba(37, 99, 235, 0.08);
+        border: 1px solid rgba(37, 99, 235, 0.15);
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+      }
+
+      .live-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #64748b;
+        margin-bottom: 0.35rem;
+      }
+
+      .live-value {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--dark);
+      }
+
+      .tools-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 0.75rem;
+        margin-top: 1rem;
+      }
+
+      .tool-tag {
+        background: rgba(37, 99, 235, 0.1);
+        border: 1px solid rgba(37, 99, 235, 0.2);
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        color: var(--primary);
+        text-align: center;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 2rem;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.875rem;
+      }
+
+      .footer a {
+        color: white;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .footer a:hover {
+        border-bottom-color: white;
+      }
+
+      .api-test {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-top: 2rem;
+      }
+
+      .api-test h3 {
+        margin-bottom: 1rem;
+        color: var(--primary);
+      }
+
+      .test-select {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .test-result {
+        background: #f8fafc;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 1rem;
+        font-family: "SF Mono", "Monaco", "Inconsolata", monospace;
+        font-size: 0.875rem;
+        white-space: pre-wrap;
+        word-break: break-all;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 1rem;
+        }
+
+        .header {
+          padding: 2rem 1.5rem;
+        }
+
+        .logo-text h1 {
+          font-size: 2rem;
+        }
+      }
+
+      /* Trinity Nav Utility Classes */
+      .bg-black {
+        background-color: #000;
+      }
+      .border-b {
+        border-bottom-width: 1px;
+      }
+      .border-yellow-500\/30 {
+        border-color: rgba(234, 179, 8, 0.3);
+      }
+      .sticky {
+        position: sticky;
+      }
+      .top-0 {
+        top: 0;
+      }
+      .z-50 {
+        z-index: 50;
+      }
+      .max-w-6xl {
+        max-width: 72rem;
+      }
+      .mx-auto {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .px-6 {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+      }
+      .py-4 {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+      }
+      .flex {
+        display: flex;
+      }
+      .items-center {
+        align-items: center;
+      }
+      .justify-between {
+        justify-content: space-between;
+      }
+      .gap-4 {
+        gap: 1rem;
+      }
+      .gap-3 {
+        gap: 0.75rem;
+      }
+      .gap-8 {
+        gap: 2rem;
+      }
+      .gap-6 {
+        gap: 1.5rem;
+      }
+      .text-2xl {
+        font-size: 1.5rem;
+        line-height: 2rem;
+      }
+      .text-xs {
+        font-size: 0.75rem;
+        line-height: 1rem;
+      }
+      .text-sm {
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+      }
+      .font-bold {
+        font-weight: 700;
+      }
+      .font-medium {
+        font-weight: 500;
+      }
+      .font-mono {
+        font-family:
+          ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+      }
+      .tracking-tighter {
+        letter-spacing: -0.05em;
+      }
+      .text-yellow-400 {
+        color: #facc15;
+      }
+      .text-white {
+        color: #fff;
+      }
+      .bg-yellow-500\/10 {
+        background-color: rgba(234, 179, 8, 0.1);
+      }
+      .border-yellow-400\/30 {
+        border-color: rgba(250, 204, 21, 0.3);
+      }
+      .rounded-full {
+        border-radius: 9999px;
+      }
+      .transition-colors {
+        transition-property:
+          color, background-color, border-color, text-decoration-color, fill,
+          stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+      }
+
+      .nav-link {
+        color: #e5e5e5;
+        text-decoration: none;
+      }
+      .nav-link:hover {
+        color: #facc15;
+      }
+      .APPS {
+        color: #facc15 !important;
+        border-bottom: 2px solid #facc15;
+        padding-bottom: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- TRINITY NAV -->
+    <nav class="bg-black border-b border-gold-forged/30 sticky top-0 z-50">
+      <div
+        class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between"
+      >
+        <!-- Left: Logo + Trinity -->
+        <div class="flex items-center gap-4">
+          <a
+            href="https://arif-fazil.com/"
+            class="flex items-center gap-3 text-2xl font-bold tracking-tighter"
+            style="text-decoration: none"
+          >
+            <span class="text-gold-forged">ARIF</span>
+            <span class="text-white">OS</span>
+          </a>
+          <div
+            class="text-xs px-3 py-1 bg-gold-forged/10 border border-gold-forged/30 rounded-full text-gold-forged font-mono"
+          >
+            THE TRINITY
+          </div>
+        </div>
+
+        <!-- Center: The 3 Pillars -->
+        <div class="flex gap-8 text-sm font-medium">
+          <a href="https://arif-fazil.com/" class="nav-link">HUMAN</a>
+          <a href="https://apex.arif-fazil.com/" class="nav-link">THEORY</a>
+          <a href="https://arifos.arif-fazil.com/" class="nav-link APPS"
+            >APPS</a
+          >
+        </div>
+
+        <!-- Right: Links -->
+        <div class="flex items-center gap-6 text-sm">
+          <a
+            href="https://github.com/ariffazil/arifosmcp"
+            target="_blank"
+            class="nav-link hover:text-gold-forged"
+            >GitHub</a
+          >
+          <a
+            href="https://arif-fazil.com/"
+            class="text-gold-forged font-medium"
+            style="text-decoration: none"
+            >Enter</a
+          >
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="header">
+        <div class="logo">
+          <div class="logo-icon">α</div>
+          <div class="logo-text">
+            <h1>arifOS MCP Server</h1>
+            <p>Constitutional AI Governance System</p>
+          </div>
+        </div>
+
+        <div class="tagline">
+          A full-stack MCP (Model Context Protocol) server implementing
+          Constitutional AI with 9 foundational laws. Provides 21 tools for AGI
+          governance, system monitoring, and reality grounding.
+        </div>
+
+        <div class="card live-status">
+          <h3><i>🧠</i> Real-time Intelligence State</h3>
+          <div class="live-meta">
+            <span class="status-badge status-live" id="live-status-badge">LIVE</span>
+            <span id="live-updated">Updated: --</span>
+          </div>
+          <div class="live-grid">
+            <div class="live-item">
+              <div class="live-label">Version</div>
+              <div class="live-value" id="live-version">--</div>
+            </div>
+            <div class="live-item">
+              <div class="live-label">Tools Loaded</div>
+              <div class="live-value" id="live-tools">--</div>
+            </div>
+            <div class="live-item">
+              <div class="live-label">Machine Status</div>
+              <div class="live-value" id="live-machine">--</div>
+            </div>
+            <div class="live-item">
+              <div class="live-label">Verdict</div>
+              <div class="live-value" id="live-verdict">--</div>
+            </div>
+            <div class="live-item">
+              <div class="live-label">Exploration</div>
+              <div class="live-value" id="live-exploration">--</div>
+            </div>
+            <div class="live-item">
+              <div class="live-label">Uncertainty</div>
+              <div class="live-value" id="live-uncertainty">--</div>
+            </div>
+            <div class="live-item">
+              <div class="live-label">Entropy</div>
+              <div class="live-value" id="live-entropy">--</div>
+            </div>
+            <div class="live-item">
+              <div class="live-label">Browserless</div>
+              <div class="live-value" id="live-browserless">--</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <h3><i>⚡</i> Core MCP Endpoints</h3>
+            <ul class="endpoint-list">
+              <li class="endpoint-item">
+                <span class="endpoint-method method-get">GET</span>
+                <span class="endpoint-path">/sse</span>
+                <div class="endpoint-desc">SSE transport for MCP clients</div>
+              </li>
+              <li class="endpoint-item">
+                <span class="endpoint-method method-post">POST</span>
+                <span class="endpoint-path">/messages</span>
+                <div class="endpoint-desc">MCP JSON-RPC messages endpoint</div>
+              </li>
+              <li class="endpoint-item">
+                <span class="endpoint-method method-post">POST</span>
+                <span class="endpoint-path">/mcp</span>
+                <div class="endpoint-desc">
+                  HTTP transport for MCP
+                  <span class="status-badge status-beta">Beta</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3><i>🩺</i> Health & Monitoring</h3>
+            <ul class="endpoint-list">
+              <li class="endpoint-item">
+                <span class="endpoint-method method-get">GET</span>
+                <span class="endpoint-path">/health</span>
+                <div class="endpoint-desc">System health check</div>
+              </li>
+              <li class="endpoint-item">
+                <span class="endpoint-method method-get">GET</span>
+                <span class="endpoint-path">/ready</span>
+                <div class="endpoint-desc">Tool registry readiness</div>
+              </li>
+              <li class="endpoint-item">
+                <span class="endpoint-method method-get">GET</span>
+                <span class="endpoint-path">/metrics</span>
+                <div class="endpoint-desc">Performance metrics</div>
+              </li>
+              <li class="endpoint-item">
+                <span class="endpoint-method method-get">GET</span>
+                <span class="endpoint-path">/version</span>
+                <div class="endpoint-desc">Build information</div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3><i>🛠️</i> API Tools</h3>
+            <ul class="endpoint-list">
+              <li class="endpoint-item">
+                <span class="endpoint-method method-get">GET</span>
+                <span class="endpoint-path">/tools</span>
+                <div class="endpoint-desc">List all available tools</div>
+              </li>
+              <li class="endpoint-item">
+                <span class="endpoint-method method-post">POST</span>
+                <span class="endpoint-path">/tools/{name}</span>
+                <div class="endpoint-desc">Call specific tool</div>
+              </li>
+              <li class="endpoint-item">
+                <span class="endpoint-method method-post">POST</span>
+                <span class="endpoint-path">/apex_judge</span>
+                <div class="endpoint-desc">Full pipeline wrapper</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3><i>🧰</i> Available Tools (21 total)</h3>
+          <div class="tools-grid" id="tools-list">
+            <!-- Tools will be loaded dynamically -->
+            <div class="tool-tag">Loading tools...</div>
+          </div>
+        </div>
+
+        <div class="api-test">
+          <h3><i>🔍</i> API Quick Test</h3>
+          <select class="test-select" id="endpoint-select">
+            <option value="/health">Health Check (/health)</option>
+            <option value="/ready">Ready Check (/ready)</option>
+            <option value="/version">Version (/version)</option>
+            <option value="/tools">List Tools (/tools)</option>
+            <option value="/metrics">Metrics (/metrics)</option>
+          </select>
+          <button
+            onclick="testEndpoint()"
+            style="
+              background: linear-gradient(
+                135deg,
+                var(--primary),
+                var(--secondary)
+              );
+              color: white;
+              border: none;
+              padding: 0.75rem 1.5rem;
+              border-radius: 8px;
+              font-size: 1rem;
+              font-weight: 600;
+              cursor: pointer;
+              margin-bottom: 1rem;
+            "
+          >
+            Test Endpoint
+          </button>
+          <div class="test-result" id="test-result">
+            Click "Test Endpoint" to see results
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        <strong>arifOS MCP Server</strong> •
+        <a href="https://github.com/anomalyco/opencode" target="_blank"
+          >GitHub</a
+        >
+        • <a href="https://gofastmcp.com" target="_blank">FastMCP</a> •
+        <a href="https://modelcontextprotocol.io" target="_blank"
+          >MCP Protocol</a
+        >
+      </p>
+      <p style="margin-top: 0.5rem; font-size: 0.75rem; opacity: 0.7">
+        Version: 2026.02.17-FORGE-VPS-SEAL • Server: arifOS-Unified
+      </p>
+    </div>
+
+    <script>
+      // Load tools dynamically
+      async function loadTools() {
+        try {
+          const response = await fetch("/tools");
+          if (!response.ok) throw new Error("Failed to load tools");
+          const data = await response.json();
+
+          const toolsList = document.getElementById("tools-list");
+          toolsList.innerHTML = "";
+
+          if (data.tools && Array.isArray(data.tools)) {
+            data.tools.forEach((tool) => {
+              const toolEl = document.createElement("div");
+              toolEl.className = "tool-tag";
+              toolEl.textContent = tool;
+              toolsList.appendChild(toolEl);
+            });
+          }
+        } catch (error) {
+          console.error("Error loading tools:", error);
+          document.getElementById("tools-list").innerHTML =
+            '<div class="tool-tag">Error loading tools</div>';
+        }
+      }
+
+      // Test endpoint function
+      async function testEndpoint() {
+        const select = document.getElementById("endpoint-select");
+        const endpoint = select.value;
+        const resultDiv = document.getElementById("test-result");
+
+        resultDiv.textContent = "Testing...";
+        resultDiv.style.color = "var(--dark)";
+
+        try {
+          const response = await fetch(endpoint);
+          const data = await response.json();
+          resultDiv.textContent = JSON.stringify(data, null, 2);
+          resultDiv.style.color = "var(--success)";
+        } catch (error) {
+          resultDiv.textContent = `Error: ${error.message}`;
+          resultDiv.style.color = "var(--danger)";
+        }
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        loadTools();
+        refreshLiveStatus();
+        setInterval(refreshLiveStatus, 10000);
+      });
+
+      async function refreshLiveStatus() {
+        try {
+          const [health, vital] = await Promise.all([
+            fetch("/health").then((r) => r.json()),
+            fetch("/tools/check_vital", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({}),
+            }).then((r) => r.json()),
+          ]);
+
+          const result = vital && vital.result ? vital.result : {};
+          const intelligence = result.intelligence_state || {};
+          const services = result.payload && result.payload.intelligence_services
+            ? result.payload.intelligence_services
+            : {};
+
+          const setText = (id, value) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
+          };
+
+          setText("live-version", health.version || "--");
+          setText("live-tools", (health.tools_loaded ?? "--").toString());
+          setText("live-machine", result.machine_status || "--");
+          setText("live-verdict", result.verdict || "--");
+          setText("live-exploration", intelligence.exploration || "--");
+          setText("live-uncertainty", (intelligence.uncertainty_score ?? "--").toString());
+          setText("live-entropy", intelligence.entropy || "--");
+          setText("live-browserless", services.browserless ? services.browserless.status : "--");
+
+          const badge = document.getElementById("live-status-badge");
+          if (badge) {
+            badge.textContent = (health.status || "live").toUpperCase();
+          }
+
+          const updated = document.getElementById("live-updated");
+          if (updated) {
+            updated.textContent = `Updated: ${new Date().toLocaleTimeString()}`;
+          }
+        } catch (error) {
+          const badge = document.getElementById("live-status-badge");
+          if (badge) {
+            badge.textContent = "DEGRADED";
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

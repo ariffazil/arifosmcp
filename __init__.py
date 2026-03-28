@@ -1,0 +1,1 @@
+"""arifOS MCP package root."""

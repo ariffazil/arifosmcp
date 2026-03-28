@@ -1,0 +1,11 @@
+name: engineering_memory
+type: mega-tool
+authority: MEMORY_MASTER
+description: Long-term archival and retrieval system for persistent engineering context.
+floors:
+  - F1: AMANAH
+  - F7: MUTMAINNAH (Tranquility)
+risk_tier: P1
+parameters:
+  query: string
+  context_id: string

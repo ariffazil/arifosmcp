@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>arifOS APEX Sovereign | Realized Intelligence Dashboard</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/recharts/umd/Recharts.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;500;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --card: #0f0f0f;
+            --accent: #00ffcc;
+            --accent-dim: rgba(0, 255, 204, 0.1);
+            --text: #e0e0e0;
+            --dim: #666;
+            --border: #222;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-sans: 'Inter', sans-serif;
+            --danger: #ff4444;
+            --success: #00ff88;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-sans);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        header {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
+        }
+
+        .motto {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .title h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: var(--dim);
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .metric-box {
+            background: #151515;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .metric-label {
+            font-size: 0.7rem;
+            color: var(--dim);
+            margin-bottom: 5px;
+        }
+
+        .metric-value {
+            font-family: var(--font-mono);
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .main-score {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--accent);
+            text-shadow: 0 0 20px var(--accent-glow);
+            margin: 10px 0;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        button.active {
+            border-color: var(--accent);
+            background: var(--accent-dim);
+            color: var(--accent);
+        }
+
+        button:hover {
+            border-color: var(--accent);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        input {
+            background: #000;
+            border: 1px solid var(--border);
+            color: var(--accent);
+            padding: 8px 12px;
+            border-radius: 6px;
+            flex-grow: 1;
+            font-family: var(--font-mono);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-success { background: var(--success); color: #000; }
+        .badge-danger { background: var(--danger); color: #fff; }
+
+        .log-line {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            padding: 4px 0;
+            border-bottom: 1px solid #111;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .pulse {
+            animation: pulse-animation 2s infinite;
+        }
+
+        @keyframes pulse-animation {
+            0% { box-shadow: 0 0 0 0px rgba(0, 255, 204, 0.4); }
+            100% { box-shadow: 0 0 0 10px rgba(0, 255, 204, 0); }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+        const { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } = Recharts;
+
+        // MCP Apps SDK Integration
+        let mcpApp = null;
+        try {
+            import("https://unpkg.com/@modelcontextprotocol/ext-apps@0.4.0/app-with-deps")
+                .then(module => {
+                    const { App } = module;
+                    mcpApp = new App({ name: "APEX Sovereign", version: "1.0.0" });
+                    mcpApp.connect().then(() => console.log("MCP Host Connected"));
+                });
+        } catch (e) {
+            console.warn("MCP SDK Load failed, running in standalone mode", e);
+        }
+
+        const DEMO_DATA = {
+            apex_output: {
+                capacity_layer: { A: 0.95, P: 0.92, X: 0.85, capacity_product: 0.7429 },
+                effort_layer: { E: 0.88, effort_amplifier: 0.7744, reasoning_steps: 12, tool_calls: 3 },
+                entropy_layer: { H_before: 2.4, H_after: 1.8, delta_S: 0.6 },
+                efficiency_layer: { C: 120, entropy_removed: 0.6, eta: 0.004979 },
+                governed_intelligence: { G_star: 0.5753, G_dagger: 0.002864 },
+                governance_layer: { amanah_score: 0.75, truth_floor: "pass", authority_status: "pass", sovereignty_status: "pass", tri_witness_status: "Cannot Compute" },
+                diagnostics: {
+                    log_decomposition: { logA: -0.051, logP: -0.083, logX: -0.162, "2logE": -0.255, logDeltaS: -0.51, logC: 4.79 },
+                    primary_constraint: "none",
+                    equation: "log G\u2020 = logA + logP + logX + 2logE + log\u0394S - logC",
+                    runtime_story: "Capacity is high, effort is engaged, entropy is clarifying, efficiency is workable, governance is provisional; realized governed intelligence is 0.002864."
+                }
+            }
+        };
+
+        function Dashboard() {
+            const [mode, setMode] = useState('mcp'); // 'demo', 'live', or 'mcp'
+            const [endpoint, setEndpoint] = useState('https://arifosmcp.arif-fazil.com/api/governance-status');
+            const [data, setData] = useState(DEMO_DATA);
+            const [isPolling, setIsPolling] = useState(false);
+
+            useEffect(() => {
+                // Listen for pushed results from MCP Host
+                if (mcpApp) {
+                    mcpApp.ontoolresult = ({ content }) => {
+                        console.log("Result received from host", content);
+                        const textContent = content?.find(c => c.type === 'text');
+                        if (textContent) {
+                            try {
+                                const parsed = JSON.parse(textContent.text);
+                                // Robust lookup: Top level OR nested in .data
+                                let apex = parsed.apex_output;
+                                if (!apex && parsed.data && parsed.data.apex_output) {
+                                    apex = parsed.data.apex_output;
+                                }
+
+                                if (apex) {
+                                    setData({ apex_output: apex });
+                                    setMode('mcp');
+                                }
+                            } catch (e) {
+                                console.error("Failed to parse tool result as APEX JSON", e);
+                            }
+                        }
+                    };
+                }
+            }, []);
+
+            useEffect(() => {
+                let interval;
+                if (mode === 'live' && isPolling) {
+                    interval = setInterval(fetchData, 3000);
+                }
+                return () => clearInterval(interval);
+            }, [mode, isPolling, endpoint]);
+
+            const fetchData = async () => {
+                try {
+                    const res = await fetch(endpoint);
+                    const json = await res.json();
+                    if (json.apex_output) {
+                        setData(json);
+                    }
+                } catch (e) {
+                    console.error("Fetch failed", e);
+                }
+            };
+
+            const radarData = useMemo(() => [
+                { subject: 'Akal (A)', A: data.apex_output.capacity_layer.A, fullMark: 1 },
+                { subject: 'Peace (P)', A: data.apex_output.capacity_layer.P, fullMark: 1 },
+                { subject: 'Exploration (X)', A: data.apex_output.capacity_layer.X, fullMark: 1 },
+                { subject: 'Effort (E)', A: data.apex_output.effort_layer.E, fullMark: 1 },
+                { subject: 'Efficiency (η)', A: Math.min(1, data.apex_output.efficiency_layer.eta * 100), fullMark: 1 },
+            ], [data]);
+
+            const logData = useMemo(() => {
+                const ld = data.apex_output.diagnostics.log_decomposition;
+                return [
+                    { name: 'logA', val: ld.logA },
+                    { name: 'logP', val: ld.logP },
+                    { name: 'logX', val: ld.logX },
+                    { name: '2logE', val: ld["2logE"] },
+                    { name: 'logΔS', val: ld.logDeltaS },
+                    { name: '-logC', val: -ld.logC },
+                ];
+            }, [data]);
+
+            const apex = data.apex_output;
+
+            return (
+                <div style={{width: '100%'}}>
+                    <header>
+                        <div className="title">
+                            <div className="motto">Ditempa Bukan Diberi</div>
+                            <h1>APEX Sovereign Dashboard</h1>
+                        </div>
+                        <div className="controls">
+                            <button className={mode === 'demo' ? 'active' : ''} onClick={() => {setMode('demo'); setData(DEMO_DATA);}}>Static Demo</button>
+                            <button className={mode === 'live' ? 'active' : ''} onClick={() => setMode('live')}>Live Fetch</button>
+                        </div>
+                    </header>
+
+                    {mode === 'live' && (
+                        <div className="input-group">
+                            <input value={endpoint} onChange={e => setEndpoint(e.target.value)} placeholder="MCP Endpoint URL..." />
+                            <button className={isPolling ? 'active' : ''} onClick={() => setIsPolling(!isPolling)}>
+                                {isPolling ? 'Stop Polling' : 'Start Polling'}
+                            </button>
+                        </div>
+                    )}
+
+                    <div className="container">
+                        {/* Realized Intelligence G† */}
+                        <div className="card">
+                            <h3>Governed Intelligence Realized (G†)</h3>
+                            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', height: '300px', flexDirection: 'column'}}>
+                                <div className="main-score pulse">{apex.governed_intelligence.G_dagger.toFixed(6)}</div>
+                                <div style={{color: 'var(--dim)', fontSize: '0.8rem'}}>G† = G* · η</div>
+                                <div style={{marginTop: '20px'}}>
+                                    <span className={`badge ${apex.governed_intelligence.G_dagger >= 0.001 ? 'badge-success' : 'badge-danger'}`}>
+                                        {apex.governed_intelligence.G_dagger >= 0.001 ? 'Governed Seal' : 'Insufficient realization'}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Triad Geometry */}
+                        <div className="card">
+                            <h3>Discipline Geometry (APX vs E vs η)</h3>
+                            <div style={{height: '300px'}}>
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
+                                        <PolarGrid stroke="#333" />
+                                        <PolarAngleAxis dataKey="subject" tick={{fill: '#999', fontSize: 10}} />
+                                        <Radar name="Intelligence" dataKey="A" stroke="#00ffcc" fill="#00ffcc" fillOpacity={0.3} />
+                                    </RadarChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </div>
+
+                        {/* Metrics Grid */}
+                        <div className="card full-width">
+                            <h3>5-Layer Intelligence Stack</h3>
+                            <div className="metric-grid">
+                                <div className="metric-box">
+                                    <div className="metric-label">Capacity (A·P·X)</div>
+                                    <div className="metric-value">{apex.capacity_layer.capacity_product.toFixed(4)}</div>
+                                </div>
+                                <div className="metric-box">
+                                    <div className="metric-label">Effort (E²)</div>
+                                    <div className="metric-value">{apex.effort_layer.effort_amplifier.toFixed(4)}</div>
+                                </div>
+                                <div className="metric-box">
+                                    <div className="metric-label">Clarity (ΔS)</div>
+                                    <div className="metric-value">{apex.entropy_layer.delta_S.toFixed(2)}</div>
+                                </div>
+                                <div className="metric-box">
+                                    <div className="metric-label">Efficiency (η)</div>
+                                    <div className="metric-value">{apex.efficiency_layer.eta.toFixed(6)}</div>
+                                </div>
+                                <div className="metric-box">
+                                    <div className="metric-label">Potential (G*)</div>
+                                    <div className="metric-value">{apex.governed_intelligence.G_star.toFixed(4)}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Log Decomposition */}
+                        <div className="card">
+                            <h3>Log-Decomposition (Realization Drivers)</h3>
+                            <div style={{height: '250px'}}>
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <BarChart data={logData} layout="vertical">
+                                        <XAxis type="number" domain={[-6, 2]} hide />
+                                        <YAxis dataKey="name" type="category" tick={{fill: '#999', fontSize: 10}} width={60} />
+                                        <Tooltip cursor={{fill: '#151515'}} contentStyle={{background: '#000', border: '1px solid #333'}} />
+                                        <Bar dataKey="val">
+                                            {logData.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={entry.val >= 0 ? '#00ffcc' : '#ff4444'} />
+                                            ))}
+                                        </Bar>
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </div>
+
+                        {/* Governance Status */}
+                        <div className="card">
+                            <h3>Governance Integrity</h3>
+                            <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
+                                <div className="log-line">
+                                    <span>Amanah Score (F1)</span>
+                                    <span style={{color: apex.governance_layer.amanah_score >= 0.75 ? 'var(--success)' : 'var(--danger)'}}>
+                                        {apex.governance_layer.amanah_score.toFixed(2)}
+                                    </span>
+                                </div>
+                                <div className="log-line">
+                                    <span>F2 Truth Floor</span>
+                                    <span className={`badge ${apex.governance_layer.truth_floor === 'pass' ? 'badge-success' : 'badge-danger'}`}>
+                                        {apex.governance_layer.truth_floor}
+                                    </span>
+                                </div>
+                                <div className="log-line">
+                                    <span>F11 Authority</span>
+                                    <span className={`badge ${apex.governance_layer.authority_status === 'pass' ? 'badge-success' : 'badge-danger'}`}>
+                                        {apex.governance_layer.authority_status}
+                                    </span>
+                                </div>
+                                <div className="log-line">
+                                    <span>F13 Sovereignty</span>
+                                    <span className={`badge ${apex.governance_layer.sovereignty_status === 'pass' ? 'badge-success' : 'badge-danger'}`}>
+                                        {apex.governance_layer.sovereignty_status}
+                                    </span>
+                                </div>
+                                <div className="log-line">
+                                    <span>F3 Tri-Witness</span>
+                                    <span className={`badge ${apex.governance_layer.tri_witness_status === 'pass' ? 'badge-success' : 'badge-danger'}`}>
+                                        {apex.governance_layer.tri_witness_status}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <footer style={{marginTop: '40px', color: '#333', fontSize: '0.7rem', textAlign: 'center', width: '100%'}}>
+                        arifOS L0 KERNEL | VERSION 2026.03.08-FORGE | APEX THEOREM GOVERNANCE ACTIVE
+                    </footer>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<Dashboard />);
+    </script>
+</body>
+</html>

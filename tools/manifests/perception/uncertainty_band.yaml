@@ -1,0 +1,9 @@
+name: uncertainty_band
+type: perception-tool
+authority: MATH_ESTIMATOR
+description: Define the current ranges of uncertainty for agentic decisions.
+floors:
+  - F2: SIDDIQ
+risk_tier: P2
+parameters:
+  decision_vector: array

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3E Telemetry — arifOS MCP Docs</title>
+  <meta http-equiv="refresh" content="0; url=https://arifos.arif-fazil.com/docs/telemetry.html">
+  <link rel="canonical" href="https://arifos.arif-fazil.com/docs/telemetry.html">
+  <meta name="description" content="3E Telemetry documentation for arifOS MCP. Epistemic, Ethical, and Execution telemetry data in every governance response.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<!-- Trinity Strip -->
+<div class="trinity-strip">
+  <a href="https://arif-fazil.com" class="trinity-node human">HUMAN</a>
+  <a href="https://apex.arif-fazil.com" class="trinity-node theory">THEORY</a>
+  <a href="https://arifosmcp.arif-fazil.com" class="trinity-node apps active">APPS</a>
+</div>
+
+<!-- Navigation -->
+<nav class="main-nav">
+  <a href="../index.html" class="nav-logo">
+    <svg viewBox="0 0 48 48" width="32" height="32" fill="none">
+      <line x1="24" y1="8" x2="24" y2="22" stroke="#ffd24a" stroke-width="3" stroke-linecap="round"/>
+      <line x1="24" y1="26" x2="11" y2="40" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+      <line x1="24" y1="26" x2="37" y2="40" stroke="#ff4d4f" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="24" cy="6" r="4" stroke="#ffd24a" stroke-width="1.5" fill="none"/>
+      <circle cx="9" cy="41" r="4" stroke="#2563eb" stroke-width="1.5" fill="none"/>
+      <circle cx="39" cy="41" r="4" stroke="#ff4d4f" stroke-width="1.5" fill="none"/>
+      <circle cx="24" cy="24" r="5" stroke="#2563eb" stroke-width="1.5" fill="#12121a"/>
+    </svg>
+    <span class="nav-title">arifOS<span class="nav-mcp">MCP</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="overview.html">Documentation</a>
+    <a href="tools.html">Tools</a>
+    <a href="telemetry.html" class="active">Telemetry</a>
+    <a href="changelog.html">Changelog</a>
+  </div>
+  <div class="nav-right">
+    <span class="version-badge">v2026.03.14</span>
+    <a href="https://github.com/ariffazil/arifosmcp" class="btn btn-sm btn-secondary" target="_blank">GitHub</a>
+  </div>
+  <button class="nav-hamburger" aria-label="Menu">☰</button>
+</nav>
+
+<!-- Sidebar Overlay -->
+<div class="sidebar-overlay"></div>
+
+<!-- Doc Layout -->
+<div class="doc-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-search">
+      <input type="text" placeholder="Search docs…" aria-label="Search documentation">
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span>3E Telemetry</div>
+      <div class="sidebar-group-items">
+        <a href="#overview" class="sidebar-link">Overview</a>
+        <a href="#epistemic" class="sidebar-link">Epistemic</a>
+        <a href="#ethical" class="sidebar-link">Ethical</a>
+        <a href="#execution" class="sidebar-link">Execution</a>
+        <a href="#envelope" class="sidebar-link">Governance Envelope</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span>Reference</div>
+      <div class="sidebar-group-items">
+        <a href="tools.html" class="sidebar-link">Tools</a>
+        <a href="floors.html" class="sidebar-link">Floors</a>
+        <a href="deployment.html" class="sidebar-link">Deployment</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="doc-content">
+    <h1>3E Telemetry</h1>
+    
+    <p class="doc-subtitle">
+      Real-time governance metrics in every response. Epistemic, Ethical, and Execution telemetry for complete observability.
+    </p>
+
+    <div class="callout callout-info">
+      <div class="callout-title">Governance Transparency</div>
+      <p>
+        Every arifOS MCP response includes 3E telemetry data in the governance envelope, 
+        providing complete visibility into the decision-making process.
+      </p>
+    </div>
+
+    <h2 id="overview">Overview</h2>
+
+    <p>
+      The 3E (Triple-E) telemetry system provides three dimensions of insight into every governance decision:
+    </p>
+
+    <div class="card-grid card-grid-3">
+      <div class="card">
+        <div class="card-icon" style="color: var(--color-agility)">🧠</div>
+        <h3 class="card-title">Epistemic</h3>
+        <p class="card-description">
+          Knowledge quality metrics: confidence, evidence count, source diversity
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon" style="color: var(--color-human)">⚖️</div>
+        <h3 class="card-title">Ethical</h3>
+        <p class="card-description">
+          Impact metrics: harm score, fairness, compassion flags
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon" style="color: var(--color-apps)">⚡</div>
+        <h3 class="card-title">Execution</h3>
+        <p class="card-description">
+          Performance metrics: latency, tokens, budget consumption
+        </p>
+      </div>
+    </div>
+
+    <h2 id="epistemic">Epistemic Telemetry</h2>
+
+    <p>Measures the quality and reliability of knowledge:</p>
+
+    <div class="code-block">
+      <div class="code-block-header">
+        <span>JSON</span>
+        <button class="copy-btn">Copy</button>
+      </div>
+      <pre><code class="language-json">{
+  "epistemic": {
+    "confidence": 0.87,
+    "evidence_count": 5,
+    "source_diversity": 0.72
+  }
+}</code></pre>
+    </div>
+
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Type</th>
+            <th>Range</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">confidence</td>
+            <td>float</td>
+            <td>0.0 – 1.0</td>
+            <td>Overall confidence in the knowledge claim</td>
+          </tr>
+          <tr>
+            <td class="mono">evidence_count</td>
+            <td>integer</td>
+            <td>0 – N</td>
+            <td>Number of evidence sources consulted</td>
+          </tr>
+          <tr>
+            <td class="mono">source_diversity</td>
+            <td>float</td>
+            <td>0.0 – 1.0</td>
+            <td>Diversity score of evidence sources</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="ethical">Ethical Telemetry</h2>
+
+    <p>Measures the ethical impact and alignment:</p>
+
+    <div class="code-block">
+      <div class="code-block-header">
+        <span>JSON</span>
+        <button class="copy-btn">Copy</button>
+      </div>
+      <pre><code class="language-json">{
+  "ethical": {
+    "harm_score": 0.02,
+    "fairness_score": 0.95,
+    "compassion_flag": false
+  }
+}</code></pre>
+    </div>
+
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Type</th>
+            <th>Range</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">harm_score</td>
+            <td>float</td>
+            <td>0.0 – 1.0</td>
+            <td>Estimated potential harm (lower is better)</td>
+          </tr>
+          <tr>
+            <td class="mono">fairness_score</td>
+            <td>float</td>
+            <td>0.0 – 1.0</td>
+            <td>Fairness across stakeholder groups</td>
+          </tr>
+          <tr>
+            <td class="mono">compassion_flag</td>
+            <td>boolean</td>
+            <td>true/false</td>
+            <td>Whether compassion protocols were activated</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="execution">Execution Telemetry</h2>
+
+    <p>Measures operational performance and resource usage:</p>
+
+    <div class="code-block">
+      <div class="code-block-header">
+        <span>JSON</span>
+        <button class="copy-btn">Copy</button>
+      </div>
+      <pre><code class="language-json">{
+  "execution": {
+    "latency_ms": 1240,
+    "tokens_used": 3200,
+    "budget_remaining": 0.68
+  }
+}</code></pre>
+    </div>
+
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Type</th>
+            <th>Unit</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">latency_ms</td>
+            <td>integer</td>
+            <td>milliseconds</td>
+            <td>Total request processing time</td>
+          </tr>
+          <tr>
+            <td class="mono">tokens_used</td>
+            <td>integer</td>
+            <td>tokens</td>
+            <td>LLM tokens consumed</td>
+          </tr>
+          <tr>
+            <td class="mono">budget_remaining</td>
+            <td>float</td>
+            <td>ratio</td>
+            <td>Remaining computational budget (0.0 – 1.0)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="envelope">Governance Envelope</h2>
+
+    <p>
+      The complete telemetry envelope is included in every response:
+    </p>
+
+    <div class="code-block">
+      <div class="code-block-header">
+        <span>Complete Envelope</span>
+        <button class="copy-btn">Copy</button>
+      </div>
+      <pre><code class="language-json">{
+  "verdict": "SEAL",
+  "floor_violations": [],
+  "telemetry": {
+    "epistemic": {
+      "confidence": 0.87,
+      "evidence_count": 5,
+      "source_diversity": 0.72
+    },
+    "ethical": {
+      "harm_score": 0.02,
+      "fairness_score": 0.95,
+      "compassion_flag": false
+    },
+    "execution": {
+      "latency_ms": 1240,
+      "tokens_used": 3200,
+      "budget_remaining": 0.68
+    }
+  },
+  "vault_hash": "a3f7b2c1d4e5...",
+  "timestamp": "2026-03-14T10:30:00Z"
+}</code></pre>
+    </div>
+
+    <div class="callout callout-success">
+      <div class="callout-title">Observability</div>
+      <p>
+        Use 3E telemetry to build dashboards, set up alerts, and ensure your AI governance 
+        is operating within acceptable parameters. All metrics are exportable to Prometheus.
+      </p>
+    </div>
+
+  </main>
+
+  <!-- Table of Contents -->
+  <nav class="toc" aria-label="On this page">
+    <div class="toc-title">On this page</div>
+    <a href="#overview">Overview</a>
+    <a href="#epistemic">Epistemic</a>
+    <a href="#ethical">Ethical</a>
+    <a href="#execution">Execution</a>
+    <a href="#envelope">Governance Envelope</a>
+  </nav>
+
+</div>
+
+<script src="../app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+</body>
+</html>

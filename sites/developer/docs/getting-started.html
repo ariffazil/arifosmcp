@@ -1,0 +1,394 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Getting Started — arifOS MCP Docs</title>
+  <meta http-equiv="refresh" content="0; url=https://arifos.arif-fazil.com/docs/getting-started.html">
+  <link rel="canonical" href="https://arifos.arif-fazil.com/docs/getting-started.html">
+  <meta name="description" content="Install arifOS MCP, configure your environment, and make your first constitutional query.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<!-- Trinity Strip -->
+<div class="trinity-strip">
+  <a href="https://arif-fazil.com" class="trinity-node human">HUMAN</a>
+  <a href="https://apex.arif-fazil.com" class="trinity-node theory">THEORY</a>
+  <a href="https://arifosmcp.arif-fazil.com" class="trinity-node apps active">APPS</a>
+</div>
+
+<!-- Navigation -->
+<nav class="main-nav">
+  <a href="../index.html" class="nav-logo">
+    <svg viewBox="0 0 48 48" width="32" height="32" fill="none" aria-label="arifOS Trinity">
+      <line x1="24" y1="8" x2="24" y2="22" stroke="#ffd24a" stroke-width="3" stroke-linecap="round"/>
+      <line x1="24" y1="26" x2="11" y2="40" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+      <line x1="24" y1="26" x2="37" y2="40" stroke="#ff4d4f" stroke-width="3" stroke-linecap="round"/>
+      <text x="24" y="28" text-anchor="middle" font-size="10" fill="#e8e8f0" font-family="monospace">Δ</text>
+      <circle cx="24" cy="6" r="4" stroke="#ffd24a" stroke-width="1.5" fill="none"/>
+      <circle cx="9" cy="41" r="4" stroke="#2563eb" stroke-width="1.5" fill="none"/>
+      <circle cx="39" cy="41" r="4" stroke="#ff4d4f" stroke-width="1.5" fill="none"/>
+      <circle cx="24" cy="24" r="5" stroke="#2563eb" stroke-width="1.5" fill="#12121a"/>
+    </svg>
+    <span class="nav-title">arifOS<span class="nav-mcp"> MCP</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="overview.html">Docs</a>
+    <a href="tools.html">API Reference</a>
+    <a href="integrations.html">Guides</a>
+    <a href="changelog.html">Changelog</a>
+  </div>
+  <div class="nav-right">
+    <span class="version-badge">v2026.03.14</span>
+    <a href="https://github.com/ariffazil/arifosmcp" class="btn-github" target="_blank">GitHub ↗</a>
+  </div>
+  <button class="nav-hamburger" aria-label="Menu">☰</button>
+</nav>
+
+<!-- Sidebar Overlay (mobile) -->
+<div class="sidebar-overlay"></div>
+
+<!-- Doc Layout -->
+<div class="doc-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-search">
+      <input type="text" placeholder="Search docs…" aria-label="Search documentation">
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Getting Started</div>
+      <div class="sidebar-group-items">
+        <a href="getting-started.html" class="sidebar-link active">Installation</a>
+        <a href="getting-started.html#quick-start" class="sidebar-link">Quick Start</a>
+        <a href="getting-started.html#env-vars" class="sidebar-link">Environment Variables</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Architecture</div>
+      <div class="sidebar-group-items">
+        <a href="overview.html" class="sidebar-link">MGI Envelope</a>
+        <a href="overview.html#metabolic-loop" class="sidebar-link">Metabolic Loop</a>
+        <a href="overview.html#trinity-engines" class="sidebar-link">Trinity Engines</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Tools Reference</div>
+      <div class="sidebar-group-items">
+        <a href="tools.html#reality-compass" class="sidebar-link">reality_compass</a>
+        <a href="tools.html#reality-atlas" class="sidebar-link">reality_atlas</a>
+        <a href="tools.html#arifos-kernel" class="sidebar-link">arifOS_kernel</a>
+        <a href="tools.html#check-vital" class="sidebar-link">check_vital</a>
+        <a href="tools.html#init-anchor-state" class="sidebar-link">init_anchor_state</a>
+        <a href="tools.html#verify-vault-ledger" class="sidebar-link">verify_vault_ledger</a>
+        <a href="tools.html#audit-rules" class="sidebar-link">audit_rules</a>
+        <a href="tools.html#session-memory" class="sidebar-link">session_memory</a>
+        <a href="tools.html#open-apex-dashboard" class="sidebar-link">open_apex_dashboard</a>
+        <div class="sidebar-divider"></div>
+        <a href="tools.html#search-reality" class="sidebar-link">search_reality <span class="legacy-label">legacy</span></a>
+        <a href="tools.html#ingest-evidence" class="sidebar-link">ingest_evidence <span class="legacy-label">legacy</span></a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Constitutional Floors</div>
+      <div class="sidebar-group-items">
+        <a href="floors.html" class="sidebar-link">F1–F13 Overview</a>
+        <a href="floors.html#verdict-states" class="sidebar-link">Verdict States</a>
+        <a href="floors.html#fault-codes" class="sidebar-link">Fault Codes</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> 3E Telemetry</div>
+      <div class="sidebar-group-items">
+        <a href="overview.html#3e-cycle" class="sidebar-link">3E Cycle</a>
+        <a href="overview.html#metrics" class="sidebar-link">Metrics</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Integrations</div>
+      <div class="sidebar-group-items">
+        <a href="integrations.html#claude-desktop" class="sidebar-link">Claude Desktop</a>
+        <a href="integrations.html#cursor" class="sidebar-link">Cursor / VS Code</a>
+        <a href="integrations.html#python-sdk" class="sidebar-link">Python SDK</a>
+        <a href="integrations.html#typescript-sdk" class="sidebar-link">TypeScript SDK</a>
+        <a href="integrations.html#http-curl" class="sidebar-link">HTTP / curl</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Self-Hosting</div>
+      <div class="sidebar-group-items">
+        <a href="getting-started.html#docker" class="sidebar-link">Docker Setup</a>
+        <a href="getting-started.html#vps" class="sidebar-link">VPS Architecture</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Changelog</div>
+      <div class="sidebar-group-items">
+        <a href="changelog.html" class="sidebar-link">v2026.03.14-FORGED</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="doc-content">
+    <h1>Getting Started</h1>
+    <p class="doc-subtitle">Install arifOS MCP, configure your environment, and make your first constitutional governance query in minutes.</p>
+
+    <h2 id="prerequisites">Prerequisites</h2>
+    <ul>
+      <li><strong>Python ≥ 3.12</strong> — required for the FastMCP runtime</li>
+      <li><strong>FastMCP ≥ 3.1.0</strong> — the MCP server framework (installed automatically)</li>
+      <li><strong>Brave Search API key</strong> — for <code>reality_compass</code> search capability</li>
+      <li><strong>Qdrant</strong> (optional) — for <code>reality_atlas</code> vector storage</li>
+    </ul>
+
+    <h2 id="installation">Installation</h2>
+
+    <h3>Via pip</h3>
+    <div class="code-block-wrapper">
+      <div class="code-block-header"><span>bash</span><button class="copy-btn">Copy</button></div>
+      <pre><code class="language-bash">pip install arifosmcp</code></pre>
+    </div>
+
+    <h3>Via pip (with extras)</h3>
+    <div class="code-block-wrapper">
+      <div class="code-block-header"><span>bash</span><button class="copy-btn">Copy</button></div>
+      <pre><code class="language-bash"># Install with Qdrant support for reality_atlas
+pip install arifosmcp[qdrant]
+
+# Install with all optional dependencies
+pip install arifosmcp[all]</code></pre>
+    </div>
+
+    <h3 id="docker">Via Docker</h3>
+    <div class="code-block-wrapper">
+      <div class="code-block-header"><span>bash</span><button class="copy-btn">Copy</button></div>
+      <pre><code class="language-bash"># Pull the official image
+docker pull ghcr.io/ariffazil/arifosmcp:latest
+
+# Run with environment variables
+docker run -d \
+  --name arifosmcp \
+  -p 8080:8080 \
+  -e BRAVE_API_KEY=your_key_here \
+  -e ARIFOS_LOG_LEVEL=INFO \
+  ghcr.io/ariffazil/arifosmcp:latest</code></pre>
+    </div>
+
+    <h2 id="quick-start">Quick Start</h2>
+
+    <h3>Running the Server</h3>
+    <p>arifOS MCP supports three transport modes:</p>
+
+    <h4>STDIO (for Claude Desktop, Cursor, etc.)</h4>
+    <div class="code-block-wrapper">
+      <div class="code-block-header"><span>bash</span><button class="copy-btn">Copy</button></div>
+      <pre><code class="language-bash"># Default STDIO transport
+python -m arifosmcp
+
+# Or use the CLI
+arifosmcp serve</code></pre>
+    </div>
+
+    <h4>HTTP (Streamable HTTP transport)</h4>
+    <div class="code-block-wrapper">
+      <div class="code-block-header"><span>bash</span><button class="copy-btn">Copy</button></div>
+      <pre><code class="language-bash"># Start HTTP server on port 8080
+arifosmcp serve --transport http --port 8080
+
+# Or with uvicorn directly
+uvicorn arifosmcp.server:app --host 0.0.0.0 --port 8080</code></pre>
+    </div>
+
+    <h4>Docker</h4>
+    <div class="code-block-wrapper">
+      <div class="code-block-header"><span>bash</span><button class="copy-btn">Copy</button></div>
+      <pre><code class="language-bash">docker run -p 8080:8080 \
+  -e BRAVE_API_KEY=your_key \
+  ghcr.io/ariffazil/arifosmcp:latest</code></pre>
+    </div>
+
+    <h3>Your First Query</h3>
+
+    <h4>Python</h4>
+    <div class="code-block-wrapper">
+      <div class="code-block-header"><span>python</span><button class="copy-btn">Copy</button></div>
+      <pre><code class="language-python">from mcp import ClientSession, StdioServerParameters
+from mcp.client.stdio import stdio_client
+
+async def main():
+    server = StdioServerParameters(
+        command="python",
+        args=["-m", "arifosmcp"]
+    )
+    async with stdio_client(server) as (read, write):
+        async with ClientSession(read, write) as session:
+            await session.initialize()
+
+            # Check system health
+            result = await session.call_tool("check_vital", {})
+            print(result)
+
+            # Search with constitutional governance
+            result = await session.call_tool("reality_compass", {
+                "input": "quantum computing breakthroughs 2026"
+            })
+            print(result)
+
+import asyncio
+asyncio.run(main())</code></pre>
+    </div>
+
+    <h4>curl</h4>
+    <div class="code-block-wrapper">
+      <div class="code-block-header"><span>bash</span><button class="copy-btn">Copy</button></div>
+      <pre><code class="language-bash"># Check system health
+curl -X POST http://localhost:8080/mcp \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "tools/call",
+    "params": {
+      "name": "check_vital",
+      "arguments": {}
+    }
+  }'</code></pre>
+    </div>
+
+    <h2 id="request-flow">What Happens in a Request</h2>
+    <p>When you call a tool through arifOS MCP, this is the flow:</p>
+    <ol>
+      <li><strong>000_INIT</strong> — Session anchor is initialized (or resumed). Identity tokens are minted if needed.</li>
+      <li><strong>111_SENSE</strong> — For search/fetch tools, reality sensing kicks in. Brave Search or URL fetching gathers raw evidence.</li>
+      <li><strong>222_REALITY</strong> — Evidence is processed, deduplicated, and optionally ingested into the Qdrant vector store.</li>
+      <li><strong>333_MIND</strong> — Constitutional audit rules are checked against the evidence and query.</li>
+      <li><strong>444_ROUTER</strong> — The governance kernel routes the query through all 13 constitutional floors.</li>
+      <li><strong>555_MEMORY</strong> — Relevant session memory is retrieved and stored.</li>
+      <li><strong>666_HEART</strong> — Ethical evaluation assesses harm, fairness, and compassion.</li>
+      <li><strong>777_CRITIQUE</strong> — The self-critique engine challenges assumptions.</li>
+      <li><strong>888_JUDGE</strong> — Final judgment is rendered: SEAL, HOLD, or VOID.</li>
+      <li><strong>999_VAULT</strong> — The verdict and response are sealed into the SHA-256 Merkle chain.</li>
+    </ol>
+
+    <div class="callout callout-info">
+      <div class="callout-title">Note</div>
+      Not all stages run for every tool. Simple tools like <code>check_vital</code> skip the full metabolic pipeline. The <code>arifOS_kernel</code> tool is the only one that always traverses the complete 000–999 loop.
+    </div>
+
+    <h2 id="env-vars">Environment Variables</h2>
+
+    <table class="doc-table">
+      <thead>
+        <tr><th>Variable</th><th>Required</th><th>Default</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>BRAVE_API_KEY</code></td><td>Yes</td><td>—</td><td>API key for Brave Search (used by reality_compass)</td></tr>
+        <tr><td><code>QDRANT_URL</code></td><td>No</td><td><code>http://localhost:6333</code></td><td>Qdrant vector database URL (used by reality_atlas)</td></tr>
+        <tr><td><code>QDRANT_API_KEY</code></td><td>No</td><td>—</td><td>API key for Qdrant Cloud</td></tr>
+        <tr><td><code>ARIFOS_LOG_LEVEL</code></td><td>No</td><td><code>INFO</code></td><td>Logging level (DEBUG, INFO, WARNING, ERROR)</td></tr>
+        <tr><td><code>ARIFOS_VAULT_PATH</code></td><td>No</td><td><code>./vault</code></td><td>Path to VAULT999 ledger storage</td></tr>
+        <tr><td><code>ARIFOS_SESSION_TTL</code></td><td>No</td><td><code>3600</code></td><td>Session time-to-live in seconds</td></tr>
+        <tr><td><code>ARIFOS_MAX_SEARCH_RESULTS</code></td><td>No</td><td><code>10</code></td><td>Max results from Brave Search</td></tr>
+        <tr><td><code>ARIFOS_TRANSPORT</code></td><td>No</td><td><code>stdio</code></td><td>Transport mode: stdio, http</td></tr>
+        <tr><td><code>ARIFOS_PORT</code></td><td>No</td><td><code>8080</code></td><td>HTTP server port (when transport=http)</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="vps">VPS Architecture</h2>
+    <p>For production deployments, the recommended VPS setup includes:</p>
+    <div class="code-block-wrapper">
+      <div class="code-block-header"><span>text</span><button class="copy-btn">Copy</button></div>
+      <pre><code>┌─────────────────────────────────────────┐
+│              VPS / Cloud VM              │
+│                                          │
+│  ┌──────────┐  ┌──────────┐  ┌────────┐ │
+│  │ arifOS   │  │  Qdrant  │  │ VAULT  │ │
+│  │ MCP      │──│  Vector  │  │  999   │ │
+│  │ Server   │  │  Store   │  │ Ledger │ │
+│  └────┬─────┘  └──────────┘  └────────┘ │
+│       │                                   │
+│  ┌────┴─────┐                            │
+│  │  Nginx   │  ← TLS termination         │
+│  │  Reverse │                            │
+│  │  Proxy   │                            │
+│  └────┬─────┘                            │
+│       │                                   │
+└───────┼───────────────────────────────────┘
+        │
+    Internet ← MCP clients connect here</code></pre>
+    </div>
+    <ul>
+      <li><strong>Nginx</strong> handles TLS termination and reverse proxies to the MCP server</li>
+      <li><strong>Qdrant</strong> runs as a separate service for vector storage</li>
+      <li><strong>VAULT999</strong> stores the Merkle chain on persistent disk</li>
+      <li>All services are containerized with Docker Compose</li>
+    </ul>
+
+    <h2 id="telemetry">3E Telemetry</h2>
+    <p>Every response includes 3E telemetry data in the governance envelope:</p>
+    <div class="code-block-wrapper">
+      <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+      <pre><code class="language-json">{
+  "telemetry": {
+    "epistemic": {
+      "confidence": 0.87,
+      "evidence_count": 5,
+      "source_diversity": 0.72
+    },
+    "ethical": {
+      "harm_score": 0.02,
+      "fairness_score": 0.95,
+      "compassion_flag": false
+    },
+    "execution": {
+      "latency_ms": 1240,
+      "tokens_used": 3200,
+      "budget_remaining": 0.68
+    }
+  }
+}</code></pre>
+    </div>
+  </main>
+
+  <!-- Right TOC -->
+  <aside class="toc">
+    <div class="toc-title">On this page</div>
+    <a href="#prerequisites">Prerequisites</a>
+    <a href="#installation">Installation</a>
+    <a href="#docker" class="toc-h3">Docker</a>
+    <a href="#quick-start">Quick Start</a>
+    <a href="#request-flow">Request Flow</a>
+    <a href="#env-vars">Environment Variables</a>
+    <a href="#vps">VPS Architecture</a>
+    <a href="#telemetry">3E Telemetry</a>
+  </aside>
+
+</div>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-line">© 2026 ARIF FAZIL · arifOS MCP · Ditempa Bukan Diberi</div>
+  <div class="footer-line"><a href="https://perplexity.ai" target="_blank">Created with Perplexity Computer</a></div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../app.js"></script>
+</body>
+</html>

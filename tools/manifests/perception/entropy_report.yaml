@@ -1,0 +1,8 @@
+name: entropy_report
+type: perception-tool
+authority: CALCULATOR
+description: Calculate the current systemic entropy and order indices.
+floors:
+  - F2: SIDDIQ
+risk_tier: P2
+parameters: {}

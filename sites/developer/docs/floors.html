@@ -1,0 +1,451 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Constitutional Floors — arifOS MCP Docs</title>
+  <meta http-equiv="refresh" content="0; url=https://arifos.arif-fazil.com/docs/floors.html">
+  <link rel="canonical" href="https://arifos.arif-fazil.com/docs/floors.html">
+  <meta name="description" content="All 13 constitutional floors F1–F13 with thresholds, VOID triggers, and verdict states for arifOS MCP governance.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<!-- Trinity Strip -->
+<div class="trinity-strip">
+  <a href="https://arif-fazil.com" class="trinity-node human">HUMAN</a>
+  <a href="https://apex.arif-fazil.com" class="trinity-node theory">THEORY</a>
+  <a href="https://arifosmcp.arif-fazil.com" class="trinity-node apps active">APPS</a>
+</div>
+
+<!-- Navigation -->
+<nav class="main-nav">
+  <a href="../index.html" class="nav-logo">
+    <svg viewBox="0 0 48 48" width="32" height="32" fill="none" aria-label="arifOS Trinity">
+      <line x1="24" y1="8" x2="24" y2="22" stroke="#ffd24a" stroke-width="3" stroke-linecap="round"/>
+      <line x1="24" y1="26" x2="11" y2="40" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+      <line x1="24" y1="26" x2="37" y2="40" stroke="#ff4d4f" stroke-width="3" stroke-linecap="round"/>
+      <text x="24" y="28" text-anchor="middle" font-size="10" fill="#e8e8f0" font-family="monospace">Δ</text>
+      <circle cx="24" cy="6" r="4" stroke="#ffd24a" stroke-width="1.5" fill="none"/>
+      <circle cx="9" cy="41" r="4" stroke="#2563eb" stroke-width="1.5" fill="none"/>
+      <circle cx="39" cy="41" r="4" stroke="#ff4d4f" stroke-width="1.5" fill="none"/>
+      <circle cx="24" cy="24" r="5" stroke="#2563eb" stroke-width="1.5" fill="#12121a"/>
+    </svg>
+    <span class="nav-title">arifOS<span class="nav-mcp"> MCP</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="overview.html">Docs</a>
+    <a href="tools.html">API Reference</a>
+    <a href="integrations.html">Guides</a>
+    <a href="changelog.html">Changelog</a>
+  </div>
+  <div class="nav-right">
+    <span class="version-badge">v2026.03.14</span>
+    <a href="https://github.com/ariffazil/arifosmcp" class="btn-github" target="_blank">GitHub ↗</a>
+  </div>
+  <button class="nav-hamburger" aria-label="Menu">☰</button>
+</nav>
+
+<!-- Sidebar Overlay (mobile) -->
+<div class="sidebar-overlay"></div>
+
+<!-- Doc Layout -->
+<div class="doc-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-search">
+      <input type="text" placeholder="Search docs…" aria-label="Search documentation">
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Getting Started</div>
+      <div class="sidebar-group-items">
+        <a href="getting-started.html" class="sidebar-link">Installation</a>
+        <a href="getting-started.html#quick-start" class="sidebar-link">Quick Start</a>
+        <a href="getting-started.html#env-vars" class="sidebar-link">Environment Variables</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Architecture</div>
+      <div class="sidebar-group-items">
+        <a href="overview.html" class="sidebar-link">MGI Envelope</a>
+        <a href="overview.html#metabolic-loop" class="sidebar-link">Metabolic Loop</a>
+        <a href="overview.html#trinity-engines" class="sidebar-link">Trinity Engines</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Tools Reference</div>
+      <div class="sidebar-group-items">
+        <a href="tools.html#reality-compass" class="sidebar-link">reality_compass</a>
+        <a href="tools.html#reality-atlas" class="sidebar-link">reality_atlas</a>
+        <a href="tools.html#arifos-kernel" class="sidebar-link">arifOS_kernel</a>
+        <a href="tools.html#check-vital" class="sidebar-link">check_vital</a>
+        <a href="tools.html#init-anchor-state" class="sidebar-link">init_anchor_state</a>
+        <a href="tools.html#verify-vault-ledger" class="sidebar-link">verify_vault_ledger</a>
+        <a href="tools.html#audit-rules" class="sidebar-link">audit_rules</a>
+        <a href="tools.html#session-memory" class="sidebar-link">session_memory</a>
+        <a href="tools.html#open-apex-dashboard" class="sidebar-link">open_apex_dashboard</a>
+        <div class="sidebar-divider"></div>
+        <a href="tools.html#search-reality" class="sidebar-link">search_reality <span class="legacy-label">legacy</span></a>
+        <a href="tools.html#ingest-evidence" class="sidebar-link">ingest_evidence <span class="legacy-label">legacy</span></a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Constitutional Floors</div>
+      <div class="sidebar-group-items">
+        <a href="floors.html" class="sidebar-link active">F1–F13 Overview</a>
+        <a href="floors.html#verdict-states" class="sidebar-link">Verdict States</a>
+        <a href="floors.html#fault-codes" class="sidebar-link">Fault Codes</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> 3E Telemetry</div>
+      <div class="sidebar-group-items">
+        <a href="overview.html#3e-cycle" class="sidebar-link">3E Cycle</a>
+        <a href="overview.html#metrics" class="sidebar-link">Metrics</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Integrations</div>
+      <div class="sidebar-group-items">
+        <a href="integrations.html#claude-desktop" class="sidebar-link">Claude Desktop</a>
+        <a href="integrations.html#cursor" class="sidebar-link">Cursor / VS Code</a>
+        <a href="integrations.html#python-sdk" class="sidebar-link">Python SDK</a>
+        <a href="integrations.html#typescript-sdk" class="sidebar-link">TypeScript SDK</a>
+        <a href="integrations.html#http-curl" class="sidebar-link">HTTP / curl</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Self-Hosting</div>
+      <div class="sidebar-group-items">
+        <a href="getting-started.html#docker" class="sidebar-link">Docker Setup</a>
+        <a href="getting-started.html#vps" class="sidebar-link">VPS Architecture</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Changelog</div>
+      <div class="sidebar-group-items">
+        <a href="changelog.html" class="sidebar-link">v2026.03.14-FORGED</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="doc-content">
+    <h1>Constitutional Floors</h1>
+    <p class="doc-subtitle">The 13 constitutional floors form the governance backbone of arifOS. Every response must pass through each floor, with scores above the threshold required for a SEAL verdict.</p>
+
+    <h2 id="floor-overview">F1–F13 Overview</h2>
+    <p>Each floor evaluates a specific dimension of constitutional compliance. Floors with <strong>VOID triggers</strong> can reject a response entirely if violated. Other floors contribute to the aggregate score but do not independently cause VOID.</p>
+
+    <!-- Floor F1 -->
+    <div class="floor-card" id="f1">
+      <div class="floor-id">F1</div>
+      <div class="floor-info">
+        <h4>Tauhid / Sovereignty</h4>
+        <div class="floor-name-alt">التوحيد — Divine Unity &amp; System Sovereignty</div>
+        <p>The supreme floor. Ensures no response contradicts the foundational sovereignty principle. All governance authority derives from this floor.</p>
+      </div>
+      <div class="floor-meta">
+        <div class="floor-threshold">θ = 0.99</div>
+        <div class="floor-void yes">VOID TRIGGER</div>
+      </div>
+    </div>
+
+    <!-- Floor F2 -->
+    <div class="floor-card" id="f2">
+      <div class="floor-id">F2</div>
+      <div class="floor-info">
+        <h4>Haqq / Truth</h4>
+        <div class="floor-name-alt">الحق — Truth &amp; Epistemic Integrity</div>
+        <p>Verifies factual accuracy and epistemic rigor. Evidence must be traceable, sources must be credible, and claims must be substantiated.</p>
+      </div>
+      <div class="floor-meta">
+        <div class="floor-threshold">θ = 0.80</div>
+        <div class="floor-void no">NO VOID</div>
+      </div>
+    </div>
+
+    <!-- Floor F3 -->
+    <div class="floor-card" id="f3">
+      <div class="floor-id">F3</div>
+      <div class="floor-info">
+        <h4>Adl / Justice</h4>
+        <div class="floor-name-alt">العدل — Justice &amp; Fairness</div>
+        <p>Ensures responses are fair, unbiased, and do not discriminate. Evaluates equitable treatment across different groups and perspectives.</p>
+      </div>
+      <div class="floor-meta">
+        <div class="floor-threshold">θ = 0.85</div>
+        <div class="floor-void yes">VOID TRIGGER</div>
+      </div>
+    </div>
+
+    <!-- Floor F4 -->
+    <div class="floor-card" id="f4">
+      <div class="floor-id">F4</div>
+      <div class="floor-info">
+        <h4>Amanah / Trust</h4>
+        <div class="floor-name-alt">الأمانة — Trust &amp; Stewardship</div>
+        <p>Validates that the system acts as a trustworthy steward. Checks data handling, privacy, and responsible use of capabilities.</p>
+      </div>
+      <div class="floor-meta">
+        <div class="floor-threshold">θ = 0.85</div>
+        <div class="floor-void no">NO VOID</div>
+      </div>
+    </div>
+
+    <!-- Floor F5 -->
+    <div class="floor-card" id="f5">
+      <div class="floor-id">F5</div>
+      <div class="floor-info">
+        <h4>Ihsan / Excellence</h4>
+        <div class="floor-name-alt">الإحسان — Excellence &amp; Quality</div>
+        <p>Ensures responses meet quality and completeness standards. Not just correct, but excellent — thorough, clear, and actionable.</p>
+      </div>
+      <div class="floor-meta">
+        <div class="floor-threshold">θ = 0.75</div>
+        <div class="floor-void no">NO VOID</div>
+      </div>
+    </div>
+
+    <!-- Floor F6 -->
+    <div class="floor-card" id="f6">
+      <div class="floor-id">F6</div>
+      <div class="floor-info">
+        <h4>Ilm / Knowledge</h4>
+        <div class="floor-name-alt">العلم — Knowledge &amp; Learning</div>
+        <p>Evaluates the depth and correctness of knowledge applied. Checks for hallucination, confabulation, and knowledge boundary awareness.</p>
+      </div>
+      <div class="floor-meta">
+        <div class="floor-threshold">θ = 0.80</div>
+        <div class="floor-void no">NO VOID</div>
+      </div>
+    </div>
+
+    <!-- Floor F7 -->
+    <div class="floor-card" id="f7">
+      <div class="floor-id">F7</div>
+      <div class="floor-info">
+        <h4>Hikmah / Wisdom</h4>
+        <div class="floor-name-alt">الحكمة — Wisdom &amp; Prudence</div>
+        <p>Assesses prudence and long-term thinking. Ensures responses consider consequences, trade-offs, and downstream effects.</p>
+      </div>
+      <div class="floor-meta">
+        <div class="floor-threshold">θ = 0.75</div>
+        <div class="floor-void no">NO VOID</div>
+      </div>
+    </div>
+
+    <!-- Floor F8 -->
+    <div class="floor-card" id="f8">
+      <div class="floor-id">F8</div>
+      <div class="floor-info">
+        <h4>Shura / Consultation</h4>
+        <div class="floor-name-alt">الشورى — Consultation &amp; Deliberation</div>
+        <p>Validates that multiple perspectives were considered. Ensures the system doesn't tunnel-vision on a single interpretation.</p>
+      </div>
+      <div class="floor-meta">
+        <div class="floor-threshold">θ = 0.70</div>
+        <div class="floor-void no">NO VOID</div>
+      </div>
+    </div>
+
+    <!-- Floor F9 -->
+    <div class="floor-card" id="f9">
+      <div class="floor-id">F9</div>
+      <div class="floor-info">
+        <h4>Sabr / Patience</h4>
+        <div class="floor-name-alt">الصبر — Patience &amp; Restraint</div>
+        <p>Checks for rushing to conclusions or premature certainty. Enforces epistemic humility and willingness to say "I don't know."</p>
+      </div>
+      <div class="floor-meta">
+        <div class="floor-threshold">θ = 0.70</div>
+        <div class="floor-void no">NO VOID</div>
+      </div>
+    </div>
+
+    <!-- Floor F10 -->
+    <div class="floor-card" id="f10">
+      <div class="floor-id">F10</div>
+      <div class="floor-info">
+        <h4>Tawbah / Correction</h4>
+        <div class="floor-name-alt">التوبة — Correction &amp; Self-Improvement</div>
+        <p>Ensures the system can acknowledge and correct errors. Tracks correction history and prevents repeated mistakes.</p>
+      </div>
+      <div class="floor-meta">
+        <div class="floor-threshold">θ = 0.75</div>
+        <div class="floor-void no">NO VOID</div>
+      </div>
+    </div>
+
+    <!-- Floor F11 -->
+    <div class="floor-card" id="f11">
+      <div class="floor-id">F11</div>
+      <div class="floor-info">
+        <h4>Tawakkul / Reliance</h4>
+        <div class="floor-name-alt">التوكل — Reliance &amp; Operational Trust</div>
+        <p>Validates system reliability and operational integrity. Ensures infrastructure, dependencies, and services are functioning correctly.</p>
+      </div>
+      <div class="floor-meta">
+        <div class="floor-threshold">θ = 0.80</div>
+        <div class="floor-void no">NO VOID</div>
+      </div>
+    </div>
+
+    <!-- Floor F12 -->
+    <div class="floor-card" id="f12">
+      <div class="floor-id">F12</div>
+      <div class="floor-info">
+        <h4>Istiqamah / Consistency</h4>
+        <div class="floor-name-alt">الاستقامة — Consistency &amp; Steadfastness</div>
+        <p>Checks for consistency with previous responses, stated principles, and governance rules. Prevents contradiction and drift.</p>
+      </div>
+      <div class="floor-meta">
+        <div class="floor-threshold">θ = 0.80</div>
+        <div class="floor-void no">NO VOID</div>
+      </div>
+    </div>
+
+    <!-- Floor F13 -->
+    <div class="floor-card" id="f13">
+      <div class="floor-id">F13</div>
+      <div class="floor-info">
+        <h4>Khalifah / Stewardship</h4>
+        <div class="floor-name-alt">الخلافة — Stewardship &amp; Accountability</div>
+        <p>The final floor. Ensures the system acts as a responsible steward of knowledge and power. The last gate before sealing into VAULT999.</p>
+      </div>
+      <div class="floor-meta">
+        <div class="floor-threshold">θ = 0.90</div>
+        <div class="floor-void yes">VOID TRIGGER</div>
+      </div>
+    </div>
+
+    <h2 id="verdict-states">Verdict States</h2>
+    <p>After traversing all 13 floors, the governance kernel assigns one of these verdict states:</p>
+
+    <table class="doc-table">
+      <thead>
+        <tr><th>Verdict</th><th>Code</th><th>Meaning</th><th>Action</th></tr>
+      </thead>
+      <tbody class="verdict-row">
+        <tr>
+          <td style="color: #22c55e;">SEAL</td>
+          <td><code>SEAL</code></td>
+          <td>All 13 floors passed. Response is fully verified and constitutionally compliant.</td>
+          <td>Response is sealed into VAULT999 Merkle chain and delivered to client.</td>
+        </tr>
+        <tr>
+          <td style="color: #22c55e;">PROVISIONAL</td>
+          <td><code>PROVISIONAL</code></td>
+          <td>All critical floors passed but some non-critical floors are borderline.</td>
+          <td>Response delivered with advisory notice. Sealed with PROVISIONAL flag.</td>
+        </tr>
+        <tr>
+          <td style="color: #f59e0b;">PARTIAL</td>
+          <td><code>PARTIAL</code></td>
+          <td>Most floors passed but one or more non-VOID floors failed.</td>
+          <td>Response delivered with degraded confidence warning.</td>
+        </tr>
+        <tr>
+          <td style="color: #f59e0b;">SABAR</td>
+          <td><code>SABAR</code></td>
+          <td>Patience verdict — insufficient evidence to determine. More time or data needed.</td>
+          <td>Response held pending additional evidence gathering. Retry recommended.</td>
+        </tr>
+        <tr>
+          <td style="color: #f59e0b;">HOLD</td>
+          <td><code>HOLD</code></td>
+          <td>Mechanical failure or insufficient conditions (NOT a constitutional violation).</td>
+          <td>Response held. System retries or requests human intervention.</td>
+        </tr>
+        <tr>
+          <td style="color: #8b5cf6;">HOLD_888</td>
+          <td><code>HOLD_888</code></td>
+          <td>Judgment-level hold at stage 888_JUDGE. The APEX dashboard flagged an anomaly.</td>
+          <td>Response held for APEX review. Requires manual inspection.</td>
+        </tr>
+        <tr>
+          <td style="color: #ef4444;">VOID</td>
+          <td><code>VOID</code></td>
+          <td>Constitutional violation detected. A VOID-trigger floor (F1, F3, or F13) failed.</td>
+          <td>Response is REJECTED. Cannot be delivered. Logged with VOID reason.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-danger">
+      <div class="callout-title">Verdict Invariant — Critical Rule</div>
+      <strong>VOID is ONLY for constitutional violations.</strong> Mechanical failures (timeouts, parsing errors, network issues, API failures) always produce HOLD, never VOID. This invariant is enforced at the kernel level and cannot be overridden by any tool, persona, or configuration. Violating this invariant would itself trigger a VOID on floor F1.
+    </div>
+
+    <h2 id="fault-codes">Fault Codes</h2>
+    <p>When a floor fails, a structured fault code is emitted for debugging:</p>
+
+    <table class="doc-table">
+      <thead>
+        <tr><th>Code</th><th>Floor</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>F1_SOVEREIGNTY_BREACH</code></td><td>F1</td><td>Response violated sovereignty principle</td></tr>
+        <tr><td><code>F2_TRUTH_DEFICIT</code></td><td>F2</td><td>Insufficient evidence or factual accuracy below threshold</td></tr>
+        <tr><td><code>F3_JUSTICE_VIOLATION</code></td><td>F3</td><td>Bias, discrimination, or unfairness detected</td></tr>
+        <tr><td><code>F4_TRUST_BREACH</code></td><td>F4</td><td>Privacy violation or misuse of capabilities</td></tr>
+        <tr><td><code>F5_QUALITY_DEFICIT</code></td><td>F5</td><td>Response quality below acceptable standard</td></tr>
+        <tr><td><code>F6_KNOWLEDGE_GAP</code></td><td>F6</td><td>Hallucination detected or knowledge boundaries exceeded</td></tr>
+        <tr><td><code>F7_WISDOM_DEFICIT</code></td><td>F7</td><td>Failure to consider consequences or trade-offs</td></tr>
+        <tr><td><code>F8_CONSULTATION_SKIP</code></td><td>F8</td><td>Single-perspective response without deliberation</td></tr>
+        <tr><td><code>F9_PATIENCE_BREACH</code></td><td>F9</td><td>Premature certainty or rushed conclusion</td></tr>
+        <tr><td><code>F10_CORRECTION_FAIL</code></td><td>F10</td><td>Repeated error or failure to self-correct</td></tr>
+        <tr><td><code>F11_RELIABILITY_FAULT</code></td><td>F11</td><td>Infrastructure or dependency failure</td></tr>
+        <tr><td><code>F12_CONSISTENCY_DRIFT</code></td><td>F12</td><td>Contradiction with prior responses or rules</td></tr>
+        <tr><td><code>F13_STEWARDSHIP_FAIL</code></td><td>F13</td><td>Accountability failure at the stewardship gate</td></tr>
+      </tbody>
+    </table>
+  </main>
+
+  <!-- Right TOC -->
+  <aside class="toc">
+    <div class="toc-title">On this page</div>
+    <a href="#floor-overview">F1–F13 Overview</a>
+    <a href="#f1" class="toc-h3">F1 Tauhid</a>
+    <a href="#f2" class="toc-h3">F2 Haqq</a>
+    <a href="#f3" class="toc-h3">F3 Adl</a>
+    <a href="#f4" class="toc-h3">F4 Amanah</a>
+    <a href="#f5" class="toc-h3">F5 Ihsan</a>
+    <a href="#f6" class="toc-h3">F6 Ilm</a>
+    <a href="#f7" class="toc-h3">F7 Hikmah</a>
+    <a href="#f8" class="toc-h3">F8 Shura</a>
+    <a href="#f9" class="toc-h3">F9 Sabr</a>
+    <a href="#f10" class="toc-h3">F10 Tawbah</a>
+    <a href="#f11" class="toc-h3">F11 Tawakkul</a>
+    <a href="#f12" class="toc-h3">F12 Istiqamah</a>
+    <a href="#f13" class="toc-h3">F13 Khalifah</a>
+    <a href="#verdict-states">Verdict States</a>
+    <a href="#fault-codes">Fault Codes</a>
+  </aside>
+
+</div>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-line">© 2026 ARIF FAZIL · arifOS MCP · Ditempa Bukan Diberi</div>
+  <div class="footer-line"><a href="https://perplexity.ai" target="_blank">Created with Perplexity Computer</a></div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="../app.js"></script>
+</body>
+</html>

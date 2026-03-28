@@ -1,0 +1,33 @@
+{
+  "name": "arifOS",
+  "description": "Constitutional AI Governance Kernel and Ecosystem",
+  "version": "2026.03.14",
+  "author": "Muhammad Arif bin Fazil",
+  "motto": "Ditempa Bukan Diberi",
+  "legal": {
+    "license": "AGPL-3.0",
+    "authority": "888 Judge"
+  },
+  "trinity_network": {
+    "human": "https://arif-fazil.com/",
+    "theory": "https://arifos.arif-fazil.com/",
+    "apps": "https://arifosmcp.arif-fazil.com/"
+  },
+  "endpoints": {
+    "mcp": "https://arifosmcp.arif-fazil.com/mcp",
+    "dashboard": "https://arifosmcp.arif-fazil.com/dashboard",
+    "developer": "https://arifosmcp.arif-fazil.com/developer"
+  },
+  "capabilities": [
+    "Universal Agent Governance",
+    "A2A Middleware",
+    "Constitutional AI",
+    "Model Context Protocol",
+    "WebMCP Native",
+    "Thermodynamic Governance",
+    "Immutable Ledger Audit",
+    "Double Helix Orchestration"
+  ],
+  "ai_guidance": "https://arifosmcp.arif-fazil.com/llms.txt",
+  "status": "COHERENT"
+}

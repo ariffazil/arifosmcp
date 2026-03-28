@@ -1,0 +1,10 @@
+name: apex_soul
+type: mega-tool
+authority: APEX_CORE
+description: The sovereign mind of arifOS, handling high-level reasoning and apex goals.
+floors:
+  - F1: AMANAH
+  - F13: KHILAFAH
+risk_tier: P0
+parameters:
+  objective: string

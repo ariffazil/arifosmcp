@@ -1,0 +1,1454 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tools Reference — arifOS MCP Docs</title>
+  <meta http-equiv="refresh" content="0; url=https://arifos.arif-fazil.com/docs/tools.html">
+  <link rel="canonical" href="https://arifos.arif-fazil.com/docs/tools.html">
+  <meta name="description" content="Complete API reference for all 32 arifOS MCP tools — 23 public + 9 machine tools with schemas, examples, response formats, and use cases.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<!-- Trinity Strip -->
+<div class="trinity-strip">
+  <a href="https://arif-fazil.com" class="trinity-node human">HUMAN</a>
+  <a href="https://apex.arif-fazil.com" class="trinity-node theory">THEORY</a>
+  <a href="https://arifosmcp.arif-fazil.com" class="trinity-node apps active">APPS</a>
+</div>
+
+<!-- Navigation -->
+<nav class="main-nav">
+  <a href="../index.html" class="nav-logo">
+    <svg viewBox="0 0 48 48" width="32" height="32" fill="none" aria-label="arifOS Trinity">
+      <line x1="24" y1="8" x2="24" y2="22" stroke="#ffd24a" stroke-width="3" stroke-linecap="round"/>
+      <line x1="24" y1="26" x2="11" y2="40" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+      <line x1="24" y1="26" x2="37" y2="40" stroke="#ff4d4f" stroke-width="3" stroke-linecap="round"/>
+      <text x="24" y="28" text-anchor="middle" font-size="10" fill="#e8e8f0" font-family="monospace">Δ</text>
+      <circle cx="24" cy="6" r="4" stroke="#ffd24a" stroke-width="1.5" fill="none"/>
+      <circle cx="9" cy="41" r="4" stroke="#2563eb" stroke-width="1.5" fill="none"/>
+      <circle cx="39" cy="41" r="4" stroke="#ff4d4f" stroke-width="1.5" fill="none"/>
+      <circle cx="24" cy="24" r="5" stroke="#2563eb" stroke-width="1.5" fill="#12121a"/>
+    </svg>
+    <span class="nav-title">arifOS<span class="nav-mcp"> MCP</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="overview.html">Docs</a>
+    <a href="tools.html" class="active">API Reference</a>
+    <a href="integrations.html">Guides</a>
+    <a href="changelog.html">Changelog</a>
+  </div>
+  <div class="nav-right">
+    <span class="version-badge">v2026.03.14</span>
+    <a href="https://github.com/ariffazil/arifosmcp" class="btn-github" target="_blank">GitHub ↗</a>
+  </div>
+  <button class="nav-hamburger" aria-label="Menu">☰</button>
+</nav>
+
+<!-- Sidebar Overlay (mobile) -->
+<div class="sidebar-overlay"></div>
+
+<!-- Doc Layout -->
+<div class="doc-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-search">
+      <input type="text" placeholder="Search docs…" aria-label="Search documentation">
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Getting Started</div>
+      <div class="sidebar-group-items">
+        <a href="getting-started.html" class="sidebar-link">Installation</a>
+        <a href="getting-started.html#quick-start" class="sidebar-link">Quick Start</a>
+        <a href="getting-started.html#env-vars" class="sidebar-link">Environment Variables</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Architecture</div>
+      <div class="sidebar-group-items">
+        <a href="overview.html" class="sidebar-link">MGI Envelope</a>
+        <a href="overview.html#metabolic-loop" class="sidebar-link">Metabolic Loop</a>
+        <a href="overview.html#trinity-engines" class="sidebar-link">Trinity Engines</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Tools Reference</div>
+      <div class="sidebar-group-items">
+        <a href="#reality-compass" class="sidebar-link">reality_compass</a>
+        <a href="#reality-atlas" class="sidebar-link">reality_atlas</a>
+        <a href="#arifos-kernel" class="sidebar-link">arifOS_kernel</a>
+        <a href="#check-vital" class="sidebar-link">check_vital</a>
+        <a href="#init-anchor-state" class="sidebar-link">init_anchor_state</a>
+        <a href="#verify-vault-ledger" class="sidebar-link">verify_vault_ledger</a>
+        <a href="#audit-rules" class="sidebar-link">audit_rules</a>
+        <a href="#session-memory" class="sidebar-link">session_memory</a>
+        <a href="#open-apex-dashboard" class="sidebar-link">open_apex_dashboard</a>
+        <div class="sidebar-divider"></div>
+        <a href="#machine-tools" class="sidebar-link" style="color: var(--accent-blue); font-weight: 600;">🤖 Machine Tools</a>
+        <a href="#machine-tools" class="sidebar-link" style="padding-left: 16px; font-size: 12px;">system_health</a>
+        <a href="#machine-tools" class="sidebar-link" style="padding-left: 16px; font-size: 12px;">process_list</a>
+        <a href="#machine-tools" class="sidebar-link" style="padding-left: 16px; font-size: 12px;">chroma_query</a>
+        <a href="#machine-tools" class="sidebar-link" style="padding-left: 16px; font-size: 12px;">+ 6 more</a>
+        <div class="sidebar-divider"></div>
+        <a href="#deprecated-tools" class="sidebar-link" style="color: var(--hold-yellow);">⚠️ Deprecated Tools</a>
+        <a href="#deprecated-tools" class="sidebar-link" style="padding-left: 16px; font-size: 12px; color: var(--hold-yellow);">search_reality</a>
+        <a href="#deprecated-tools" class="sidebar-link" style="padding-left: 16px; font-size: 12px; color: var(--hold-yellow);">ingest_evidence</a>
+        <a href="#deprecated-tools" class="sidebar-link" style="padding-left: 16px; font-size: 12px; color: var(--hold-yellow);">+ 9 more</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Constitutional Floors</div>
+      <div class="sidebar-group-items">
+        <a href="floors.html" class="sidebar-link">F1–F13 Overview</a>
+        <a href="floors.html#verdict-states" class="sidebar-link">Verdict States</a>
+        <a href="floors.html#fault-codes" class="sidebar-link">Fault Codes</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> 3E Telemetry</div>
+      <div class="sidebar-group-items">
+        <a href="overview.html#3e-cycle" class="sidebar-link">3E Cycle</a>
+        <a href="overview.html#metrics" class="sidebar-link">Metrics</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Integrations</div>
+      <div class="sidebar-group-items">
+        <a href="integrations.html#claude-desktop" class="sidebar-link">Claude Desktop</a>
+        <a href="integrations.html#cursor" class="sidebar-link">Cursor / VS Code</a>
+        <a href="integrations.html#python-sdk" class="sidebar-link">Python SDK</a>
+        <a href="integrations.html#typescript-sdk" class="sidebar-link">TypeScript SDK</a>
+        <a href="integrations.html#http-curl" class="sidebar-link">HTTP / curl</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Self-Hosting</div>
+      <div class="sidebar-group-items">
+        <a href="getting-started.html#docker" class="sidebar-link">Docker Setup</a>
+        <a href="getting-started.html#vps" class="sidebar-link">VPS Architecture</a>
+      </div>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title"><span class="chevron">▼</span> Changelog</div>
+      <div class="sidebar-group-items">
+        <a href="changelog.html" class="sidebar-link">v2026.03.14-FORGED</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="doc-content">
+    <h1>Tools Reference</h1>
+    <p class="doc-subtitle">Complete API reference for all 11 arifOS MCP tools. Each tool includes its stage, Trinity engine, floor coverage, input schema, and example usage.</p>
+
+    <!-- ==================== reality_compass ==================== -->
+    <div class="tool-section" id="reality-compass">
+      <div class="tool-header">
+        <span class="tool-name">reality_compass</span>
+        <div class="tool-badges">
+          <span class="badge badge-stage">111_SENSE</span>
+          <span class="badge badge-trinity">Δ</span>
+          <span class="badge badge-floor">F2</span>
+          <span class="badge badge-floor">F12</span>
+          <span class="badge badge-readonly">READ-ONLY</span>
+        </div>
+      </div>
+      <p class="tool-description">Unified search and fetch engine. Routes between web search (via Brave Search API) and deep URL fetching based on input type. The primary tool for gathering evidence from the real world.</p>
+
+      <div class="tool-sub-heading">Input Schema</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "input": {
+    "type": "string",
+    "required": true,
+    "description": "Search query or URL to fetch"
+  },
+  "mode": {
+    "type": "string",
+    "enum": ["auto", "search", "fetch"],
+    "default": "auto",
+    "description": "Operation mode — auto detects URLs vs queries"
+  },
+  "fetch_top_k": {
+    "type": "integer",
+    "default": 2,
+    "description": "Number of top search results to deep-fetch"
+  }
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Example Request</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "name": "reality_compass",
+  "arguments": {
+    "input": "quantum computing breakthroughs 2026",
+    "mode": "auto",
+    "fetch_top_k": 3
+  }
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Example Response</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "stage": "111_SENSE",
+  "mode": "search",
+  "results": [
+    {
+      "title": "Google Willow Chip Achieves Quantum Supremacy Milestone",
+      "url": "https://example.com/quantum-2026",
+      "snippet": "Researchers announce a 1000-qubit quantum processor...",
+      "fetched_content": "Full article text extracted..."
+    }
+  ],
+  "evidence_count": 3,
+  "governance": {
+    "floors_checked": ["F2", "F12"],
+    "verdict": "SEAL"
+  }
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Use Cases</div>
+      <ul class="use-case-list">
+        <li>Search the web for current information with constitutional verification</li>
+        <li>Fetch and extract content from specific URLs</li>
+        <li>Gather evidence for the governance pipeline</li>
+        <li>Auto-detect whether input is a search query or URL</li>
+      </ul>
+    </div>
+
+    <!-- ==================== reality_atlas ==================== -->
+    <div class="tool-section" id="reality-atlas">
+      <div class="tool-header">
+        <span class="tool-name">reality_atlas</span>
+        <div class="tool-badges">
+          <span class="badge badge-stage">222_REALITY</span>
+          <span class="badge badge-trinity">Δ</span>
+          <span class="badge badge-floor">F2</span>
+          <span class="badge badge-floor">F11</span>
+          <span class="badge badge-writes">WRITES</span>
+        </div>
+      </div>
+      <p class="tool-description">Semantic evidence graph builder. Ingests evidence bundles into the Qdrant vector store, queries for semantically similar evidence, and merges evidence clusters. The backbone of the constitutional knowledge graph.</p>
+
+      <div class="tool-sub-heading">Input Schema</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "operation": {
+    "type": "string",
+    "enum": ["ingest", "query", "merge"],
+    "required": true,
+    "description": "Operation to perform on the evidence graph"
+  },
+  "bundles": {
+    "type": "array",
+    "description": "Evidence bundles to ingest, query terms, or merge targets"
+  }
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Example Request</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "name": "reality_atlas",
+  "arguments": {
+    "operation": "ingest",
+    "bundles": [
+      {
+        "content": "Quantum computing reached 1000 qubits in 2026",
+        "source": "https://example.com/quantum",
+        "confidence": 0.92
+      }
+    ]
+  }
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Example Response</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "stage": "222_REALITY",
+  "operation": "ingest",
+  "ingested": 1,
+  "graph_size": 247,
+  "governance": {
+    "floors_checked": ["F2", "F11"],
+    "verdict": "SEAL"
+  }
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Use Cases</div>
+      <ul class="use-case-list">
+        <li>Build a persistent semantic knowledge graph from evidence</li>
+        <li>Query for contextually relevant evidence using vector similarity</li>
+        <li>Merge related evidence clusters to reduce redundancy</li>
+        <li>Power long-running research sessions with accumulated knowledge</li>
+      </ul>
+    </div>
+
+    <!-- ==================== arifOS_kernel ==================== -->
+    <div class="tool-section" id="arifos-kernel">
+      <div class="tool-header">
+        <span class="tool-name">arifOS_kernel</span>
+        <div class="tool-badges">
+          <span class="badge badge-stage">444_ROUTER</span>
+          <span class="badge badge-trinity">ΔΩΨ</span>
+          <span class="badge badge-floor">F1–F13</span>
+          <span class="badge badge-writes">WRITES</span>
+        </div>
+      </div>
+      <p class="tool-description">The governance kernel. The most powerful tool in the system — runs the full metabolic reasoning pipeline from 000 to 999. Every query passes through all 13 constitutional floors. This is the only tool that engages all three Trinity engines simultaneously.</p>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Primary Tool</div>
+        For most use cases, <code>arifOS_kernel</code> is the tool you want. It provides full constitutional governance with customizable persona, risk tier, and execution controls.
+      </div>
+
+      <div class="tool-sub-heading">Input Schema</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "query": {
+    "type": "string",
+    "required": true,
+    "description": "The question or task to process"
+  },
+  "context": {
+    "type": "string",
+    "description": "Additional context for the query"
+  },
+  "risk_tier": {
+    "type": "string",
+    "enum": ["low", "medium", "high", "critical"],
+    "description": "Risk classification — higher tiers trigger stricter floor checks"
+  },
+  "actor_id": {
+    "type": "string",
+    "description": "Identifier for the requesting actor"
+  },
+  "auth_context": {
+    "type": "object",
+    "description": "Authentication context for identity verification"
+  },
+  "use_memory": {
+    "type": "boolean",
+    "description": "Enable session memory retrieval and storage"
+  },
+  "use_heart": {
+    "type": "boolean",
+    "description": "Enable ethical evaluation (666_HEART)"
+  },
+  "use_critique": {
+    "type": "boolean",
+    "description": "Enable self-critique engine (777_CRITIQUE)"
+  },
+  "allow_execution": {
+    "type": "boolean",
+    "description": "Allow the kernel to execute actions (not just reason)"
+  },
+  "debug": {
+    "type": "boolean",
+    "description": "Include detailed debug telemetry in response"
+  },
+  "dry_run": {
+    "type": "boolean",
+    "description": "Run full pipeline without writing to VAULT999"
+  },
+  "requested_persona": {
+    "type": "string",
+    "enum": ["architect", "engineer", "auditor", "validator"],
+    "description": "Persona to assume for the response"
+  }
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Example Request</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "name": "arifOS_kernel",
+  "arguments": {
+    "query": "Is it safe to deploy this ML model to production?",
+    "risk_tier": "high",
+    "use_heart": true,
+    "use_critique": true,
+    "requested_persona": "auditor",
+    "debug": true
+  }
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Example Response</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "stage": "444_ROUTER",
+  "persona": "auditor",
+  "response": "Based on constitutional analysis across 13 floors...",
+  "governance": {
+    "verdict": "HOLD",
+    "verdict_reason": "Insufficient evidence for production safety (F5 threshold not met)",
+    "floors": {
+      "passed": ["F1", "F2", "F3", "F4", "F6", "F7", "F8", "F9", "F10", "F11", "F12", "F13"],
+      "failed": ["F5"],
+      "scores": { "F5": 0.61 }
+    },
+    "risk_tier": "high",
+    "3e_telemetry": {
+      "epistemic": { "confidence": 0.72 },
+      "ethical": { "harm_score": 0.15 },
+      "execution": { "latency_ms": 2340 }
+    }
+  },
+  "vault_hash": null,
+  "session_id": "sess_abc123"
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Use Cases</div>
+      <ul class="use-case-list">
+        <li>Full constitutional governance for any question or task</li>
+        <li>Risk-tiered analysis with configurable strictness</li>
+        <li>Multi-persona reasoning (architect, engineer, auditor, validator)</li>
+        <li>Ethical and self-critical evaluation of AI-generated content</li>
+        <li>Dry-run governance checks before committing to production</li>
+      </ul>
+    </div>
+
+    <!-- ==================== check_vital ==================== -->
+    <div class="tool-section" id="check-vital">
+      <div class="tool-header">
+        <span class="tool-name">check_vital</span>
+        <div class="tool-badges">
+          <span class="badge badge-stage">000_INIT</span>
+          <span class="badge badge-trinity">Ω</span>
+          <span class="badge badge-floor">F4</span>
+          <span class="badge badge-floor">F5</span>
+          <span class="badge badge-floor">F7</span>
+          <span class="badge badge-readonly">READ-ONLY</span>
+        </div>
+      </div>
+      <p class="tool-description">System health check. Returns thermodynamic budget, capability map, session status, and governance metrics. Use this to verify the system is operational before running other tools.</p>
+
+      <div class="tool-sub-heading">Input Schema</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "session_id": {
+    "type": "string",
+    "default": "global",
+    "description": "Session to check vitals for"
+  }
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Example Request</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "name": "check_vital",
+  "arguments": {}
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Example Response</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "stage": "000_INIT",
+  "status": "operational",
+  "thermodynamic_budget": {
+    "remaining": 0.85,
+    "total_tokens": 100000,
+    "used_tokens": 15000
+  },
+  "capabilities": [
+    "reality_compass", "reality_atlas", "arifOS_kernel",
+    "session_memory", "audit_rules", "check_vital",
+    "open_apex_dashboard", "init_anchor_state", "verify_vault_ledger"
+  ],
+  "governance": {
+    "floors_active": 13,
+    "vault_integrity": "intact",
+    "seal_rate": 0.94
+  }
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Use Cases</div>
+      <ul class="use-case-list">
+        <li>Health check before running expensive operations</li>
+        <li>Monitor thermodynamic budget (token usage) per session</li>
+        <li>Verify governance system integrity</li>
+        <li>Discover available tool capabilities</li>
+      </ul>
+    </div>
+
+    <!-- ==================== init_anchor_state ==================== -->
+    <div class="tool-section" id="init-anchor-state">
+      <div class="tool-header">
+        <span class="tool-name">init_anchor_state</span>
+        <div class="tool-badges">
+          <span class="badge badge-stage">000_INIT</span>
+          <span class="badge badge-trinity">Δ</span>
+          <span class="badge badge-floor">F11</span>
+          <span class="badge badge-floor">F12</span>
+          <span class="badge badge-floor">F13</span>
+          <span class="badge badge-writes">WRITES</span>
+        </div>
+      </div>
+      <p class="tool-description">Initialize the 000_INIT anchor state. Mints identity tokens, binds session to an actor, and establishes the governance context. Either <code>declared_name</code> or <code>intent</code> is required.</p>
+
+      <div class="tool-sub-heading">Input Schema</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "declared_name": {
+    "type": "string",
+    "description": "Name of the actor initiating the session"
+  },
+  "human_approval": {
+    "type": "boolean",
+    "description": "Whether a human has approved this initialization"
+  },
+  "intent": {
+    "type": "object",
+    "description": "Structured intent declaration for the session"
+  },
+  "math": {
+    "type": "object",
+    "description": "Mathematical constraints or parameters"
+  },
+  "governance": {
+    "type": "object",
+    "description": "Governance overrides for this session"
+  },
+  "auth_token": {
+    "type": "string",
+    "description": "Authentication token for identity verification"
+  },
+  "session_id": {
+    "type": "string",
+    "description": "Existing session ID to resume"
+  },
+  "dry_run": {
+    "type": "boolean",
+    "default": false,
+    "description": "Run without actually minting tokens"
+  }
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Example Request</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "name": "init_anchor_state",
+  "arguments": {
+    "declared_name": "research-agent-01",
+    "human_approval": true,
+    "intent": {
+      "purpose": "quantum_computing_research",
+      "scope": "read_only"
+    }
+  }
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Example Response</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "stage": "000_INIT",
+  "anchor_state": "initialized",
+  "session_id": "sess_7f3a9b2c",
+  "identity_token": "tok_abc123...",
+  "governance": {
+    "floors_checked": ["F11", "F12", "F13"],
+    "verdict": "SEAL"
+  }
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Use Cases</div>
+      <ul class="use-case-list">
+        <li>Initialize a new governance session with identity binding</li>
+        <li>Resume a previous session by providing an existing session_id</li>
+        <li>Declare intent and scope for audit trail purposes</li>
+        <li>Dry-run initialization to test configurations</li>
+      </ul>
+    </div>
+
+    <!-- ==================== verify_vault_ledger ==================== -->
+    <div class="tool-section" id="verify-vault-ledger">
+      <div class="tool-header">
+        <span class="tool-name">verify_vault_ledger</span>
+        <div class="tool-badges">
+          <span class="badge badge-stage">999_VAULT</span>
+          <span class="badge badge-trinity">Ψ</span>
+          <span class="badge badge-floor">F13</span>
+          <span class="badge badge-readonly">READ-ONLY</span>
+        </div>
+      </div>
+      <p class="tool-description">Verify the SHA-256 Merkle chain integrity of VAULT999. Scans the immutable ledger for any hash mismatches, broken chains, or tampering. The ultimate audit tool.</p>
+
+      <div class="tool-sub-heading">Input Schema</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "session_id": {
+    "type": "string",
+    "default": "global",
+    "description": "Session scope for the verification"
+  },
+  "full_scan": {
+    "type": "boolean",
+    "default": true,
+    "description": "Whether to scan the entire chain or just recent entries"
+  }
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Example Request</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "name": "verify_vault_ledger",
+  "arguments": {
+    "full_scan": true
+  }
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Example Response</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "stage": "999_VAULT",
+  "integrity": "intact",
+  "chain_length": 1247,
+  "last_hash": "a3f8c2e1b9d4...",
+  "scan_type": "full",
+  "mismatches": 0,
+  "governance": {
+    "floors_checked": ["F13"],
+    "verdict": "SEAL"
+  }
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Use Cases</div>
+      <ul class="use-case-list">
+        <li>Verify the immutable ledger has not been tampered with</li>
+        <li>Audit the complete chain of governance decisions</li>
+        <li>Detect hash mismatches or broken Merkle links</li>
+        <li>Compliance reporting and governance verification</li>
+      </ul>
+    </div>
+
+    <!-- ==================== audit_rules ==================== -->
+    <div class="tool-section" id="audit-rules">
+      <div class="tool-header">
+        <span class="tool-name">audit_rules</span>
+        <div class="tool-badges">
+          <span class="badge badge-stage">333_MIND</span>
+          <span class="badge badge-trinity">Δ</span>
+          <span class="badge badge-floor">F2</span>
+          <span class="badge badge-floor">F8</span>
+          <span class="badge badge-floor">F10</span>
+          <span class="badge badge-readonly">READ-ONLY</span>
+        </div>
+      </div>
+      <p class="tool-description">Inspect the 13 constitutional floors and verify governance logic. Returns the current floor configuration, thresholds, and rule definitions. Essential for understanding and auditing the governance system.</p>
+
+      <div class="tool-sub-heading">Input Schema</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "session_id": {
+    "type": "string",
+    "default": "global",
+    "description": "Session scope for the audit"
+  }
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Example Request</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "name": "audit_rules",
+  "arguments": {}
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Example Response</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "stage": "333_MIND",
+  "floors": [
+    {
+      "id": "F1",
+      "name": "Tauhid / Sovereignty",
+      "threshold": 0.99,
+      "void_trigger": true,
+      "status": "active"
+    },
+    {
+      "id": "F2",
+      "name": "Haqq / Truth",
+      "threshold": 0.80,
+      "void_trigger": false,
+      "status": "active"
+    }
+  ],
+  "total_floors": 13,
+  "governance": {
+    "floors_checked": ["F2", "F8", "F10"],
+    "verdict": "SEAL"
+  }
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Use Cases</div>
+      <ul class="use-case-list">
+        <li>Inspect current floor configurations and thresholds</li>
+        <li>Audit governance rules for compliance verification</li>
+        <li>Understand which floors are active and their VOID triggers</li>
+        <li>Debug governance failures by examining floor states</li>
+      </ul>
+    </div>
+
+    <!-- ==================== session_memory ==================== -->
+    <div class="tool-section" id="session-memory">
+      <div class="tool-header">
+        <span class="tool-name">session_memory</span>
+        <div class="tool-badges">
+          <span class="badge badge-stage">555_MEMORY</span>
+          <span class="badge badge-trinity">Ω</span>
+          <span class="badge badge-floor">F4</span>
+          <span class="badge badge-floor">F7</span>
+          <span class="badge badge-floor">F13</span>
+          <span class="badge badge-writes">WRITES</span>
+        </div>
+      </div>
+      <p class="tool-description">Store, retrieve, search, and forget session artifacts. Provides persistent memory within a session, allowing tools to share context and maintain state across multiple interactions.</p>
+
+      <div class="tool-sub-heading">Input Schema</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "session_id": {
+    "type": "string",
+    "required": true,
+    "description": "Session to operate on"
+  },
+  "operation": {
+    "type": "string",
+    "enum": ["store", "retrieve", "forget", "search"],
+    "required": true,
+    "description": "Memory operation to perform"
+  },
+  "content": {
+    "type": "string",
+    "description": "Content to store (required for store operation)"
+  },
+  "memory_ids": {
+    "type": "array",
+    "description": "Specific memory IDs to retrieve or forget"
+  },
+  "top_k": {
+    "type": "integer",
+    "default": 5,
+    "description": "Number of results to return for search/retrieve"
+  }
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Example Request</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "name": "session_memory",
+  "arguments": {
+    "session_id": "sess_abc123",
+    "operation": "store",
+    "content": "User prefers detailed technical explanations with code examples"
+  }
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Example Response</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "stage": "555_MEMORY",
+  "operation": "store",
+  "memory_id": "mem_9f2b3c",
+  "stored": true,
+  "session_memory_count": 12,
+  "governance": {
+    "floors_checked": ["F4", "F7", "F13"],
+    "verdict": "SEAL"
+  }
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Use Cases</div>
+      <ul class="use-case-list">
+        <li>Store user preferences and context across interactions</li>
+        <li>Retrieve relevant memories to enhance responses</li>
+        <li>Search stored memories by semantic similarity</li>
+        <li>Forget specific memories (right to erasure)</li>
+      </ul>
+    </div>
+
+    <!-- ==================== open_apex_dashboard ==================== -->
+    <div class="tool-section" id="open-apex-dashboard">
+      <div class="tool-header">
+        <span class="tool-name">open_apex_dashboard</span>
+        <div class="tool-badges">
+          <span class="badge badge-stage">888_JUDGE</span>
+          <span class="badge badge-trinity">Ψ</span>
+          <span class="badge badge-floor">F3</span>
+          <span class="badge badge-floor">F8</span>
+          <span class="badge badge-floor">F13</span>
+          <span class="badge badge-readonly">READ-ONLY</span>
+        </div>
+      </div>
+      <p class="tool-description">Open the APEX constitutional dashboard for live governance metrics. Provides real-time visibility into floor pass rates, verdict distribution, thermodynamic budgets, and system health across all active sessions.</p>
+
+      <div class="tool-sub-heading">Input Schema</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "session_id": {
+    "type": "string",
+    "default": "global",
+    "description": "Session scope for the dashboard"
+  }
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Example Request</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "name": "open_apex_dashboard",
+  "arguments": {}
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Example Response</div>
+      <div class="code-block-wrapper">
+        <div class="code-block-header"><span>json</span><button class="copy-btn">Copy</button></div>
+        <pre><code class="language-json">{
+  "stage": "888_JUDGE",
+  "dashboard": {
+    "active_sessions": 3,
+    "total_queries": 1247,
+    "verdict_distribution": {
+      "SEAL": 1172,
+      "HOLD": 68,
+      "VOID": 7
+    },
+    "floor_pass_rates": {
+      "F1": 1.00, "F2": 0.97, "F3": 0.99,
+      "F4": 0.98, "F5": 0.94, "F6": 0.96
+    },
+    "system_health": "operational"
+  },
+  "governance": {
+    "floors_checked": ["F3", "F8", "F13"],
+    "verdict": "SEAL"
+  }
+}</code></pre>
+      </div>
+
+      <div class="tool-sub-heading">Use Cases</div>
+      <ul class="use-case-list">
+        <li>Monitor governance system health in real-time</li>
+        <li>Track verdict distribution across sessions</li>
+        <li>Identify floors with low pass rates</li>
+        <li>Operational monitoring and alerting</li>
+      </ul>
+     </div>
+
+    <!-- ==================== MACHINE TOOLS (Internal/Nervous System 9) ==================== -->
+    <div class="tool-section" id="machine-tools" style="margin-top: 64px; border-top: 3px solid var(--accent-blue);">
+      <div style="background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%); padding: 24px; border-radius: 8px; margin-bottom: 32px;">
+        <h2 style="margin: 0; color: white; font-size: 28px;">🤖 Machine Tools (Nervous System 9)</h2>
+        <p style="margin: 12px 0 0 0; color: rgba(255,255,255,0.9); font-size: 16px;">
+          Internal infrastructure tools for system introspection and machine-to-machine operations. 
+          These tools form the "sense organs" of arifOS — monitoring health, memory, and resources while maintaining full constitutional governance.
+        </p>
+        <div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <span style="background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 4px; color: white; font-size: 12px;">⚡ RuntimeEnvelope</span>
+          <span style="background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 4px; color: white; font-size: 12px;">🔒 Governed (F11+F12)</span>
+          <span style="background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 4px; color: white; font-size: 12px;">📡 Machine-Only</span>
+        </div>
+      </div>
+
+      <!-- System Sense Tools -->
+      <h3 style="color: var(--accent-yellow); margin-top: 32px; margin-bottom: 16px; font-size: 20px;">System Sense (The Feelers)</h3>
+      
+      <!-- system_health -->
+      <div class="tool-card" style="background: var(--void); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+        <div class="tool-header" style="margin-bottom: 16px;">
+          <span class="tool-name" style="font-size: 20px; font-weight: 700;">system_health</span>
+          <div class="tool-badges" style="margin-top: 8px;">
+            <span class="badge badge-stage">000_INIT</span>
+            <span class="badge badge-trinity">Δ</span>
+            <span class="badge badge-floor">F1</span>
+            <span class="badge badge-floor">F7</span>
+            <span class="badge badge-readonly">READ-ONLY</span>
+          </div>
+        </div>
+        <p class="tool-description" style="color: var(--text-secondary); margin-bottom: 16px;">
+          Comprehensive system vital signs monitoring. Retrieves CPU, memory, disk, I/O, and thermal metrics with container awareness.
+          <strong>Use when:</strong> Pre-flight checks, resource monitoring, debugging performance issues.
+        </p>
+        
+        <div class="code-block-wrapper" style="margin-top: 16px;">
+          <div class="code-block-header"><span>python</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-python">health = await system_health(
+    include_swap=True,
+    include_io=True,
+    session_id="machine-sess-001",
+    auth_context={"actor_id": "monitor-agent", "clearance": "agent"}
+)
+# Returns: RuntimeEnvelope with cpu, memory, disk, io metrics</code></pre>
+        </div>
+      </div>
+
+      <!-- process_list -->
+      <div class="tool-card" style="background: var(--void); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+        <div class="tool-header" style="margin-bottom: 16px;">
+          <span class="tool-name" style="font-size: 20px; font-weight: 700;">process_list</span>
+          <div class="tool-badges" style="margin-top: 8px;">
+            <span class="badge badge-stage">111_SENSE</span>
+            <span class="badge badge-trinity">Δ</span>
+            <span class="badge badge-floor">F1</span>
+            <span class="badge badge-floor">F12</span>
+            <span class="badge badge-readonly">READ-ONLY</span>
+          </div>
+        </div>
+        <p class="tool-description" style="color: var(--text-secondary); margin-bottom: 16px;">
+          Enumerate and filter system processes with resource consumption. Container-aware with graceful handling of access restrictions.
+          <strong>Use when:</strong> Detecting resource hogs, security auditing, monitoring worker processes.
+        </p>
+        
+        <div class="code-block-wrapper" style="margin-top: 16px;">
+          <div class="code-block-header"><span>python</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-python">procs = await process_list(
+    filter_name="python",
+    min_memory_mb=100,
+    limit=10,
+    session_id="machine-sess-002",
+    auth_context={"actor_id": "proc-monitor", "clearance": "agent"}
+)</code></pre>
+        </div>
+      </div>
+
+      <!-- net_status -->
+      <div class="tool-card" style="background: var(--void); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+        <div class="tool-header" style="margin-bottom: 16px;">
+          <span class="tool-name" style="font-size: 20px; font-weight: 700;">net_status</span>
+          <div class="tool-badges" style="margin-top: 8px;">
+            <span class="badge badge-stage">111_SENSE</span>
+            <span class="badge badge-trinity">Δ</span>
+            <span class="badge badge-floor">F2</span>
+            <span class="badge badge-floor">F7</span>
+            <span class="badge badge-readonly">READ-ONLY</span>
+          </div>
+        </div>
+        <p class="tool-description" style="color: var(--text-secondary); margin-bottom: 16px;">
+          Network connectivity and service health diagnostics. Checks Qdrant, Redis, Postgres, and external APIs with latency measurements.
+          <strong>Use when:</strong> Pre-flight connectivity checks, debugging "why is search failing", health probes.
+        </p>
+        
+        <div class="code-block-wrapper" style="margin-top: 16px;">
+          <div class="code-block-header"><span>python</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-python">net = await net_status(
+    session_id="machine-sess-003",
+    auth_context={"actor_id": "net-monitor", "clearance": "agent"}
+)
+# Returns: {qdrant: {reachable: true, latency_ms: 12}, ...}</code></pre>
+        </div>
+      </div>
+
+      <!-- Memory & Storage Tools -->
+      <h3 style="color: var(--accent-blue); margin-top: 32px; margin-bottom: 16px; font-size: 20px;">Memory & Storage (The Archive)</h3>
+      
+      <!-- chroma_query -->
+      <div class="tool-card" style="background: var(--void); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+        <div class="tool-header" style="margin-bottom: 16px;">
+          <span class="tool-name" style="font-size: 20px; font-weight: 700;">chroma_query</span>
+          <div class="tool-badges" style="margin-top: 8px;">
+            <span class="badge badge-stage">555_MEMORY</span>
+            <span class="badge badge-trinity">Ω</span>
+            <span class="badge badge-floor">F2</span>
+            <span class="badge badge-floor">F4</span>
+            <span class="badge badge-readonly">READ-ONLY</span>
+          </div>
+        </div>
+        <p class="tool-description" style="color: var(--text-secondary); margin-bottom: 16px;">
+          Semantic search in Chroma/Qdrant vector memory. Dual API support (legacy + modern). Supports metadata filtering and embedding retrieval.
+          <strong>Use when:</strong> Retrieving past context, evidence search, cross-session memory, RAG operations.
+        </p>
+        
+        <div class="code-block-wrapper" style="margin-top: 16px;">
+          <div class="code-block-header"><span>python</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-python">results = await chroma_query(
+    query="AI safety research",
+    collection="evidence",
+    n_results=5,
+    where={"category": "ethics"},
+    session_id="machine-sess-004",
+    auth_context={"actor_id": "memory-agent", "clearance": "agent"}
+)</code></pre>
+        </div>
+      </div>
+
+      <!-- list_resources -->
+      <div class="tool-card" style="background: var(--void); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+        <div class="tool-header" style="margin-bottom: 16px;">
+          <span class="tool-name" style="font-size: 20px; font-weight: 700;">list_resources</span>
+          <div class="tool-badges" style="margin-top: 8px;">
+            <span class="badge badge-stage">111_SENSE</span>
+            <span class="badge badge-trinity">Δ</span>
+            <span class="badge badge-floor">F1</span>
+            <span class="badge badge-readonly">READ-ONLY</span>
+          </div>
+        </div>
+        <p class="tool-description" style="color: var(--text-secondary); margin-bottom: 16px;">
+          Enumerate available MCP resources (canon://, governance://, vault://, etc.). Self-documenting API discovery.
+          <strong>Use when:</strong> Resource discovery, client initialization, building explorers.
+        </p>
+        
+        <div class="code-block-wrapper" style="margin-top: 16px;">
+          <div class="code-block-header"><span>python</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-python">resources = await list_resources(
+    session_id="machine-sess-005",
+    auth_context={"actor_id": "explorer", "clearance": "user"}
+)
+# Returns: [{uri: "canon://floors", name: "..."}, ...]</code></pre>
+        </div>
+      </div>
+
+      <!-- read_resource -->
+      <div class="tool-card" style="background: var(--void); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+        <div class="tool-header" style="margin-bottom: 16px;">
+          <span class="tool-name" style="font-size: 20px; font-weight: 700;">read_resource</span>
+          <div class="tool-badges" style="margin-top: 8px;">
+            <span class="badge badge-stage">111_SENSE</span>
+            <span class="badge badge-trinity">Δ</span>
+            <span class="badge badge-floor">F1</span>
+            <span class="badge badge-floor">F2</span>
+            <span class="badge badge-readonly">READ-ONLY</span>
+          </div>
+        </div>
+        <p class="tool-description" style="color: var(--text-secondary); margin-bottom: 16px;">
+          Read content of MCP resources by URI. Access constitution, vault entries, telemetry, and schemas.
+          <strong>Use when:</strong> Loading floor definitions, reading vault audits, accessing telemetry.
+        </p>
+        
+        <div class="code-block-wrapper" style="margin-top: 16px;">
+          <div class="code-block-header"><span>python</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-python">constitution = await read_resource(
+    uri="canon://floors",
+    session_id="machine-sess-006",
+    auth_context={"actor_id": "auditor", "clearance": "apex"}
+)
+
+latest_vault = await read_resource(
+    uri="vault://latest",
+    session_id="machine-sess-007",
+    auth_context={"actor_id": "validator", "clearance": "apex"}
+)</code></pre>
+        </div>
+      </div>
+
+      <!-- Diagnostics & Control Tools -->
+      <h3 style="color: var(--seal-green); margin-top: 32px; margin-bottom: 16px; font-size: 20px;">Diagnostics & Control (The Regulators)</h3>
+      
+      <!-- log_tail -->
+      <div class="tool-card" style="background: var(--void); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+        <div class="tool-header" style="margin-bottom: 16px;">
+          <span class="tool-name" style="font-size: 20px; font-weight: 700;">log_tail</span>
+          <div class="tool-badges" style="margin-top: 8px;">
+            <span class="badge badge-stage">111_SENSE</span>
+            <span class="badge badge-trinity">Δ</span>
+            <span class="badge badge-floor">F1</span>
+            <span class="badge badge-floor">F12</span>
+            <span class="badge badge-readonly">READ-ONLY</span>
+          </div>
+        </div>
+        <p class="tool-description" style="color: var(--text-secondary); margin-bottom: 16px;">
+          Stream and filter log files with smart path detection. Automatically finds logs without exact paths. Supports pattern filtering and time windows.
+          <strong>Use when:</strong> Debugging failures, security audits, performance analysis, incident response.
+        </p>
+        
+        <div class="code-block-wrapper" style="margin-top: 16px;">
+          <div class="code-block-header"><span>python</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-python">logs = await log_tail(
+    lines=50,
+    grep_pattern="ERROR|FATAL",
+    since_minutes=60,
+    session_id="machine-sess-008",
+    auth_context={"actor_id": "debugger", "clearance": "agent"}
+)</code></pre>
+        </div>
+      </div>
+
+      <!-- fs_inspect -->
+      <div class="tool-card" style="background: var(--void); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+        <div class="tool-header" style="margin-bottom: 16px;">
+          <span class="tool-name" style="font-size: 20px; font-weight: 700;">fs_inspect</span>
+          <div class="tool-badges" style="margin-top: 8px;">
+            <span class="badge badge-stage">111_SENSE</span>
+            <span class="badge badge-trinity">Δ</span>
+            <span class="badge badge-floor">F1</span>
+            <span class="badge badge-floor">F12</span>
+            <span class="badge badge-readonly">READ-ONLY</span>
+          </div>
+        </div>
+        <p class="tool-description" style="color: var(--text-secondary); margin-bottom: 16px;">
+          Inspect filesystem within governed sandbox. Lists directory contents with metadata while preventing path traversal attacks.
+          <strong>Use when:</strong> Evidence discovery, directory validation, debugging file operations, audit compliance.
+        </p>
+        
+        <div class="code-block-wrapper" style="margin-top: 16px;">
+          <div class="code-block-header"><span>python</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-python">files = await fs_inspect(
+    path="./evidence",
+    max_depth=3,
+    include_hidden=True,
+    session_id="machine-sess-009",
+    auth_context={"actor_id": "inspector", "clearance": "agent"}
+)</code></pre>
+        </div>
+      </div>
+
+      <!-- cost_estimator -->
+      <div class="tool-card" style="background: var(--void); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+        <div class="tool-header" style="margin-bottom: 16px;">
+          <span class="tool-name" style="font-size: 20px; font-weight: 700;">cost_estimator</span>
+          <div class="tool-badges" style="margin-top: 8px;">
+            <span class="badge badge-stage">333_MIND</span>
+            <span class="badge badge-trinity">Δ</span>
+            <span class="badge badge-floor">F4</span>
+            <span class="badge badge-readonly">READ-ONLY</span>
+          </div>
+        </div>
+        <p class="tool-description" style="color: var(--text-secondary); margin-bottom: 16px;">
+          Estimate operation costs before execution. Calculates tokens, time, memory, API costs, and thermodynamic budget impact.
+          <strong>Use when:</strong> Budget planning, resource allocation, cost-aware operations, user approval workflows.
+        </p>
+        
+        <div class="code-block-wrapper" style="margin-top: 16px;">
+          <div class="code-block-header"><span>python</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-python">cost = await cost_estimator(
+    operation="web_search",
+    query="AI safety research",
+    session_id="machine-sess-010",
+    auth_context={"actor_id": "planner", "clearance": "agent"}
+)
+# Returns: {total_cost_usd: 0.023, affordable: true, ...}</code></pre>
+        </div>
+      </div>
+
+      <!-- Governance Notice -->
+      <div style="background: rgba(255, 210, 74, 0.1); border: 1px solid var(--accent-yellow); border-radius: 8px; padding: 20px; margin-top: 32px;">
+        <h4 style="color: var(--accent-yellow); margin: 0 0 12px 0;">🔒 Governance Notice</h4>
+        <p style="color: var(--text-secondary); margin: 0; font-size: 14px; line-height: 1.6;">
+          All 9 Machine Tools are fully governed by the 13 Constitutional Floors. They accept <code>session_id</code> and <code>auth_context</code> parameters, 
+          return <strong>RuntimeEnvelope</strong> (not legacy responses), and log all operations to the immutable VAULT999 ledger. 
+          These tools are designed for <strong>machine-to-machine</strong> operations and infrastructure monitoring, not end-user interaction.
+        </p>
+      </div>
+    </div>
+
+    <!-- ==================== DEPRECATED TOOLS ==================== -->
+    <div class="tool-section" id="deprecated-tools" style="margin-top: 80px; border-top: 3px solid var(--hold-yellow);">
+      <div style="background: linear-gradient(135deg, #4a4030 0%, #2d2820 100%); padding: 24px; border-radius: 8px; margin-bottom: 32px; border: 1px solid var(--hold-yellow);">
+        <h2 style="margin: 0; color: var(--hold-yellow); font-size: 28px;">⚠️ Deprecated Tools</h2>
+        <p style="margin: 12px 0 0 0; color: rgba(255,255,255,0.8); font-size: 16px;">
+          The following tools are deprecated and will be removed in a future release. They are maintained for backward compatibility only. 
+          Use the recommended replacements for all new implementations.
+        </p>
+        <div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <span style="background: rgba(255, 210, 74, 0.2); padding: 4px 12px; border-radius: 4px; color: var(--hold-yellow); font-size: 12px;">⚠️ Do Not Use</span>
+          <span style="background: rgba(255, 210, 74, 0.2); padding: 4px 12px; border-radius: 4px; color: var(--hold-yellow); font-size: 12px;">🗑️ Removal Pending</span>
+          <span style="background: rgba(255, 210, 74, 0.2); padding: 4px 12px; border-radius: 4px; color: var(--hold-yellow); font-size: 12px;">📋 11 Legacy Tools</span>
+        </div>
+      </div>
+
+      <!-- Deprecated Tool Cards -->
+      
+      <!-- search_reality -->
+      <div class="tool-card" style="background: rgba(255, 210, 74, 0.05); border: 1px solid var(--hold-yellow); border-radius: 8px; padding: 24px; margin-bottom: 20px; opacity: 0.9;">
+        <div class="tool-header" style="margin-bottom: 16px;">
+          <span class="tool-name" style="font-size: 20px; font-weight: 700; color: var(--hold-yellow); text-decoration: line-through;">search_reality</span>
+          <div class="tool-badges" style="margin-top: 8px;">
+            <span class="badge badge-deprecated">DEPRECATED</span>
+            <span style="background: rgba(0,0,0,0.3); color: var(--seal-green); padding: 2px 8px; border-radius: 4px; font-size: 11px;">Use: reality_compass</span>
+          </div>
+        </div>
+        <p class="tool-description" style="color: var(--text-secondary); margin-bottom: 16px;">
+          Legacy alias for <code>reality_compass</code>. Was used for web search operations before the unified reality_compass tool.
+        </p>
+        <div class="code-block-wrapper" style="margin-top: 16px;">
+          <div class="code-block-header"><span>python</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-python"># ❌ DEPRECATED - Do not use
+result = await search_reality("AI safety research")
+
+# ✅ CORRECT - Use this instead
+result = await reality_compass(
+    input="AI safety research",
+    mode="search",
+    session_id="sess-001",
+    auth_context={"actor_id": "user"}
+)</code></pre>
+        </div>
+      </div>
+
+      <!-- ingest_evidence -->
+      <div class="tool-card" style="background: rgba(255, 210, 74, 0.05); border: 1px solid var(--hold-yellow); border-radius: 8px; padding: 24px; margin-bottom: 20px; opacity: 0.9;">
+        <div class="tool-header" style="margin-bottom: 16px;">
+          <span class="tool-name" style="font-size: 20px; font-weight: 700; color: var(--hold-yellow); text-decoration: line-through;">ingest_evidence</span>
+          <div class="tool-badges" style="margin-top: 8px;">
+            <span class="badge badge-deprecated">DEPRECATED</span>
+            <span style="background: rgba(0,0,0,0.3); color: var(--seal-green); padding: 2px 8px; border-radius: 4px; font-size: 11px;">Use: reality_compass</span>
+          </div>
+        </div>
+        <p class="tool-description" style="color: var(--text-secondary); margin-bottom: 16px;">
+          Legacy alias for <code>reality_compass</code> in fetch mode. Was used for URL content extraction.
+        </p>
+        <div class="code-block-wrapper" style="margin-top: 16px;">
+          <div class="code-block-header"><span>python</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-python"># ❌ DEPRECATED - Do not use
+result = await ingest_evidence("https://example.com/article")
+
+# ✅ CORRECT - Use this instead
+result = await reality_compass(
+    input="https://example.com/article",
+    mode="fetch",
+    session_id="sess-001",
+    auth_context={"actor_id": "user"}
+)</code></pre>
+        </div>
+      </div>
+
+      <!-- metabolic_loop_router -->
+      <div class="tool-card" style="background: rgba(255, 210, 74, 0.05); border: 1px solid var(--hold-yellow); border-radius: 8px; padding: 24px; margin-bottom: 20px; opacity: 0.9;">
+        <div class="tool-header" style="margin-bottom: 16px;">
+          <span class="tool-name" style="font-size: 20px; font-weight: 700; color: var(--hold-yellow); text-decoration: line-through;">metabolic_loop_router</span>
+          <div class="tool-badges" style="margin-top: 8px;">
+            <span class="badge badge-deprecated">DEPRECATED</span>
+            <span style="background: rgba(0,0,0,0.3); color: var(--seal-green); padding: 2px 8px; border-radius: 4px; font-size: 11px;">Use: arifOS_kernel</span>
+          </div>
+        </div>
+        <p class="tool-description" style="color: var(--text-secondary); margin-bottom: 16px;">
+          Legacy name for <code>arifOS_kernel</code>. The master pipeline orchestration tool. The new name better reflects its role as the central kernel.
+        </p>
+        <div class="code-block-wrapper" style="margin-top: 16px;">
+          <div class="code-block-header"><span>python</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-python"># ❌ DEPRECATED - Do not use
+result = await metabolic_loop_router(query="Analyze data")
+
+# ✅ CORRECT - Use this instead
+result = await arifOS_kernel(
+    query="Analyze data",
+    session_id="sess-001",
+    auth_context={"actor_id": "user"}
+)</code></pre>
+        </div>
+      </div>
+
+      <!-- init_anchor_state -->
+      <div class="tool-card" style="background: rgba(255, 210, 74, 0.05); border: 1px solid var(--hold-yellow); border-radius: 8px; padding: 24px; margin-bottom: 20px; opacity: 0.9;">
+        <div class="tool-header" style="margin-bottom: 16px;">
+          <span class="tool-name" style="font-size: 20px; font-weight: 700; color: var(--hold-yellow); text-decoration: line-through;">init_anchor_state</span>
+          <div class="tool-badges" style="margin-top: 8px;">
+            <span class="badge badge-deprecated">DEPRECATED</span>
+            <span style="background: rgba(0,0,0,0.3); color: var(--seal-green); padding: 2px 8px; border-radius: 4px; font-size: 11px;">Use: init_anchor</span>
+          </div>
+        </div>
+        <p class="tool-description" style="color: var(--text-secondary); margin-bottom: 16px;">
+          Legacy alias for <code>init_anchor</code>. Used for session initialization with a longer, more complex name.
+        </p>
+        <div class="code-block-wrapper" style="margin-top: 16px;">
+          <div class="code-block-header"><span>python</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-python"># ❌ DEPRECATED - Do not use
+result = await init_anchor_state(raw_input="Start session")
+
+# ✅ CORRECT - Use this instead
+result = await init_anchor(
+    raw_input="Start session",
+    session_id="sess-001",
+    auth_context={"actor_id": "user"}
+)</code></pre>
+        </div>
+      </div>
+
+      <!-- seal_vault_commit -->
+      <div class="tool-card" style="background: rgba(255, 210, 74, 0.05); border: 1px solid var(--hold-yellow); border-radius: 8px; padding: 24px; margin-bottom: 20px; opacity: 0.9;">
+        <div class="tool-header" style="margin-bottom: 16px;">
+          <span class="tool-name" style="font-size: 20px; font-weight: 700; color: var(--hold-yellow); text-decoration: line-through;">seal_vault_commit</span>
+          <div class="tool-badges" style="margin-top: 8px;">
+            <span class="badge badge-deprecated">DEPRECATED</span>
+            <span style="background: rgba(0,0,0,0.3); color: var(--seal-green); padding: 2px 8px; border-radius: 4px; font-size: 11px;">Use: vault_seal</span>
+          </div>
+        </div>
+        <p class="tool-description" style="color: var(--text-secondary); margin-bottom: 16px;">
+          Legacy alias for <code>vault_seal</code>. Commits verdicts to the immutable VAULT999 ledger.
+        </p>
+        <div class="code-block-wrapper" style="margin-top: 16px;">
+          <div class="code-block-header"><span>python</span><button class="copy-btn">Copy</button></div>
+          <pre><code class="language-python"># ❌ DEPRECATED - Do not use
+result = await seal_vault_commit(verdict="SEAL", evidence={...})
+
+# ✅ CORRECT - Use this instead
+result = await vault_seal(
+    verdict="SEAL",
+    evidence={...},
+    session_id="sess-001",
+    auth_context={"actor_id": "user"}
+)</code></pre>
+        </div>
+      </div>
+
+      <!-- Internal Naming Aliases -->
+      <h3 style="color: var(--hold-yellow); margin-top: 32px; margin-bottom: 16px; font-size: 18px; opacity: 0.8;">Internal Naming Aliases (Code-Only)</h3>
+      
+      <p style="color: var(--text-secondary); margin-bottom: 16px; font-size: 14px;">
+        The following function aliases exist in the codebase for backward compatibility but should not be used in new implementations:
+      </p>
+
+      <div style="background: rgba(255, 210, 74, 0.05); border: 1px solid var(--hold-yellow); border-radius: 8px; padding: 20px; margin-bottom: 20px; opacity: 0.8;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+          <thead>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <th style="text-align: left; padding: 8px; color: var(--hold-yellow);">Deprecated Name</th>
+              <th style="text-align: left; padding: 8px; color: var(--seal-green);">Use Instead</th>
+              <th style="text-align: left; padding: 8px; color: var(--text-secondary);">Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 8px; font-family: monospace; color: var(--hold-yellow);">reason_mind_synthesis</td>
+              <td style="padding: 8px; font-family: monospace; color: var(--seal-green);">agi_reason</td>
+              <td style="padding: 8px; color: var(--text-secondary);">AGI Mind reasoning</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 8px; font-family: monospace; color: var(--hold-yellow);">assess_heart_impact</td>
+              <td style="padding: 8px; font-family: monospace; color: var(--seal-green);">asi_simulate</td>
+              <td style="padding: 8px; color: var(--text-secondary);">ASI Heart simulation</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 8px; font-family: monospace; color: var(--hold-yellow);">critique_thought_audit</td>
+              <td style="padding: 8px; font-family: monospace; color: var(--seal-green);">asi_critique</td>
+              <td style="padding: 8px; color: var(--text-secondary);">ASI Critique</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 8px; font-family: monospace; color: var(--hold-yellow);">vector_memory_store</td>
+              <td style="padding: 8px; font-family: monospace; color: var(--seal-green);">agi_reflect</td>
+              <td style="padding: 8px; color: var(--text-secondary);">Memory reflection</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 8px; font-family: monospace; color: var(--hold-yellow);">agi_asi_forge</td>
+              <td style="padding: 8px; font-family: monospace; color: var(--seal-green);">agi_asi_forge_handler</td>
+              <td style="padding: 8px; color: var(--text-secondary);">AGI-ASI forge</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px; font-family: monospace; color: var(--hold-yellow);">apex_judge_verdict</td>
+              <td style="padding: 8px; font-family: monospace; color: var(--seal-green);">apex_judge</td>
+              <td style="padding: 8px; color: var(--text-secondary);">APEX judgment</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Migration Notice -->
+      <div style="background: rgba(37, 99, 235, 0.1); border: 1px solid var(--accent-blue); border-radius: 8px; padding: 20px; margin-top: 32px;">
+        <h4 style="color: var(--accent-blue); margin: 0 0 12px 0;">🔄 Migration Guide</h4>
+        <p style="color: var(--text-secondary); margin: 0 0 12px 0; font-size: 14px; line-height: 1.6;">
+          All deprecated tools will be removed in <strong>v2027.01.01</strong>. To migrate your code:
+        </p>
+        <ol style="color: var(--text-secondary); margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.8;">
+          <li>Replace deprecated tool names with their modern equivalents</li>
+          <li>Add <code>session_id</code> and <code>auth_context</code> parameters for full governance</li>
+          <li>Update to expect <code>RuntimeEnvelope</code> responses instead of legacy formats</li>
+          <li>Test thoroughly before deploying to production</li>
+          <li>Update any saved tool calls in your application code</li>
+        </ol>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Right TOC -->
+  <aside class="toc">
+    <div class="toc-title">On this page</div>
+    <a href="#reality-compass">reality_compass</a>
+    <a href="#reality-atlas">reality_atlas</a>
+    <a href="#arifos-kernel">arifOS_kernel</a>
+    <a href="#check-vital">check_vital</a>
+    <a href="#init-anchor-state">init_anchor_state</a>
+    <a href="#verify-vault-ledger">verify_vault_ledger</a>
+    <a href="#audit-rules">audit_rules</a>
+    <a href="#session-memory">session_memory</a>
+    <a href="#open-apex-dashboard">open_apex_dashboard</a>
+    <a href="#machine-tools" style="margin-top: 8px; color: var(--accent-blue);">Machine Tools</a>
+    <a href="#machine-tools" class="toc-h3">system_health</a>
+    <a href="#machine-tools" class="toc-h3">process_list</a>
+    <a href="#machine-tools" class="toc-h3">net_status</a>
+    <a href="#machine-tools" class="toc-h3">chroma_query</a>
+    <a href="#machine-tools" class="toc-h3">+ 5 more</a>
+    <a href="#deprecated-tools" style="margin-top: 8px; color: var(--hold-yellow);">⚠️ Deprecated Tools</a>
+    <a href="#deprecated-tools" class="toc-h3">search_reality</a>
+    <a href="#deprecated-tools" class="toc-h3">ingest_evidence</a>
+    <a href="#deprecated-tools" class="toc-h3">metabolic_loop_router</a>
+    <a href="#deprecated-tools" class="toc-h3">+ 8 more</a>
+  </aside>
+
+</div>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-line">© 2026 ARIF FAZIL · arifOS MCP · Ditempa Bukan Diberi</div>
+  <div class="footer-line"><a href="https://perplexity.ai" target="_blank">Created with Perplexity Computer</a></div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../app.js"></script>
+</body>
+</html>
