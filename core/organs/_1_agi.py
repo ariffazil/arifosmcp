@@ -294,4 +294,165 @@ think = agi
 sense = agi
 
 
-__all__ = ["agi", "reason", "think", "sense"]
+def build_st_thought_chain(
+    query: str,
+    search_text: str,
+    analyze_text: str,
+    synthesis_text: str,
+    session_id: str,
+    axioms_used: list[str] | None = None,
+    assumptions_challenged: list[str] | None = None,
+) -> list[dict[str, Any]]:
+    """
+    Build Sequential Thinking chain from 3-phase agi_mind output.
+
+    Maps agi_mind phases to ST 5-stage model:
+        Phase 111 → "Problem Definition" + "Research"
+        Phase 222 → "Analysis"
+        Phase 333 → "Synthesis" + "Conclusion"
+
+    Args:
+        query: Original user query
+        search_text: Phase 111 output (facts + constraints)
+        analyze_text: Phase 222 output (implications + assumptions)
+        synthesis_text: Phase 333 output (final conclusion)
+        session_id: Session identifier
+        axioms_used: List of F-floor principles applied
+        assumptions_challenged: List of assumptions tested
+
+    Returns:
+        Sequential Thinking chain (list[dict]) for QT Quad W₂/W₄ calculation
+    """
+    axioms = axioms_used or ["F2_TRUTH", "F4_CLARITY", "F7_HUMILITY", "F8_GENIUS"]
+    assumptions = assumptions_challenged or []
+
+    chain = [
+        {
+            "thought": f"[111] Problem Definition: {query[:100]}...",
+            "thoughtNumber": 1,
+            "stage": "Problem Definition",
+            "isRevision": False,
+            "axioms_used": axioms[:2],
+            "assumptions_challenged": [],
+            "branchId": None,
+            "tags": [f"query:{query[:50]}", f"session:{session_id}"],
+        },
+        {
+            "thought": f"[111] Research: {search_text[:200]}...",
+            "thoughtNumber": 2,
+            "stage": "Research",
+            "isRevision": False,
+            "axioms_used": axioms[:2],
+            "assumptions_challenged": [],
+            "branchId": None,
+            "tags": ["phase:111", "src:ollama"],
+        },
+        {
+            "thought": f"[222] Analysis: {analyze_text[:200]}...",
+            "thoughtNumber": 3,
+            "stage": "Analysis",
+            "isRevision": False,
+            "axioms_used": axioms[2:],
+            "assumptions_challenged": assumptions[:2] if assumptions else [],
+            "branchId": None,
+            "tags": ["phase:222", "src:ollama"],
+        },
+        {
+            "thought": f"[333] Synthesis: {synthesis_text[:200]}...",
+            "thoughtNumber": 4,
+            "stage": "Synthesis",
+            "isRevision": False,
+            "axioms_used": axioms,
+            "assumptions_challenged": assumptions,
+            "branchId": None,
+            "tags": ["phase:333", "src:ollama", "eureka:check"],
+        },
+        {
+            "thought": f"[333] Conclusion: Based on analysis, {synthesis_text[:150]}.",
+            "thoughtNumber": 5,
+            "stage": "Conclusion",
+            "isRevision": False,
+            "axioms_used": axioms,
+            "assumptions_challenged": assumptions,
+            "branchId": None,
+            "tags": ["final", "verdict:ready"],
+        },
+    ]
+
+    # Check for revision signals in synthesis
+    synthesis_lower = synthesis_text.lower()
+    revision_signals = ["however", "but", "revise", "reconsider", "amend", "correction"]
+    if any(signal in synthesis_lower for signal in revision_signals):
+        # Mark conclusion as revision
+        chain[-1]["isRevision"] = True
+        chain[-1]["revisesThought"] = 4
+        # Add a correction thought
+        chain.append(
+            {
+                "thought": f"[333] Self-Correction: Reconsidering {synthesis_text[:100]}...",
+                "thoughtNumber": 6,
+                "stage": "Synthesis",
+                "isRevision": True,
+                "revisesThought": 4,
+                "axioms_used": axioms,
+                "assumptions_challenged": assumptions,
+                "branchId": None,
+                "tags": ["self_correction", "phase:333"],
+            }
+        )
+
+    return chain
+
+
+def build_st_thought_chain_from_agi_output(
+    agi_output: dict[str, Any], session_id: str
+) -> list[dict[str, Any]]:
+    """
+    Build ST thought chain from agi() function output.
+
+    Args:
+        agi_output: Dict returned by agi() function
+        session_id: Session identifier
+
+    Returns:
+        Sequential Thinking chain for QT Quad
+    """
+    steps = agi_output.get("steps", [])
+    answer = agi_output.get("answer", {})
+    summary = answer.get("summary", "") if isinstance(answer, dict) else str(answer)
+
+    # Extract phase outputs from steps
+    search_text = ""
+    analyze_text = ""
+    synthesis_text = summary
+
+    for step in steps:
+        phase = getattr(step, "phase", "") if hasattr(step, "phase") else step.get("phase", "")
+        thought = (
+            getattr(step, "thought", "") if hasattr(step, "thought") else step.get("thought", "")
+        )
+
+        if "111" in phase:
+            search_text = thought
+        elif "222" in phase:
+            analyze_text = thought
+        elif "333" in phase:
+            synthesis_text = thought
+
+    return build_st_thought_chain(
+        query=agi_output.get("query", ""),
+        search_text=search_text,
+        analyze_text=analyze_text,
+        synthesis_text=synthesis_text,
+        session_id=session_id,
+    )
+
+
+__all__ = [
+    "agi",
+    "reason",
+    "think",
+    "sense",
+    "build_st_thought_chain",
+    "build_st_thought_chain_from_agi_output",
+]

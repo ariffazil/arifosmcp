@@ -63,14 +63,27 @@ def _apply_policy(
         "source": "empirical_measurement",
     }
 
-    # 3. Dynamic Genius Score (F8)
+    # 3. Dynamic Genius Score (F8) — Enhanced with QT Quad W₂/W₄
     conf = envelope_dict.get("confidence", 0.85)
     peace = 1.0
     exploration = 0.9
     energy = 1.0 if ds <= 0 else 0.8
 
     g = genius_score(A=conf, P=peace, X=exploration, E=energy)
-    envelope_dict["g_score"] = round(g, 4)
+
+    # QT Quad Enhancement: G_governed = G × W_four
+    # If W_four present (from agi_reason with thought chain), apply governance
+    payload = envelope_dict.get("payload", {})
+    w_four = payload.get("W_four", 0.0)
+    if w_four > 0:
+        g_governed = round(g * w_four, 4)
+        envelope_dict["g_score"] = g_governed
+        envelope_dict["g_base"] = round(g, 4)
+        envelope_dict["W_four"] = w_four
+        envelope_dict["g_override"] = True
+    else:
+        envelope_dict["g_score"] = round(g, 4)
+        envelope_dict["g_override"] = False
 
     # 4. Humility Mapping (F7)
     omega = humility_band(conf).omega_0
@@ -78,7 +91,7 @@ def _apply_policy(
 
     # 5. Geox Eureka: Goldilocks & Godellock (The Paradox Eureka)
     is_goldilocks = (ds <= 0) and (0.03 <= omega <= 0.05)
-    is_godellock = (omega < 0.03)
+    is_godellock = omega < 0.03
 
     envelope_dict["geox_eureka"] = {
         "is_goldilocks": is_goldilocks,
@@ -95,6 +108,20 @@ def _apply_policy(
     elif (policy.risk in ("high", "critical")) and envelope_dict.get("verdict") != "VOID":
         envelope_dict["verdict"] = "888_HOLD"
         envelope_dict["note"] = f"Sovereign approval required for {policy.substrate} operation."
+
+    # 7. QT Quad Proof — Propagate to envelope top-level for visibility
+    qt_proof = payload.get("qt_proof")
+    if qt_proof:
+        envelope_dict["qt_proof"] = qt_proof
+        envelope_dict["quad_witness_valid"] = qt_proof.get("quad_witness_valid", False)
+
+        # Override verdict based on W_four threshold
+        if qt_proof["W_four"] >= 0.75:
+            envelope_dict["qt_verdict"] = "SEAL"
+        elif qt_proof["W_four"] >= 0.50:
+            envelope_dict["qt_verdict"] = "SABAR"
+        else:
+            envelope_dict["qt_verdict"] = "HOLD_888"
 
     return envelope_dict
 
@@ -138,7 +165,7 @@ async def hardened_init_anchor_dispatch(
         return {"ok": False, "error": f"Invalid mode for init_anchor: {mode}"}
 
     envelope_dict = _apply_policy(envelope.to_dict(), "init_anchor", mode, payload)
-    
+
     # Preserve objects for RuntimeEnvelope reconstruction
     envelope_dict["authority"] = getattr(envelope, "authority", None)
     envelope_dict["auth_context"] = getattr(envelope, "auth_context", None)
@@ -149,8 +176,7 @@ async def hardened_init_anchor_dispatch(
     raw_status = envelope_dict.get("status") or envelope_dict.get("payload", {}).get("status")
     raw_session = envelope_dict.get("session_id", "")
     if mode == "init" and (
-        raw_status in ("void", "VOID")
-        or str(raw_session).startswith("session-rejected")
+        raw_status in ("void", "VOID") or str(raw_session).startswith("session-rejected")
     ):
         void_reason = (
             envelope_dict.get("payload", {}).get("reason")
@@ -180,6 +206,7 @@ async def hardened_init_anchor_dispatch(
     if mode == "init":
         try:
             from arifosmcp.core.recovery.rollback_engine import outcome_ledger
+
             envelope_dict["scar_context"] = outcome_ledger.build_scar_context(n=10)
         except Exception as _sc_err:
             envelope_dict["scar_context"] = {"error": str(_sc_err)}
@@ -216,10 +243,45 @@ async def hardened_agi_mind_dispatch(
     mode: str, payload: dict[str, Any], **kwargs
 ) -> dict[str, Any]:
     if mode in ("reason", "reflect", "forge"):
+        query = payload.get("query", "")
+        session_id = payload.get("session_id") or "anonymous"
+
+        # Check if we should run full Ollama reasoning (for "reason" mode)
+        # The "reflect" and "forge" modes go through metabolic_loop internally
+        thought_chain = None
+
+        if mode == "reason":
+            # Run full agi() pipeline to get actual reasoning with Ollama
+            try:
+                from arifosmcp.core.organs._1_agi import (
+                    agi,
+                    build_st_thought_chain_from_agi_output,
+                )
+
+                # Execute the 3-phase Ollama reasoning
+                agi_output = await agi(
+                    query=query,
+                    session_id=session_id,
+                    action="reason",
+                    reason_mode="default",
+                    max_tokens=800,
+                )
+
+                # Build Sequential Thinking chain from agi output
+                thought_chain = build_st_thought_chain_from_agi_output(agi_output, session_id)
+
+            except Exception as ollama_err:
+                # Ollama not available or failed — use fallback chain
+                logger = __import__("logging").getLogger(__name__)
+                logger.warning(f"Ollama reasoning failed: {ollama_err}, using fallback")
+                thought_chain = None
+
+        # Call HardenedAGIReason with thought chain for QT Quad
         envelope = await agi_reason_tool.reason(
-            query=payload.get("query"),
+            query=query,
             is_forge=(mode == "forge"),
-            session_id=payload.get("session_id"),
+            session_id=session_id,
+            thought_chain=thought_chain,
         )
     else:
         return {"ok": False, "error": f"Invalid mode for agi_mind: {mode}"}
@@ -287,9 +349,15 @@ async def hardened_code_engine_dispatch(
     mode: str, payload: dict[str, Any], **kwargs
 ) -> dict[str, Any]:
     from arifosmcp.runtime.shell_forge import forge
+
     command = payload.get("command") or payload.get("code")
-    if not command: return {"ok": False, "error": "No command/code provided"}
-    res = forge.execute(command=command, dry_run=payload.get("dry_run", True), session_id=payload.get("session_id", "anonymous"))
+    if not command:
+        return {"ok": False, "error": "No command/code provided"}
+    res = forge.execute(
+        command=command,
+        dry_run=payload.get("dry_run", True),
+        session_id=payload.get("session_id", "anonymous"),
+    )
     return _apply_policy(res, "code_engine", mode, payload)
 
 
@@ -304,8 +372,10 @@ async def hardened_arifos_kernel_dispatch(
     mode: str, payload: dict[str, Any], **kwargs
 ) -> dict[str, Any]:
     session_id = payload.get("session_id")
-    if not session_id: return {"ok": False, "error": "arifOS_kernel requires session_id."}
+    if not session_id:
+        return {"ok": False, "error": "arifOS_kernel requires session_id."}
     from arifosmcp.runtime.orchestrator import metabolic_loop
+
     result = await metabolic_loop(
         query=payload.get("query") or "No query",
         session_id=session_id,
