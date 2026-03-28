@@ -10,7 +10,13 @@ Modes: reason, reflect, forge
 from __future__ import annotations
 
 from typing import Any
-from fastmcp.dependencies import CurrentContext
+
+# FastMCP 2.x/3.x compatibility
+try:
+    from fastmcp.dependencies import CurrentContext
+except ImportError:
+    # FastMCP 2.x doesn't have dependencies module
+    CurrentContext = None
 
 from arifosmcp.runtime.models import RuntimeEnvelope, RuntimeStatus, Verdict
 from arifosmcp.runtime.tools_internal import agi_mind_dispatch_impl
@@ -94,5 +100,5 @@ async def agi_mind(
         auth_context=resolved_payload.get("auth_context", auth_context),
         risk_tier=resolved_payload.get("risk_tier", risk_tier),
         dry_run=bool(resolved_payload.get("dry_run", dry_run)),
-        ctx=ctx or CurrentContext(),
+        ctx=ctx or (CurrentContext() if CurrentContext else None),
     )
