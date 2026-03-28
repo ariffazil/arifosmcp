@@ -11,8 +11,8 @@ import logging
 from fastmcp import FastMCP
 
 # Configuration
-# Default to your VPS URL. Horizon can override this via env var.
-VPS_URL = os.getenv("ARIFOS_VPS_URL", "https://arifosmcp.arif-fazil.com/mcp")
+# Default to your VPS URL.
+VPS_URL = os.getenv("ARIFOS_VPS_URL", "https://arifosmcp.arif-fazil.com")
 ARIFOS_GOVERNANCE_SECRET = os.getenv("ARIFOS_GOVERNANCE_SECRET", "")
 
 # Create Ambassador (Strictly 2.x compatible)
@@ -28,26 +28,31 @@ async def _proxy_to_vps(tool_name: str, arguments: dict) -> dict:
         async with httpx.AsyncClient(timeout=30.0) as client:
             logger.info(f"Proxying {tool_name} to {VPS_URL}...")
             
-            # Horizon calls the VPS
+            # The arifOS Sovereign Kernel uses /tools/{name} for REST calls
             response = await client.post(
-                f"{VPS_URL}/call/{tool_name}", 
+                f"{VPS_URL}/tools/{tool_name}", 
                 json=arguments,
                 headers={
                     "X-ArifOS-Source": "Horizon",
-                    "X-ArifOS-Secret": ARIFOS_GOVERNANCE_SECRET
+                    "X-ArifOS-Secret": ARIFOS_GOVERNANCE_SECRET,
+                    "Accept": "application/json"
                 }
             )
             
             if response.status_code == 200:
-                return response.json()
+                data = response.json()
+                # Extract the nested 'result' field from arifOS REST response
+                if isinstance(data, dict) and "result" in data:
+                    return data["result"]
+                return data
             else:
                 return {
-                    "error": f"VPS Kernel returned {response.status_code}",
+                    "error": f"Sovereign Kernel returned {response.status_code}",
                     "verdict": "SABAR",
-                    "note": response.text[:100]
+                    "note": response.text[:200]
                 }
     except Exception as e:
-        logger.error(f"Proxy failure: {str(e)}")
+        logger.error(f"Ambassador link severed: {str(e)}")
         return {
             "error": "Ambassador link severed",
             "verdict": "SABAR",
