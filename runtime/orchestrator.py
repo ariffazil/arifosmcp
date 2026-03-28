@@ -305,6 +305,7 @@ async def run_stage(
     actor_id: str = "anonymous",
     declared_name: str | None = None,
     human_approval: bool = False,
+    risk_tier: str = "medium",
 ) -> RuntimeEnvelope:
     """Execute one routed stage for the metabolic loop.
     
@@ -441,8 +442,20 @@ async def run_stage(
         # 8. VAULT·SEAL (999) - FORBIDDEN ZONE
         if stage_id == Stage.VAULT_999.value:
             last_verdict = verdict_history[-1] if verdict_history else Verdict.SABAR
+            
+            # QSP-333: Quantum Sabar Protocol - Byzantine Witness Check
+            # In a live system, this would ping W1 (Human) and W3 (Earth) heartbeats.
+            # Here we simulate a blackout if risk is high and dry_run is false.
+            is_blackout = (risk_tier in ("high", "critical")) and (not dry_run)
+            
+            decision_payload = {
+                "verdict": last_verdict.value,
+                "witness_blackout": is_blackout,
+                "protocol": "QSP-333" if is_blackout else "STANDARD"
+            }
+
             return await vault_seal(
-                verdict=last_verdict.value,
+                decision=decision_payload,
                 evidence=query,
                 session_id=session_id,
                 ctx=None,  # type: ignore
@@ -578,6 +591,7 @@ async def metabolic_loop(
             actor_id=actor_id,
             declared_name=declared_name,
             human_approval=human_approval,
+            risk_tier=risk_tier,
         )
 
         auth_ctx = _extract_auth_context(init_res, auth_context)
@@ -656,6 +670,7 @@ async def metabolic_loop(
                 pns_context=pns_context,
                 dry_run=dry_run,
                 actor_id=actor_id,
+                risk_tier=risk_tier,
             )
             current_verdict = res.verdict
 
@@ -701,6 +716,7 @@ async def metabolic_loop(
                         reality_summary=reality_summary,
                         caller_ctx=caller_ctx,
                         dry_run=dry_run,
+                        risk_tier=risk_tier,
                     )
                     trace[Stage.VAULT_999.value] = vault_res.verdict.value
                 break

@@ -936,11 +936,44 @@ class ConstitutionalTensor:
 # =============================================================================
 
 
+def calculate_entropy_trajectory(thought_chain: list[dict[str, Any]]) -> dict[str, Any]:
+    """
+    Compute entropy trajectory across thought chain.
+
+    Detects stability (dS <= 0 trend), oscillation, and convergence.
+    """
+    if not thought_chain:
+        return {"dS_trend": 0.0, "stability": 1.0, "is_cooling": True}
+
+    deltas = []
+    prev_text = ""
+    for t in thought_chain:
+        curr_text = str(t.get("thought", ""))
+        if prev_text:
+            deltas.append(delta_S(prev_text, curr_text))
+        prev_text = curr_text
+
+    if not deltas:
+        return {"dS_trend": 0.0, "stability": 1.0, "is_cooling": True}
+
+    avg_dS = sum(deltas) / len(deltas)
+    stability = 1.0 - min(1.0, sum(abs(d) for d in deltas if d > 0) / len(deltas))
+    is_cooling = all(d <= 0.05 for d in deltas[-3:]) if len(deltas) >= 3 else (avg_dS <= 0)
+
+    return {
+        "avg_dS": round(avg_dS, 4),
+        "deltas": [round(d, 4) for d in deltas],
+        "stability": round(stability, 4),
+        "is_cooling": is_cooling,
+        "positive_trend": sum(1 for d in deltas if d > 0) > len(deltas) / 2,
+    }
+
+
 def calculate_w_ai_quad(thought_chain: list[dict[str, Any]]) -> float:
     """
     Calculate AI witness score (W₂) from Sequential Thinking thought chain.
 
-    QT Quad requires W₂ ≥ 0.91 for W_four ≥ 0.95 with typical other witnesses.
+    Enhanced for QTT: Penalizes instability and rewards convergence.
 
     Args:
         thought_chain: List of ST thought dicts with keys:
@@ -964,6 +997,9 @@ def calculate_w_ai_quad(thought_chain: list[dict[str, Any]]) -> float:
     assumptions = sum(len(t.get("assumptions_challenged", [])) for t in thought_chain)
     branches = len(set(t.get("branchId") for t in thought_chain if t.get("branchId")))
 
+    # Thermo metrics
+    trajectory = calculate_entropy_trajectory(thought_chain)
+
     # Weighted calculation
     score = 0.50  # Base
 
@@ -978,6 +1014,12 @@ def calculate_w_ai_quad(thought_chain: list[dict[str, Any]]) -> float:
 
     # Epistemic humility (max 0.10)
     score += min(0.10, assumptions * 0.02)
+
+    # Thermo Stability Penalty/Bonus (max +/- 0.10)
+    if trajectory["stability"] < 0.5:
+        score -= 0.10  # Penalize high entropy oscillation
+    elif trajectory["is_cooling"]:
+        score += 0.05  # Reward convergence
 
     # Quantum exploration (max 0.05)
     score += min(0.05, branches * 0.025)
@@ -1018,6 +1060,12 @@ def calculate_w_adversarial(thought_chain: list[dict[str, Any]]) -> float:
     # Assumptions challenged depth
     assumptions_depth = sum(len(t.get("assumptions_challenged", [])) for t in revisions)
 
+    # Thermo correlation: do revisions reduce entropy?
+    trajectory = calculate_entropy_trajectory(thought_chain)
+    # Check if steps tagged as isRevision have negative dS
+    # (simplified: if overall stability is high, assume revisions worked)
+    thermo_discipline = trajectory["stability"]
+
     # Calculate W₄
     score = 0.30  # Base
 
@@ -1026,6 +1074,9 @@ def calculate_w_adversarial(thought_chain: list[dict[str, Any]]) -> float:
 
     # Assumption depth (max 0.20)
     score += min(0.20, assumptions_depth * 0.05)
+
+    # Thermo discipline (max 0.10)
+    score += min(0.10, thermo_discipline * 0.1)
 
     # Branch complexity (max 0.10)
     branches = len(set(t.get("branchId") for t in thought_chain if t.get("branchId")))
@@ -1047,7 +1098,6 @@ def extract_stakeholders_from_tags(thought_chain: list[dict[str, Any]]) -> list[
         List of Stakeholder objects
     """
     stakeholders = []
-
     for thought in thought_chain:
         if thought.get("stage") != "Synthesis":
             continue
@@ -1111,6 +1161,7 @@ def build_qt_quad_proof(
     """
     w_ai = calculate_w_ai_quad(thought_chain)
     w_adversarial = calculate_w_adversarial(thought_chain)
+    trajectory = calculate_entropy_trajectory(thought_chain)
 
     # QT Quad calculation: geometric mean of 4 witnesses
     witness_product = w_human * w_ai * w_earth * w_adversarial
@@ -1124,6 +1175,7 @@ def build_qt_quad_proof(
             "W_earth": w_earth,
             "W_adversarial": round(w_adversarial, 4),
         },
+        "thermo": trajectory,
         "thought_metrics": {
             "total_thoughts": len(thought_chain),
             "revision_count": sum(1 for t in thought_chain if t.get("isRevision")),

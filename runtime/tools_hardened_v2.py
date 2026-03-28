@@ -178,10 +178,13 @@ class HardenedApexJudge:
 
 
 class HardenedAGIReason:
-    """Hardened agi_reason with 11-part artifact forge and QT Quad integration.
+    """Hardened agi_reason with QTT (Quantum Thermodynamic Thinking) integration.
 
-    Implements W₂ (AI witness) and W₄ (adversarial witness) scoring from
-    Sequential Thinking chains for Byzantine Fault Tolerance.
+    Transforms standard Sequential Thinking into state physics:
+    - Measurable entropy per step (ΔS)
+    - Branch probability weights
+    - W2/W4 Witness validation
+    - Final state collapse (SEAL/HOLD/VOID)
     """
 
     async def reason(
@@ -196,7 +199,7 @@ class HardenedAGIReason:
         thought_chain: list[dict[str, Any]] | None = None,
     ) -> ToolEnvelope:
         """
-        Hardened reasoning with QT Quad governance proof.
+        Hardened reasoning with QTT state collapse and QT Quad governance proof.
 
         Args:
             query: User query/reasoning prompt
@@ -209,76 +212,156 @@ class HardenedAGIReason:
             thought_chain: Pre-built ST thought chain (for QT Quad)
 
         Returns:
-            ToolEnvelope with QT Quad proof (W₂, W₄, W_four)
+            ToolEnvelope with QTT collapse state and W₁, W₂, W₃, W₄
         """
+        import uuid
+        from arifosmcp.core.shared.physics import build_qt_quad_proof, delta_S
+
         tool = "agi_reason"
         session_id = session_id or "anonymous"
 
-        lanes = [{"type": "baseline", "interpretation": f"Standard: {query}", "confidence": 0.8}]
-        entropy = calculate_entropy_budget(0.4, 0.7, len(query or ""), 500)
-
-        # Build payload base
-        payload = {
-            "recommendation": "proceed",
-            "g_score": 0.84,
-            "query": query,
-            "is_forge": is_forge,
-        }
-
-        # QT Quad Integration: W₂/W₄ from thought chain
-        if thought_chain:
-            from arifosmcp.core.shared.physics import build_qt_quad_proof
-
-            qt_proof = build_qt_quad_proof(
-                thought_chain=thought_chain,
-                w_human=0.95,  # W₁: Human witness
-                w_earth=0.90,  # W₃: Earth/System witness
-            )
-
-            # Extract W scores for payload
-            w_ai = qt_proof["witnesses"]["W_ai"]
-            w_adversarial = qt_proof["witnesses"]["W_adversarial"]
-            w_four = qt_proof["W_four"]
-
-            # Update G score dynamically: G = f(W₂, W₄) for AGI-grade reasoning
-            # G_dagger = G × W_four (governed genius)
-            g_base = 0.84
-            g_governed = round(g_base * w_four, 4)
-
-            payload.update(
-                {
-                    "qt_proof": qt_proof,
-                    "W_ai": w_ai,
-                    "W_adversarial": w_adversarial,
-                    "W_four": w_four,
-                    "g_score": g_governed,
-                    "quad_witness_valid": qt_proof["quad_witness_valid"],
-                    "thought_metrics": qt_proof["thought_metrics"],
-                    "stakeholders": qt_proof["stakeholders"],
-                }
-            )
-        else:
-            # No thought chain: use placeholder metrics
-            payload.update(
-                {
-                    "qt_proof": None,
+        if not thought_chain:
+            # Fallback for simple single-shot query without sequential thinking
+            entropy = calculate_entropy_budget(0.4, 0.7, len(query or ""), 500)
+            return ToolEnvelope(
+                status=ToolStatus.OK,
+                tool=tool,
+                session_id=session_id,
+                risk_tier=RiskTier(risk_tier.lower() if risk_tier else "medium"),
+                confidence=entropy.confidence,
+                trace=trace,
+                entropy=entropy,
+                payload={
+                    "recommendation": "proceed",
+                    "g_score": 0.84,
+                    "note": "QT Quad pending: provide thought_chain for full governance proof",
                     "W_ai": 0.50,
                     "W_adversarial": 0.30,
                     "W_four": 0.0,
                     "quad_witness_valid": False,
-                    "note": "QT Quad pending: provide thought_chain for full governance proof",
-                }
+                },
             )
 
+        qtt_states = []
+        prev_text = query
+        prev_entropy = 1.0
+
+        branch_weights = {}
+        contradictions_unresolved = 0
+
+        # Phase 1 & 2: Real Sequential Thinking to Thermo Layer
+        for i, t in enumerate(thought_chain):
+            current_text = str(t.get("thought", ""))
+            ds = delta_S(prev_text, current_text)
+            current_entropy = prev_entropy + ds
+
+            # Clamp entropy roughly
+            current_entropy = max(0.1, min(1.0, current_entropy))
+
+            is_rev = bool(t.get("isRevision", False))
+            branch_id = t.get("branchId", "main")
+
+            if "contradict" in current_text.lower() or "flaw" in current_text.lower():
+                contradictions_unresolved += 1
+            if is_rev and contradictions_unresolved > 0:
+                contradictions_unresolved -= 1  # resolved
+
+            state = {
+                "thought": current_text,
+                "thoughtNumber": t.get("thoughtNumber", i + 1),
+                "state_id": str(uuid.uuid4()),
+                "parent_state": qtt_states[-1]["state_id"] if qtt_states else None,
+                "branch_id": branch_id,
+                "thermo": {
+                    "entropy_before": round(prev_entropy, 4),
+                    "entropy_after": round(current_entropy, 4),
+                    "delta_s": round(ds, 4),
+                    "stability": ds <= 0.05,
+                },
+                "epistemic": {"confidence": round(1.0 - current_entropy, 2)},
+                "flags": {
+                    "is_revision": is_rev,
+                    "is_branch": bool(t.get("branchFromThought")),
+                    "contradiction_detected": "contradict" in current_text.lower(),
+                },
+            }
+            qtt_states.append(state)
+
+            # Branch probability mapping (Phase 3)
+            b_weight = branch_weights.get(branch_id, 1.0)
+            if ds > 0:
+                b_weight *= 0.9  # Penalize entropy gain
+            if is_rev:
+                b_weight *= 1.1  # Reward self-correction
+            branch_weights[branch_id] = round(min(1.0, b_weight), 4)
+
+            prev_text = current_text
+            prev_entropy = current_entropy
+
+        # Phase 3: Witness System (W1-W4)
+        qt_proof = build_qt_quad_proof(thought_chain=thought_chain, w_human=1.0, w_earth=0.90)
+        w2 = qt_proof["witnesses"]["W_ai"]
+        w4 = qt_proof["witnesses"]["W_adversarial"]
+        w_four = qt_proof["W_four"]
+
+        # Final state entropy & selection
+        final_entropy = qtt_states[-1]["thermo"]["entropy_after"] if qtt_states else 1.0
+        selected_branch = max(branch_weights, key=branch_weights.get) if branch_weights else "main"
+
+        # Phase 4 & 8: State Collapse & Failure Modes
+        verdict = "SEAL"
+        failure_reasons = []
+
+        # Enforce Failure Modes
+        positive_ds_count = sum(1 for s in qtt_states if s["thermo"]["delta_s"] > 0)
+        if positive_ds_count > len(qtt_states) / 2:
+            failure_reasons.append("Entropy increased across too many steps (ΔS positive trend)")
+
+        if len(branch_weights) > 3 and final_entropy > 0.5:
+            failure_reasons.append("Branch explosion without convergence")
+
+        if contradictions_unresolved > 0:
+            failure_reasons.append(f"Unresolved contradictions: {contradictions_unresolved}")
+
+        if sum(1 for s in qtt_states if s["flags"]["is_revision"]) == 0 and len(qtt_states) > 2:
+            failure_reasons.append("Fake linear thinking (no revisions/self-critique detected)")
+
+        if w4 < 0.3:
+            failure_reasons.append("Failed adversarial pass (W4 too low)")
+
+        if failure_reasons:
+            verdict = "VOID" if len(failure_reasons) > 1 else "HOLD"
+
+        # Construct final Collapse output
+        confidence = round(1.0 - final_entropy, 2)
+        final_payload = {
+            "final_state": verdict,
+            "selected_branch": selected_branch,
+            "entropy_final": round(final_entropy, 4),
+            "witness": {"W1": 1.0, "W2": round(w2, 4), "W3": 0.90, "W4": round(w4, 4)},
+            "confidence": confidence,
+            "uncertainty": round(final_entropy, 2),
+            "audit_trace_id": trace.trace_id if trace else str(uuid.uuid4()),
+            "qtt_states": qtt_states,
+            "qt_proof_summary": qt_proof,
+            "W_ai": w2,
+            "W_adversarial": w4,
+            "W_four": w_four,
+            "quad_witness_valid": qt_proof["quad_witness_valid"],
+            "g_score": round(0.84 * w_four, 4),
+        }
+
+        if failure_reasons:
+            final_payload["failure_reasons"] = failure_reasons
+
         return ToolEnvelope(
-            status=ToolStatus.OK,
+            status=ToolStatus.OK if verdict == "SEAL" else ToolStatus.SABAR,
             tool=tool,
             session_id=session_id,
             risk_tier=RiskTier(risk_tier.lower() if risk_tier else "medium"),
-            confidence=entropy.confidence,
+            confidence=confidence,
             trace=trace,
-            entropy=entropy,
-            payload=payload,
+            payload=final_payload,
         )
 
 
@@ -346,6 +429,13 @@ class HardenedAgentZeroEngineer:
 
 
 class HardenedVaultSeal:
+    """Hardened vault_ledger with Quantum Sabar (Purgatory) support.
+
+    Implements QSP-333:
+    - Normal state: SEAL to VAULT999
+    - Blackout state: Buffer to Purgatory Ledger as CANDIDATE_SEAL
+    """
+
     async def seal(
         self,
         decision: dict,
@@ -356,6 +446,34 @@ class HardenedVaultSeal:
     ) -> ToolEnvelope:
         tool = "vault_ledger"
         session_id = session_id or "anonymous"
+        
+        # QSP-333: Check for witness blackout
+        is_blackout = decision.get("witness_blackout", False)
+        verdict_str = decision.get("verdict", "SEAL")
+        
+        commit_hash = secrets.token_hex(32) # SHA-256 simulation
+        
+        if is_blackout:
+            # Trigger Quantum Sabar Protocol
+            payload = {
+                "sealed": False,
+                "verdict": "SABAR",
+                "state": "PURGATORY",
+                "candidate_hash": commit_hash,
+                "purgatory_id": f"QSP-{secrets.token_hex(4)}",
+                "note": "W1/W3 Blackout detected. Entry buffered in Purgatory Ledger. Pending Sovereign ratification."
+            }
+            return ToolEnvelope(
+                status=ToolStatus.SABAR,
+                tool=tool,
+                session_id=session_id,
+                risk_tier=RiskTier(risk_tier.lower() if risk_tier else "medium"),
+                confidence=0.5, # Reduced confidence during blackout
+                trace=trace,
+                payload=payload
+            )
+
+        # Normal operation
         return ToolEnvelope(
             status=ToolStatus.OK,
             tool=tool,
@@ -363,7 +481,7 @@ class HardenedVaultSeal:
             risk_tier=RiskTier(risk_tier.lower() if risk_tier else "medium"),
             confidence=1.0,
             trace=trace,
-            payload={"sealed": True, "hash": secrets.token_hex(8)},
+            payload={"sealed": True, "hash": commit_hash, "state": "VAULT999"},
         )
 
 
