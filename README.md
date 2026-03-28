@@ -1,90 +1,141 @@
 # arifosmcp
 
-**arifOS MCP Server** — The Constitutional Intelligence Kernel
+**arifOS MCP Server** — Universal Constitutional Intelligence Kernel
 
 > *Ditempa Bukan Diberi* — Forged, Not Given [ΔΩΨ | ARIF]
 
-This is the standalone MCP (Model Context Protocol) server for arifOS. Deploy it on VPS or local development.
+Now with **auto-detection** for Horizon (FastMCP 2.x) and VPS (FastMCP 3.x)!
 
 ---
 
-## ⚠️  DEPLOYMENT WARNING
+## 🚀 Quick Start
 
-> **DO NOT deploy this repository to Prefect Horizon.** It will fail.
+### Deploy to Prefect Horizon (Cloud)
 
-| Platform | Compatible? | Instructions |
-|----------|-------------|--------------|
-| **VPS (Docker)** | ✅ Yes | Use this repo + `docker compose up` |
-| **Local Dev** | ✅ Yes | `pip install -e . && python server.py` |
-| **Prefect Horizon** | ❌ **NO** | Use [`arifOS/horizon/`](https://github.com/ariffazil/arifOS/tree/main/horizon) instead |
+```
+Repository:  https://github.com/ariffazil/arifosmcp
+Entrypoint:  server.py:mcp
+Branch:      main
+```
 
-### Why Horizon Fails
+✅ Auto-detects Horizon → Loads 2.x compatible proxy (8 tools)
 
-- This repo uses **FastMCP 3.x** features (`fastmcp.dependencies.CurrentContext`)
-- Horizon is locked to **FastMCP 2.12.3**
-- Result: `No module named 'fastmcp.dependencies'`
+### Deploy to VPS (Sovereign)
 
-**See [HORIZON_README.md](./HORIZON_README.md) for details.**
+```bash
+git clone https://github.com/ariffazil/arifosmcp.git
+cd arifosmcp
+docker compose up -d
+# OR
+VPS_MODE=1 python server.py
+```
+
+✅ Auto-detects VPS → Loads full 3.x kernel (11 tools)
 
 ---
 
-## Quick Start
+## 🎯 What's New: Auto-Detection
 
-### VPS Deployment (Recommended)
-
-```bash
-# From the parent arifOS repository
-git clone https://github.com/ariffazil/arifOS.git
-cd arifOS
-docker compose up -d arifosmcp
-
-# Test
-curl https://your-domain.com/health
+```python
+# server.py - Universal Entrypoint
+┌─────────────────────────────────────────┐
+│  Detect Environment                     │
+│  ├─ FastMCP 2.x? → Horizon Mode         │
+│  ├─ FASTMCP_CLOUD_URL? → Horizon Mode   │
+│  └─ VPS_MODE=1? → VPS Mode              │
+└─────────────────────────────────────────┘
+            │
+    ┌───────┴───────┐
+    ▼               ▼
+┌──────────┐  ┌──────────┐
+│ Horizon  │  │   VPS    │
+│ 8 tools  │  │ 11 tools │
+│ Proxy    │  │ Full     │
+│ mode     │  │ kernel   │
+└──────────┘  └──────────┘
 ```
 
-### Local Development
+---
 
-```bash
-# Install with package structure
-pip install -e .
+## Deployment Matrix
 
-# Run
-python server.py
-```
+| Platform | Entrypoint | Mode | Tools | Auto-Detect |
+|----------|------------|------|-------|-------------|
+| **Prefect Horizon** | `server.py:mcp` | Proxy | 8 | ✅ Yes |
+| **VPS Docker** | `server.py` | Kernel | 11 | ✅ Yes |
+| **Local Dev** | `server.py` | Kernel | 11 | ✅ Yes |
+
+---
+
+## Tool Inventory
+
+### Available on Both (8 tools)
+| Tool | Band | Purpose |
+|------|------|---------|
+| `init_anchor` | 000_INIT | Session anchoring |
+| `physics_reality` | 111_SENSE | Time/search/grounding |
+| `agi_mind` | 333_MIND | Reasoning engine |
+| `arifOS_kernel` | 444_ROUTER | Primary conductor |
+| `asi_heart` | 666_HEART | Safety critique |
+| `math_estimator` | 777_OPS | Cost estimation |
+| `apex_soul` | 888_JUDGE | Constitutional verdict |
+| `architect_registry` | 000_INIT | Tool discovery |
+
+### VPS Only (3 additional tools)
+| Tool | Band | Purpose | Why VPS Only |
+|------|------|---------|--------------|
+| `vault_ledger` | 999_SEAL | Secure storage | Needs persistent volume |
+| `engineering_memory` | — | Redis memory | Needs Redis backend |
+| `code_engine` | — | Code execution | Security risk in cloud |
 
 ---
 
 ## Architecture
 
 ```
-arifosmcp/
-├── server.py              # Main entry point
-├── runtime/               # Core runtime (FastMCP, tools, REST)
-│   ├── server.py          # FastMCP server init
-│   ├── megaTools/         # 11 mega-tools (000-999 band)
-│   │   ├── tool_01_init_anchor.py      # 000_INIT
-│   │   ├── tool_02_physics_reality.py  # 111_SENSE
-│   │   ├── tool_03_architect_registry.py
-│   │   ├── tool_04_math_estimator.py   # 777_OPS
-│   │   ├── tool_05_agi_mind.py         # 333_MIND ← FastMCP 3.x
-│   │   ├── tool_06_asi_heart.py        # 666_HEART
-│   │   ├── tool_07_apex_soul.py        # 888_JUDGE
-│   │   ├── tool_08_code_engine.py
-│   │   ├── tool_09_engineering_memory.py
-│   │   ├── tool_10_arifOS_kernel.py    # 444_ROUTER
-│   │   └── tool_11_vault_ledger.py     # 999_SEAL
-│   ├── fastmcp_version.py # 2.x/3.x compatibility layer
-│   └── chatgpt_integration/ # Deep Research tools
-├── integrations/prefect/  # Prefect ecosystem tools
-├── core/                  # Constitutional logic
-└── requirements.txt       # FastMCP 3.x + deps
+User Request
+     │
+     ├─► Claude Desktop ──► MCP Client
+     │                         │
+     │                         ▼
+     │              ┌────────────────────┐
+     │              │  arifosmcp/server  │
+     │              │  (Auto-detect)     │
+     │              └─────────┬──────────┘
+     │                        │
+     │           ┌────────────┼────────────┐
+     │           ▼            ▼            ▼
+     │    ┌──────────┐  ┌──────────┐  ┌──────────┐
+     │    │ Horizon  │  │   VPS    │  │  Local   │
+     │    │ (Cloud)  │  │(Sovereign│  │  (Dev)   │
+     │    └────┬─────┘  └────┬─────┘  └────┬─────┘
+     │         │             │             │
+     │         ▼             ▼             ▼
+     │    ┌──────────┐  ┌──────────┐  ┌──────────┐
+     │    │ 8 tools  │  │ 11 tools │  │ 11 tools │
+     │    │ Proxy    │  │ Full     │  │ Full     │
+     │    └──────────┘  └──────────┘  └──────────┘
+     │
+     └─► Direct API ──► arifosmcp.arif-fazil.com
 ```
+
+---
+
+## Environment Variables
+
+| Variable | Used In | Description |
+|----------|---------|-------------|
+| `FASTMCP_CLOUD_URL` | Horizon | Set by Horizon platform |
+| `HORIZON_ENVIRONMENT` | Horizon | Force Horizon mode |
+| `VPS_MODE` | VPS | Force VPS mode (skip auto-detect) |
+| `ARIFOS_VPS_URL` | Horizon | Target VPS for proxying |
+| `ARIFOS_GOVERNANCE_SECRET` | Horizon | Auth with VPS |
 
 ---
 
 ## Constitutional Governance
 
-This server implements the ΔΩΨ framework:
+Implements the ΔΩΨ framework:
 - **Δ Clarity**: Reduce entropy (dS ≤ 0)
 - **Ω Humility**: Stay within uncertainty band
 - **Ψ Vitality**: Every action witnessed and auditable
@@ -93,18 +144,16 @@ Full constitution: [ariffazil/arifOS/000/](https://github.com/ariffazil/arifOS/t
 
 ---
 
-## Trinity Architecture
+## Version
 
-| Deployment | Repository | FastMCP | Tools | Status |
-|------------|------------|---------|-------|--------|
-| **VPS (Sovereign)** | `arifosmcp/` | 3.x | 11 | ✅ Operational |
-| **Horizon (Cloud)** | `arifOS/horizon/` | 2.x | 8 | ⏸️ Deploy via adapter |
-| **Local (Dev)** | `arifosmcp/` | 3.x | 11 | ✅ Ready |
+**2026.03.28-HORIZON-READY** — Auto-Detection Enabled
+
+*Part of the arifOS Trinity Architecture. Forged in ΔΩΨ.*
 
 ---
 
-## Version
+## API Key
 
-**2026.03.28-HARDENED** — 11 Mega-Tools Operational
-
-*Part of the arifOS Trinity Architecture. Forged in ΔΩΨ.*
+```
+fmcp_Z9oLZZ0OtOZkr4dzPCzp7hIm_GA2H-D94RUC2BzYnYw
+```
