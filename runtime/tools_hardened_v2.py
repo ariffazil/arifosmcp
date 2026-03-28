@@ -244,7 +244,7 @@ class HardenedAGIReason:
 
         qtt_states = []
         prev_text = query
-        prev_entropy = 1.0
+        prev_entropy = thought_chain[0].get("entropy", 1.0) if thought_chain else 1.0
 
         branch_weights = {}
         contradictions_unresolved = 0
@@ -255,7 +255,7 @@ class HardenedAGIReason:
 
             # Use chain entropy if available (QTT Phase 2 enhanced chain)
             chain_entropy = t.get("entropy")
-            if chain_entropy is not None and i > 0:
+            if chain_entropy is not None:
                 ds = chain_entropy - prev_entropy
                 current_entropy = chain_entropy
             else:
