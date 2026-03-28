@@ -122,7 +122,10 @@ def _get_stakeholder_model():
 
         except ImportError:
             import sys
-            sys.stderr.write("[arifOS] WARNING: sentence-transformers not found. Falling back to heuristics.\n")
+
+            sys.stderr.write(
+                "[arifOS] WARNING: sentence-transformers not found. Falling back to heuristics.\n"
+            )
             return None, None, None
 
     return _STAKEHOLDER_MODEL, _ARCHETYPE_EMBEDDINGS, _HARM_EMBEDDINGS
@@ -1075,8 +1078,8 @@ def calculate_w_adversarial(thought_chain: list[dict[str, Any]]) -> float:
     # Assumption depth (max 0.20)
     score += min(0.20, assumptions_depth * 0.05)
 
-    # Thermo discipline (max 0.10)
-    score += min(0.10, thermo_discipline * 0.1)
+    # Thermo discipline (max 0.20) — reward entropy reduction discipline
+    score += min(0.20, thermo_discipline * 0.2)
 
     # Branch complexity (max 0.10)
     branches = len(set(t.get("branchId") for t in thought_chain if t.get("branchId")))

@@ -252,8 +252,15 @@ class HardenedAGIReason:
         # Phase 1 & 2: Real Sequential Thinking to Thermo Layer
         for i, t in enumerate(thought_chain):
             current_text = str(t.get("thought", ""))
-            ds = delta_S(prev_text, current_text)
-            current_entropy = prev_entropy + ds
+
+            # Use chain entropy if available (QTT Phase 2 enhanced chain)
+            chain_entropy = t.get("entropy")
+            if chain_entropy is not None and i > 0:
+                ds = chain_entropy - prev_entropy
+                current_entropy = chain_entropy
+            else:
+                ds = delta_S(prev_text, current_text)
+                current_entropy = prev_entropy + ds
 
             # Clamp entropy roughly
             current_entropy = max(0.1, min(1.0, current_entropy))
@@ -348,7 +355,7 @@ class HardenedAGIReason:
             "W_adversarial": w4,
             "W_four": w_four,
             "quad_witness_valid": qt_proof["quad_witness_valid"],
-            "g_score": round(0.84 * w_four, 4),
+            "g_score": round(min(0.99, w_four * 0.95), 4),
         }
 
         if failure_reasons:
@@ -409,7 +416,7 @@ class HardenedASICritique:
             "w4_score": w4_contribution,
             "findings": findings,
             "analysis_mode": "adversarial_redteam",
-            "note": "Ψ-Shadow audit complete. Adversarial witness emitted."
+            "note": "Ψ-Shadow audit complete. Adversarial witness emitted.",
         }
 
         return ToolEnvelope(
@@ -476,13 +483,13 @@ class HardenedVaultSeal:
     ) -> ToolEnvelope:
         tool = "vault_ledger"
         session_id = session_id or "anonymous"
-        
+
         # QSP-333: Check for witness blackout
         is_blackout = decision.get("witness_blackout", False)
         verdict_str = decision.get("verdict", "SEAL")
-        
-        commit_hash = secrets.token_hex(32) # SHA-256 simulation
-        
+
+        commit_hash = secrets.token_hex(32)  # SHA-256 simulation
+
         if is_blackout:
             # Trigger Quantum Sabar Protocol
             payload = {
@@ -491,16 +498,16 @@ class HardenedVaultSeal:
                 "state": "PURGATORY",
                 "candidate_hash": commit_hash,
                 "purgatory_id": f"QSP-{secrets.token_hex(4)}",
-                "note": "W1/W3 Blackout detected. Entry buffered in Purgatory Ledger. Pending Sovereign ratification."
+                "note": "W1/W3 Blackout detected. Entry buffered in Purgatory Ledger. Pending Sovereign ratification.",
             }
             return ToolEnvelope(
                 status=ToolStatus.SABAR,
                 tool=tool,
                 session_id=session_id,
                 risk_tier=RiskTier(risk_tier.lower() if risk_tier else "medium"),
-                confidence=0.5, # Reduced confidence during blackout
+                confidence=0.5,  # Reduced confidence during blackout
                 trace=trace,
-                payload=payload
+                payload=payload,
             )
 
         # Normal operation
