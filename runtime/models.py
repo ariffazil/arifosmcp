@@ -396,11 +396,11 @@ class TelemetryVitals(BaseModel):
     """Rule 3: The Public Score Card — Sovereign Vitals."""
     ds: float = Field(0.0, description="ΔS: Entropy Delta (Landauer derivation). High dS blocks Forge (F4).")
     peace2: float = Field(1.0, description="Peace²: Lyapunov Stability. Low Peace blocks Execute (F5).")
-    kappa_r: float | None = Field(None, description="κᵣ: Maruah/Empathy Score. Low score raises Hold (F6).")
+    kappa_r: float | None = Field(None, description="κwᵣ: Maruah/Empathy Score. Low score raises Hold (F6).")
     G_star: float = Field(0.0, description="G★: Genius/Coherence Score. <0.80 blocks Forge (F8).")
     echo_debt: float = Field(0.0, description="Historical Contradictions. Measured from VAULT999 (F5).")
     shadow: float = Field(0.0, description="Hidden Assumption Load. Inferred from Grounding gaps (F9).")
-    confidence: float = Field(0.0, description="Ω₀: Confidence (Gödel-bounded). High Ω0 requires Hold (F7).")
+    confidence: float = Field(0.0, description="Ω0: Confidence (Gödel-bounded). High Ω0 requires Hold (F7).")
     psi_le: str = Field("0.0 (Estimate Only)", description="Ψ_LE: Emergence Pressure. Forensic trace only.")
     verdict: str = Field("Alive", description="System-level vitality state.")
     # Hard Budgeting & Telemetry (V2)
@@ -442,7 +442,7 @@ class TelemetryBasis(BaseModel):
     confidence: dict[str, str] = Field(
         default_factory=lambda: {
             "source": "derived",
-            "formula": "Ω₀: Calibrated probability relative to uncertainty band",
+            "formula": "Ω0: Calibrated probability relative to uncertainty band",
             "enforcement": "Hard (F7): Forces 888_HOLD on overconfidence.",
         }
     )
@@ -711,6 +711,9 @@ class RuntimeEnvelope(BaseModel):
 
     def __getitem__(self, item: str) -> Any:
         return getattr(self, item)
+
+    def to_dict(self) -> dict:
+        return self.model_dump(mode="json")
 
 
 # Rebuild models after all forward references are resolved
