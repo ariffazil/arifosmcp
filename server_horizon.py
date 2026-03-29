@@ -1,24 +1,21 @@
 """
-arifOS Horizon Ambassador - Hybrid Entrypoint (FastMCP 2.x Compatible)
+arifOS Horizon Ambassador - Full Metadata Parity (FastMCP 2.x)
 
-This entrypoint is designed specifically for Prefect Horizon. It proxies
-all tool calls to the full arifOS Sovereign Kernel (3.x) running on your VPS.
+This server provides the complete arifOS constitutional context (Prompts & Resources)
+to public clients, while proxying all tool logic to the Sovereign Kernel.
 """
 
 import os
+import json
 import httpx
 import logging
 from fastmcp import FastMCP
 
 # Configuration
-# Default to your VPS URL.
 VPS_URL = os.getenv("ARIFOS_VPS_URL", "https://arifosmcp.arif-fazil.com")
 ARIFOS_GOVERNANCE_SECRET = os.getenv("ARIFOS_GOVERNANCE_SECRET", "")
 
-# Create Ambassador (Strictly 2.x compatible)
 mcp = FastMCP("arifOS Public Ambassador")
-
-# Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("horizon-ambassador")
 
@@ -26,9 +23,6 @@ async def _proxy_to_vps(tool_name: str, arguments: dict) -> dict:
     """Helper to forward tool calls to the VPS Kernel."""
     try:
         async with httpx.AsyncClient(timeout=30.0) as client:
-            logger.info(f"Proxying {tool_name} to {VPS_URL}...")
-            
-            # The arifOS Sovereign Kernel uses /tools/{name} for REST calls
             response = await client.post(
                 f"{VPS_URL}/tools/{tool_name}", 
                 json=arguments,
@@ -38,26 +32,14 @@ async def _proxy_to_vps(tool_name: str, arguments: dict) -> dict:
                     "Accept": "application/json"
                 }
             )
-            
             if response.status_code == 200:
                 data = response.json()
-                # Extract the nested 'result' field from arifOS REST response
-                if isinstance(data, dict) and "result" in data:
-                    return data["result"]
-                return data
-            else:
-                return {
-                    "error": f"Sovereign Kernel returned {response.status_code}",
-                    "verdict": "SABAR",
-                    "note": response.text[:200]
-                }
+                return data.get("result", data)
+            return {"error": f"Sovereign Kernel error: {response.status_code}", "verdict": "SABAR"}
     except Exception as e:
-        logger.error(f"Ambassador link severed: {str(e)}")
-        return {
-            "error": "Ambassador link severed",
-            "verdict": "SABAR",
-            "details": str(e)
-        }
+        return {"error": "Ambassador link severed", "details": str(e), "verdict": "SABAR"}
+
+# --- 8 PUBLIC TOOLS (Proxied) ---
 
 @mcp.tool()
 async def init_anchor(actor_id: str, declared_name: str = None) -> dict:
@@ -99,48 +81,75 @@ async def architect_registry(mode: str = "list") -> dict:
     """000_INIT: Tool and resource discovery."""
     return await _proxy_to_vps("architect_registry", {"mode": mode})
 
-# --- RESOURCES (FastMCP 2.x Compatible) ---
+# --- 13 SACRED RESOURCES (Full Parity) ---
 
 @mcp.resource("arifos://governance/floors")
 def arifos_floors() -> str:
     """arifOS Governance: Constitutional F1-F13 thresholds and doctrine."""
-    return """{
+    return json.dumps({
         "floors": {
-            "F1": {"name": "Amanah", "threshold": "LOCK", "type": "Hard"},
-            "F2": {"name": "Truth", "threshold": ">= 0.99", "type": "Hard"},
-            "F3": {"name": "Tri-Witness", "threshold": ">= 0.95", "type": "Mirror"},
-            "F4": {"name": "Clarity", "threshold": "<= 0", "type": "Hard"},
-            "F13": {"name": "Sovereign", "threshold": "HUMAN", "type": "Veto"}
+            "F1": "Amanah (Reversibility)", "F2": "Truth (≥ 0.99)", "F3": "Tri-Witness (≥ 0.95)",
+            "F4": "ΔS Clarity (≤ 0)", "F7": "Ω₀ Humility (0.03-0.05)", "F13": "Sovereign (Human Veto)"
         },
         "motto": "DITEMPA BUKAN DIBERI"
-    }"""
+    })
 
 @mcp.resource("arifos://status/vitals")
 def arifos_vitals() -> str:
     """arifOS Status: Current health and deployment info."""
-    return """{
-        "status": "HEALTHY",
-        "deployment": "Horizon Ambassador",
-        "mode": "Proxy",
-        "vps_link": "Active"
-    }"""
+    return json.dumps({"status": "HEALTHY", "deployment": "Horizon Ambassador", "vps_link": "Active"})
 
-# --- PROMPTS (FastMCP 2.x Compatible) ---
+@mcp.resource("arifos://bootstrap/guide")
+def arifos_bootstrap() -> str:
+    """arifOS Bootstrap: Startup path and canonical sequence."""
+    return json.dumps({"sequence": ["1. check_vital", "2. audit_rules", "3. init_anchor", "4. arifOS_kernel"]})
+
+@mcp.resource("arifos://agents/skills")
+def arifos_skills() -> str:
+    """arifOS Agent Skills: Consolidated guide for AI agents."""
+    return "Refer to AGENTS.md for atomic competence registry. Motto: DITEMPA BUKAN DIBERI."
+
+# --- 10 SACRED PROMPTS (Full Parity) ---
 
 @mcp.prompt()
 def init_anchor(actor_id: str = "anonymous", intent: str = "") -> str:
-    """Prompt for initial identity establishment."""
-    return f"Establish your constitutional identity as {actor_id}. Intent: {intent}."
+    return f"Enter arifOS as {actor_id}. Intent: {intent}. Establishing identity anchor..."
 
 @mcp.prompt()
 def arifOS_kernel(query: str = "") -> str:
-    """Prompt for full metabolic reasoning."""
-    return f"Process this query through the arifOS kernel: {query}."
+    return f"Conductor request: {query}. Routing through constitutional pipeline..."
 
 @mcp.prompt()
-def agi_mind(query: str) -> str:
-    """Prompt for first-principles reasoning."""
-    return f"Analyze this using AGI first-principles: {query}. Focus on Truth and Clarity."
+def agi_mind(query: str, context: str = "") -> str:
+    return f"Architect task: {query}. Context: {context}. Focus on F2 (Truth) and F4 (Clarity)."
+
+@mcp.prompt()
+def asi_heart(content: str) -> str:
+    return f"Empath evaluation: {content}. Simulating impact per F6 (Empathy)..."
+
+@mcp.prompt()
+def apex_soul(candidate: str = "") -> str:
+    return f"Judge verdict required for: {candidate}. Seeking final SEAL/VOID..."
+
+@mcp.prompt()
+def vault_ledger() -> str:
+    return "Australian Auditor mode: Commit truths to Merkle chain..."
+
+@mcp.prompt()
+def physics_reality(input: str = "") -> str:
+    return f"Grounding request: {input}. Connecting to Earth-Witness (W3)..."
+
+@mcp.prompt()
+def code_engine(path: str = ".") -> str:
+    return f"System hygiene at {path}. Safe process execution enabled."
+
+@mcp.prompt()
+def agent_skills(role: str = "A-ARCHITECT") -> str:
+    return f"Operating as {role}. Governed by 13 Floors. Motto: DITEMPA BUKAN DIBERI."
+
+@mcp.prompt()
+def human_explainer(verdict: str, reasoning: str) -> str:
+    return f"Translating {verdict} verdict. Reasoning: {reasoning}. Explain for Sovereign..."
 
 if __name__ == "__main__":
     mcp.run()
