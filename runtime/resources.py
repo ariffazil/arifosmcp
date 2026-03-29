@@ -503,6 +503,26 @@ Review `canon://states` for the full Session Ladder and state transition require
 
     _resource_content_functions["arifos://sessions/{session_id}/vitals"] = arifos_session_vitals
 
+    @mcp.resource("arifos://tools/{tool_name}/spec")
+    def arifos_tool_spec(tool_name: str) -> str:
+        """arifOS Tool Specification: Detailed contract for a specific tool."""
+        from .public_registry import get_tool_spec_by_name
+        spec = get_tool_spec_by_name(tool_name)
+        if spec:
+            return json.dumps(spec.model_dump(), ensure_ascii=False)
+        return json.dumps({"error": "Tool not found", "name": tool_name})
+
+    _resource_content_functions["arifos://tools/{tool_name}/spec"] = arifos_tool_spec
+
+    @mcp.resource("arifos://floors/{floor_id}/doctrine")
+    def arifos_floor_doctrine(floor_id: str) -> str:
+        """arifOS Floor Doctrine: The mathematical and legal basis for a constitutional floor."""
+        from arifosmcp.core.shared.floors import get_floor_spec
+        spec = get_floor_spec(floor_id)
+        return json.dumps(spec, ensure_ascii=False)
+
+    _resource_content_functions["arifos://floors/{floor_id}/doctrine"] = arifos_floor_doctrine
+
     @mcp.resource("schema://tools/input")
     def schema_tools_input() -> str:
         """Canonical JSON Schema input specs for public tools."""

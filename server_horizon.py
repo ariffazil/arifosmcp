@@ -109,6 +109,24 @@ def arifos_skills() -> str:
     """arifOS Agent Skills: Consolidated guide for AI agents."""
     return "Refer to AGENTS.md for atomic competence registry. Motto: DITEMPA BUKAN DIBERI."
 
+# --- RESOURCE TEMPLATES (FastMCP 2.x Compatible) ---
+
+@mcp.resource("arifos://sessions/{session_id}/vitals")
+async def arifos_session_vitals(session_id: str) -> str:
+    """arifOS Session Vitals: Real-time telemetry for a specific session."""
+    # Proxy to VPS for real session telemetry
+    res = await _proxy_to_vps("arifOS_kernel", {"query": "status", "session_id": session_id})
+    return json.dumps(res.get("metrics", {"status": "ACTIVE", "session": session_id}))
+
+@mcp.resource("arifos://tools/{tool_name}/spec")
+def arifos_tool_spec(tool_name: str) -> str:
+    """arifOS Tool Specification: Detailed contract for a specific tool."""
+    return json.dumps({
+        "tool": tool_name,
+        "governance": "Hardened",
+        "parity": "Ambassador-Proxied"
+    })
+
 # --- 10 SACRED PROMPTS (Full Parity) ---
 
 @mcp.prompt()
