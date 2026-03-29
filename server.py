@@ -4,10 +4,9 @@ arifOS MCP Server - Universal Entrypoint (VPS + Horizon Compatible)
 
 Auto-detects environment and switches between:
 • VPS Mode:    Full Sovereign Kernel (FastMCP 3.x)
-• Horizon Mode: Public Ambassador Proxy (FastMCP 2.x)
+• Horizon Mode: Public Ambassador Proxy (FastMCP 2.x / cloud)
 
 Repository: https://github.com/ariffazil/arifosmcp
-API Key: fmcp_Z9oLZZ0OtOZkr4dzPCzp7hIm_GA2H-D94RUC2BzYnYw
 """
 
 import os
@@ -95,16 +94,17 @@ if IS_HORIZON:
 else:
     # ═════════════════════════════════════════════════════════════════════════
     # VPS MODE: Full Sovereign Kernel (FastMCP 3.x)
+    # Falls back to Horizon Ambassador if runtime modules not present
     # ═════════════════════════════════════════════════════════════════════════
-    logger.info("[BOOT] VPS environment detected → Full Sovereign Kernel Mode")
-    
+    logger.info("[BOOT] VPS environment detected → attempting Full Sovereign Kernel Mode")
+
     try:
         from arifosmcp.runtime.server import mcp
-    except ImportError as e:
-        if "fastmcp.dependencies" in str(e):
-            logger.error("[FATAL] FastMCP 3.x required. Run: pip install -U fastmcp")
-            logger.error("[FATAL] Or set VPS_MODE=1 if you're actually on VPS")
-        raise
+        logger.info("[BOOT] Sovereign Kernel loaded ✓")
+    except (ImportError, ModuleNotFoundError) as e:
+        logger.warning(f"[FALLBACK] arifosmcp.runtime not available ({e}) → Horizon Ambassador Mode")
+        logger.info("[BOOT] All calls proxied to VPS kernel at arifosmcp.arif-fazil.com")
+        from server_horizon import mcp
 
 
 # Export for FastMCP Cloud / Horizon
