@@ -99,5 +99,48 @@ async def architect_registry(mode: str = "list") -> dict:
     """000_INIT: Tool and resource discovery."""
     return await _proxy_to_vps("architect_registry", {"mode": mode})
 
+# --- RESOURCES (FastMCP 2.x Compatible) ---
+
+@mcp.resource("arifos://governance/floors")
+def arifos_floors() -> str:
+    """arifOS Governance: Constitutional F1-F13 thresholds and doctrine."""
+    return """{
+        "floors": {
+            "F1": {"name": "Amanah", "threshold": "LOCK", "type": "Hard"},
+            "F2": {"name": "Truth", "threshold": ">= 0.99", "type": "Hard"},
+            "F3": {"name": "Tri-Witness", "threshold": ">= 0.95", "type": "Mirror"},
+            "F4": {"name": "Clarity", "threshold": "<= 0", "type": "Hard"},
+            "F13": {"name": "Sovereign", "threshold": "HUMAN", "type": "Veto"}
+        },
+        "motto": "DITEMPA BUKAN DIBERI"
+    }"""
+
+@mcp.resource("arifos://status/vitals")
+def arifos_vitals() -> str:
+    """arifOS Status: Current health and deployment info."""
+    return """{
+        "status": "HEALTHY",
+        "deployment": "Horizon Ambassador",
+        "mode": "Proxy",
+        "vps_link": "Active"
+    }"""
+
+# --- PROMPTS (FastMCP 2.x Compatible) ---
+
+@mcp.prompt()
+def init_anchor(actor_id: str = "anonymous", intent: str = "") -> str:
+    """Prompt for initial identity establishment."""
+    return f"Establish your constitutional identity as {actor_id}. Intent: {intent}."
+
+@mcp.prompt()
+def arifOS_kernel(query: str = "") -> str:
+    """Prompt for full metabolic reasoning."""
+    return f"Process this query through the arifOS kernel: {query}."
+
+@mcp.prompt()
+def agi_mind(query: str) -> str:
+    """Prompt for first-principles reasoning."""
+    return f"Analyze this using AGI first-principles: {query}. Focus on Truth and Clarity."
+
 if __name__ == "__main__":
     mcp.run()

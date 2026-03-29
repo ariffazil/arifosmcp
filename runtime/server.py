@@ -21,6 +21,8 @@ from starlette.middleware.cors import CORSMiddleware
 
 from arifosmcp.runtime.fastmcp_version import IS_FASTMCP_3, IS_FASTMCP_2
 from arifosmcp.runtime.tools import register_tools, ALL_TOOL_IMPLEMENTATIONS
+from arifosmcp.runtime.prompts import register_prompts
+from arifosmcp.runtime.resources import register_resources
 from arifosmcp.runtime.rest_routes import register_rest_routes
 
 logger = logging.getLogger(__name__)
@@ -56,6 +58,8 @@ mcp = FastMCP(
 
 # Register Surface FIRST (before creating http_app)
 register_tools(mcp)
+register_prompts(mcp)
+register_resources(mcp)
 register_rest_routes(mcp, ALL_TOOL_IMPLEMENTATIONS)
 
 # Register ChatGPT Deep Research tools (search + fetch)
