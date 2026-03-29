@@ -21,6 +21,7 @@ async def asi_heart(
     mode: str | None = None,
     payload: dict[str, Any] | None = None,
     query: str | None = None,
+    content: str | None = None,
     session_id: str | None = None,
     actor_id: str | None = None,
     declared_name: str | None = None,
@@ -38,6 +39,8 @@ async def asi_heart(
     ctx: Any | None = None,
 ) -> RuntimeEnvelope:
     payload = dict(payload or {})
+    if content:
+        payload.setdefault("content", content)
     if raw_input:
         payload.setdefault("query", raw_input)
     if caller_context:

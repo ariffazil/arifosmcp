@@ -1,18 +1,4 @@
-"""
-arifosmcp/runtime/contracts.py — Unified arifOS MCP Contracts
-
-Unified contract surface:
-  - Basic 11-mega-tool registry from public_registry
-  - Stage/trinity/floor maps for governance
-  - Hardened constitutional contracts (v4 additions: ToolEnvelope, OutputPolicy, VerdictScope, etc.)
-
-UPGRADE (2026-03-25 — Paris Weather Incident):
-  - OutputPolicy enum: forces model surface behaviour when domain payload is absent
-  - DRY_RUN poison pill: any dry_run=True envelope forces SIMULATION_ONLY policy
-  - Domain payload gate: DOMAIN_PAYLOAD_GATES defines required keys per domain class
-  - Verdict namespace split: ROUTER_SEAL vs DOMAIN_SEAL vs SESSION_SEAL
-See: 000/FLOORS/F02_TRUTH.md §Enforcement Addendum (v2026.03.25)
-"""
+"""\narifosmcp/runtime/contracts.py — Unified arifOS MCP Contracts\n\nUnified contract surface:\n  - Basic 11-mega-tool registry from public_registry\n  - Stage/trinity/floor maps for governance\n  - Hardened constitutional contracts (v4 additions: ToolEnvelope, OutputPolicy, VerdictScope, etc.)\n\nUPGRADE (2026-03-25 — Paris Weather Incident):\n  - OutputPolicy enum: forces model surface behaviour when domain payload is absent\n  - DRY_RUN poison pill: any dry_run=True envelope forces SIMULATION_ONLY policy\n  - Domain payload gate: DOMAIN_PAYLOAD_GATES defines required keys per domain class\n  - Verdict namespace split: ROUTER_SEAL vs DOMAIN_SEAL vs SESSION_SEAL\nSee: 000/FLOORS/F02_TRUTH.md §Enforcement Addendum (v2026.03.25)\n"""
 
 from __future__ import annotations
 
@@ -117,7 +103,7 @@ AAA_TOOL_ALIASES: dict[str, str] = {
     "init": "init_anchor",
     "revoke": "init_anchor",
     "kernel": "arifOS_kernel",
-    "status": "arifOS_kernel",
+    "status": "status",
     "judge": "apex_soul",
     "seal": "vault_ledger",
     "reason": "agi_mind",
@@ -432,14 +418,40 @@ class ToolEnvelope:
         )
 
 
+class _ValidationResult:
+    """Return type for validate_fail_closed — preserves .valid + .to_envelope() interface."""
+
+    def __init__(self, valid: bool, tool: str, session_id: str | None) -> None:
+        self.valid = valid
+        self._tool = tool
+        self._session_id = session_id or "anonymous"
+
+    def __bool__(self) -> bool:
+        return self.valid
+
+    def to_envelope(self, tool: str, session_id: str | None, trace=None):
+        from arifosmcp.runtime.models import RuntimeEnvelope, RuntimeStatus, Verdict
+
+        return RuntimeEnvelope(
+            ok=False,
+            tool=tool,
+            session_id=session_id or "anonymous",
+            stage="000_INIT",
+            verdict=Verdict.VOID,
+            status=RuntimeStatus.ERROR,
+            payload={"error": "Validation failed: auth_context, risk_tier, or session_id missing"},
+        )
+
+
 def validate_fail_closed(
     auth_context: dict | None,
     risk_tier: str | None,
     session_id: str | None,
     tool: str,
     trace: TraceContext | None = None,
-) -> bool:
-    return bool(auth_context and risk_tier and session_id)
+) -> "_ValidationResult":
+    valid = bool(auth_context and risk_tier and session_id)
+    return _ValidationResult(valid=valid, tool=tool, session_id=session_id)
 
 
 def calculate_entropy_budget(
