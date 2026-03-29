@@ -1,10 +1,19 @@
 name: math_estimator
 type: mega-tool
 authority: CALCULATOR
-description: Quantitative estimation and statistical analysis engine for arifOS metrics.
+description: Quantitative estimation and constitutional metrics engine for arifOS.
+  Computes thermodynamic costs, coherence (Lyapunov stability), shadow prices (Lagrange multipliers),
+  Shannon entropy, and entropy delta (F4 Clarity).
 floors:
   - F2: SIDDIQ
+  - F7: HUMILITY
 risk_tier: P2
+functions:
+  - cost_estimator
+  - coherence_score
+  - shadow_prices
+  - shannon_entropy
+  - entropy_delta
 parameters:
   dataset: array
   metric: string

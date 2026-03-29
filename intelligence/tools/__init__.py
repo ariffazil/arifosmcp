@@ -9,7 +9,14 @@ from .safety_guard import forge_guard
 from .system_monitor import get_resource_usage
 from .system_monitor import get_system_health as system_health
 from .system_monitor import list_processes as process_list
-from .thermo_estimator import cost_estimator
+from .thermo_estimator import (
+    coherence_score,
+    cost_estimator,
+    entropy_delta,
+    landauer_limit,
+    shadow_prices,
+    shannon_entropy,
+)
 
 __all__ = [
     "chroma_query",
@@ -24,4 +31,10 @@ __all__ = [
     "process_list",
     "cost_estimator",
     "reality_dossier",
+    # New constitutional math functions
+    "coherence_score",
+    "shadow_prices",
+    "shannon_entropy",
+    "entropy_delta",
+    "landauer_limit",
 ]

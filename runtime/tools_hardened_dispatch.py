@@ -277,11 +277,15 @@ async def hardened_agi_mind_dispatch(
                 thought_chain = None
 
         # Call HardenedAGIReason with thought chain for QT Quad
+        # Pass through telos manifold, coherence, AND constitutional context for AI grounding
         envelope = await agi_reason_tool.reason(
             query=query,
             is_forge=(mode == "forge"),
             session_id=session_id,
             thought_chain=thought_chain,
+            telos_manifold=payload.get("telos_manifold"),
+            previous_coherence=payload.get("previous_coherence"),
+            constitutional_context=payload.get("constitutional_context"),
         )
     else:
         return {"ok": False, "error": f"Invalid mode for agi_mind: {mode}"}

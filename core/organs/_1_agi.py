@@ -74,10 +74,14 @@ async def agi(
     max_steps: int = 7,
     auth_context: dict[str, Any] | None = None,
     max_tokens: int = 1000,
+    constitutional_context: str | None = None,
 ) -> AgiOutput:
     """
     Stage 111-333: REASON MIND (APEX-G compliant)
     Uses local Ollama runtime for real intelligence synthesis.
+
+    constitutional_context: AI input grounding prompt from init_anchor.
+    Prepended to each reasoning phase to enforce constitutional physics.
     """
     # 1. Query Analysis (ATLAS)
     gpv = Phi(query)
@@ -117,8 +121,20 @@ async def agi(
             return f"[F12_EXCISED:{phase}]"
         return text
 
+    # =============================================================================
+    # CONSTITUTIONAL GROUNDING — Prepend to each AI prompt (Input Hardening)
+    # =============================================================================
+    # Build prefix from constitutional_context if provided
+    constitutional_prefix = ""
+    if constitutional_context:
+        constitutional_prefix = f"{constitutional_context}\n\n━━━ REASONING QUERY ━━━\n"
+
     # --- PHASE 111: SEARCH/UNDERSTAND ---
-    search_prompt = f"Analyze the intent and constraints: {query}. List core facts."
+    search_prompt = (
+        f"{constitutional_prefix}"
+        f"Analyze the intent and constraints: {query}. List core facts.\n"
+        f"CRITICAL: Apply constitutional physics. ΔS must ≤ 0. Flag paradoxes."
+    )
     search_env = await ollama_local_generate(prompt=search_prompt, max_tokens=b111)
     if not search_env.ok:
         return {
@@ -137,7 +153,13 @@ async def agi(
     actual_total += usage_111
 
     # --- PHASE 222: ANALYZE/COMPARE ---
-    analyze_prompt = f"Given facts: {search_text}. Compare implications and test assumptions."
+    analyze_prompt = (
+        f"{constitutional_prefix}"
+        f"Given facts: {search_text}.\n"
+        f"Compare implications and test assumptions.\n"
+        f"CRITICAL: Check for paradox, contradiction, or coherence failure. "
+        f"ΔS must ≤ 0 through this phase."
+    )
     analyze_env = await ollama_local_generate(prompt=analyze_prompt, max_tokens=b222)
     if not analyze_env.ok:
         return {
@@ -162,7 +184,13 @@ async def agi(
     actual_total += usage_222
 
     # --- PHASE 333: SYNTHESIZE ---
-    synthesis_prompt = f"Synthesize final conclusion for: {query}. Based on: {analyze_text}."
+    synthesis_prompt = (
+        f"{constitutional_prefix}"
+        f"Synthesize final conclusion for: {query}.\n"
+        f"Based on: {analyze_text}.\n"
+        f"CRITICAL: Verify ΔS ≤ 0 through entire reasoning chain. "
+        f"If paradox detected, output VOID immediately."
+    )
     synthesis_env = await ollama_local_generate(prompt=synthesis_prompt, max_tokens=b333)
     if not synthesis_env.ok:
         return {

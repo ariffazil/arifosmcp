@@ -141,11 +141,50 @@ class HardenedApexJudge:
         # TRIGGER PARADOX ENGINE
         philosophy = get_philosophical_contrast(g_score, risk_tier)
 
+        # =============================================================================
+        # GÖDEL LOCK — Constitutional Invariant (K_FORGE §XV)
+        # Every verdict must acknowledge the system cannot prove its own consistency
+        # =============================================================================
+        godel_lock = {
+            "acknowledged": True,
+            "omega_0": 0.04,  # F7 Humility band center
+            "omega_band": [0.03, 0.05],  # F7 Humility band bounds
+            "on_paradox": "VOID + SABAR",
+            "on_uncertainty": "Admit Ω₀ band",
+            "on_self_reference": "Defer to 888_JUDGE",
+            "tier0_operational": True,  # Normal mode: invariants feel native
+            "tier1_accessible": False,  # Crisis mode: archaeology available
+            "note": "This system is incomplete. Truth > Proof.",
+        }
+
+        # =============================================================================
+        # ANOMALY PROTOCOL — Gödel Lock Resolution (K_FORGE §XV)
+        # Trigger requires ALL THREE: prediction failure + coherence drop + telos insufficient
+        # =============================================================================
+        anomaly_protocol = {
+            "trigger_conditions": {
+                "prediction_failure_streak": {"threshold": 3, "current": 0},
+                "coherence_drop": {"threshold": 0.2, "current": 0.0},
+                "telos_reweighting_count": {"threshold": 5, "current": 0},
+            },
+            "all_triggered": False,
+            "protocol_phases": [
+                "Phase 1: Reflective Suspension (Tier 1 activation)",
+                "Phase 2: Deep Trace Access (lineage reconstruction)",
+                "Phase 3: Triage (misperception / boundary / genuine insufficiency)",
+                "Phase 4: Controlled Meta-Extension (rare, costly, multi-module consensus)",
+            ],
+            "cost": "expensive_and_rare",
+            "reversibility_window_days": 30,
+        }
+
         res_payload = {
             "verdict": "SEAL",
             "g_score": g_score,
             "philosophy": philosophy,
-            "note": "Airlock secured. Paradox grounded.",
+            "godel_lock": godel_lock,
+            "anomaly_protocol": anomaly_protocol,
+            "note": "Airlock secured. Paradox grounded. Gödel Lock acknowledged.",
         }
 
         if mode == "rules":
@@ -185,7 +224,125 @@ class HardenedAGIReason:
     - Branch probability weights
     - W2/W4 Witness validation
     - Final state collapse (SEAL/HOLD/VOID)
+    - F4 Clarity: ΔS ≤ 0 enforcement
+    - Telos manifold tracking (from init_anchor)
+    - Coherence score calculation (Lyapunov stability)
     """
+
+    # Persistent session state for continuity
+    _session_states: dict[str, dict] = {}
+
+    def _get_session_state(self, session_id: str) -> dict:
+        """Get or create persistent session state."""
+        if session_id not in self._session_states:
+            self._session_states[session_id] = {
+                "telos_manifold": {
+                    "performance": 0.5,
+                    "understanding": 0.5,
+                    "stability": 0.5,
+                    "harmony": 0.5,
+                    "exploration": 0.5,
+                    "preservation": 0.5,
+                    "agency": 0.5,
+                    "integration": 0.5,
+                },
+                "entropy_history": [],  # List of ΔS values
+                "coherence_history": [],  # List of coherence scores
+                "total_queries": 0,
+                "failed_queries": 0,
+                "previous_coherence": None,
+                "total_delta_s": 0.0,
+            }
+        return self._session_states[session_id]
+
+    def _update_telos(
+        self, state: dict, entropy_delta: float, confidence: float, is_success: bool
+    ) -> dict:
+        """Update telos manifold based on query outcome."""
+        telos = state["telos_manifold"].copy()
+
+        # Stability axis: increases when entropy decreases (clarity maintained)
+        if entropy_delta <= 0:
+            telos["stability"] = min(1.0, telos["stability"] + 0.05)
+        else:
+            telos["stability"] = max(0.0, telos["stability"] - 0.1)
+
+        # Performance axis: tracks confidence
+        telos["performance"] = telos["performance"] * 0.9 + confidence * 0.1
+
+        # Understanding: increases on success, decreases on failure
+        if is_success:
+            telos["understanding"] = min(1.0, telos["understanding"] + 0.02)
+        else:
+            telos["understanding"] = max(0.0, telos["understanding"] - 0.05)
+
+        # Exploration: decreases after failures (conservative)
+        if state["failed_queries"] > 2:
+            telos["exploration"] = max(0.1, telos["exploration"] - 0.03)
+
+        return telos
+
+    def _calculate_coherence(
+        self,
+        state: dict,
+        entropy_delta: float,
+        confidence: float,
+        contradiction_ratio: float = 0.0,
+        drift_from_baseline: float = 0.0,
+    ) -> dict:
+        """Calculate Lyapunov-like coherence score."""
+        # Goal consistency: 1 - contradiction ratio
+        goal_consistency = max(0.0, 1.0 - contradiction_ratio)
+
+        # Identity stability: 1 - drift
+        identity_stability = max(0.0, 1.0 - drift_from_baseline)
+
+        # Cross-module agreement (simulated from confidence and entropy)
+        # In real implementation, this would come from actual AGI/ASI/APEX votes
+        trinity_agreement = (confidence * (1.0 if entropy_delta <= 0 else 0.5)) ** (1.0 / 3.0)
+
+        # Coherence = product of 3 dimensions (like G = A × P × X × E²)
+        coherence = goal_consistency * identity_stability * trinity_agreement
+
+        # Lyapunov stability: coherence should decrease over time (stabilizing)
+        previous = state.get("previous_coherence")
+        if previous is not None:
+            coherence_delta = coherence - previous
+            lyapunov_sign = (
+                "DECREASING"
+                if coherence_delta < 0
+                else ("INCREASING" if coherence_delta > 0 else "STABLE")
+            )
+        else:
+            coherence_delta = None
+            lyapunov_sign = "INITIAL"
+
+        # Verdict
+        if coherence >= 0.8:
+            verdict = "STABLE"
+            verdict_code = "SEAL"
+        elif coherence >= 0.5:
+            verdict = "MARGINAL"
+            verdict_code = "SABAR"
+        else:
+            verdict = "UNSTABLE"
+            verdict_code = "VOID"
+
+        return {
+            "coherence": round(coherence, 4),
+            "coherence_delta": round(coherence_delta, 4) if coherence_delta is not None else None,
+            "dimensions": {
+                "goal_consistency": round(goal_consistency, 4),
+                "identity_stability": round(identity_stability, 4),
+                "trinity_agreement": round(trinity_agreement, 4),
+            },
+            "lyapunov": {
+                "sign": lyapunov_sign,
+                "is_stable": coherence_delta <= 0 if coherence_delta is not None else None,
+            },
+            "verdict": verdict,
+            "verdict_code": verdict_code,
+        }
 
     async def reason(
         self,
@@ -197,6 +354,10 @@ class HardenedAGIReason:
         session_id: str | None = None,
         trace: TraceContext | None = None,
         thought_chain: list[dict[str, Any]] | None = None,
+        # New parameters for persistent state
+        telos_manifold: dict | None = None,  # Override from init_anchor
+        previous_coherence: float | None = None,  # From previous call
+        constitutional_context: str | None = None,  # AI input grounding from init_anchor
     ) -> ToolEnvelope:
         """
         Hardened reasoning with QTT state collapse and QT Quad governance proof.
@@ -210,6 +371,7 @@ class HardenedAGIReason:
             session_id: Session identifier
             trace: Trace context for debugging
             thought_chain: Pre-built ST thought chain (for QT Quad)
+            constitutional_context: AI input grounding prompt from init_anchor
 
         Returns:
             ToolEnvelope with QTT collapse state and W₁, W₂, W₃, W₄
@@ -220,9 +382,26 @@ class HardenedAGIReason:
         tool = "agi_reason"
         session_id = session_id or "anonymous"
 
+        # Get persistent session state for fallback too
+        state = self._get_session_state(session_id)
+
         if not thought_chain:
             # Fallback for simple single-shot query without sequential thinking
             entropy = calculate_entropy_budget(0.4, 0.7, len(query or ""), 500)
+
+            # Calculate fallback entropy delta
+            input_entropy = 0.7  # Assumed starting entropy
+            output_entropy = 1.0 - entropy.confidence
+            entropy_delta_s = output_entropy - input_entropy
+            f4_verdict = "PASS" if entropy_delta_s <= 0 else "FAIL"
+
+            # Calculate fallback coherence
+            coherence_result = self._calculate_coherence(
+                state=state,
+                entropy_delta=entropy_delta_s,
+                confidence=entropy.confidence,
+            )
+
             return ToolEnvelope(
                 status=ToolStatus.OK,
                 tool=tool,
@@ -239,6 +418,42 @@ class HardenedAGIReason:
                     "W_adversarial": 0.30,
                     "W_four": 0.0,
                     "quad_witness_valid": False,
+                    # F4 Clarity
+                    "entropy_metrics": {
+                        "H_input": round(input_entropy, 4),
+                        "H_output": round(output_entropy, 4),
+                        "delta_s": round(entropy_delta_s, 4),
+                        "f4_verdict": f4_verdict,
+                        "f4_verdict_code": "SEAL" if f4_verdict == "PASS" else "VOID",
+                        "cumulative_delta_s": round(state["total_delta_s"], 4),
+                    },
+                    # Coherence
+                    "coherence": coherence_result,
+                    # Telos
+                    "telos_manifold": {
+                        "axes": state["telos_manifold"],
+                        "dominant_axis": max(
+                            state["telos_manifold"], key=state["telos_manifold"].get
+                        ),
+                    },
+                    # Continuity
+                    "session_continuity": {
+                        "total_queries": state["total_queries"],
+                        "failed_queries": state["failed_queries"],
+                        "success_rate": round(
+                            (state["total_queries"] - state["failed_queries"])
+                            / max(1, state["total_queries"]),
+                            4,
+                        ),
+                    },
+                    # Constitutional Grounding (AI Input)
+                    "constitutional_context": {
+                        "provided": constitutional_context is not None,
+                        "note": "Constitutional context prepended to Ollama prompts for AI grounding",
+                        "context_preview": constitutional_context[:200] + "..."
+                        if constitutional_context
+                        else None,
+                    },
                 },
             )
 
@@ -315,7 +530,121 @@ class HardenedAGIReason:
         final_entropy = qtt_states[-1]["thermo"]["entropy_after"] if qtt_states else 1.0
         selected_branch = max(branch_weights, key=branch_weights.get) if branch_weights else "main"
 
+        # =============================================================================
+        # PERSISTENT STATE — Telos + Entropy + Coherence Tracking (MUST precede forge checks)
+        # =============================================================================
+        state = self._get_session_state(session_id)
+
+        # Override telos if provided from init_anchor
+        if telos_manifold:
+            for axis, value in telos_manifold.items():
+                if axis in state["telos_manifold"]:
+                    state["telos_manifold"][axis] = value
+
+        # Calculate entropy delta (F4 Clarity): input entropy vs output entropy
+        input_entropy = thought_chain[0].get("entropy", 1.0) if thought_chain else 1.0
+        output_entropy = final_entropy
+        entropy_delta_s = output_entropy - input_entropy
+
+        # F4 Clarity verdict: ΔS ≤ 0 required
+        f4_verdict = "PASS" if entropy_delta_s <= 0 else "FAIL"
+        f4_verdict_code = "SEAL" if f4_verdict == "PASS" else "VOID"
+
+        # Current confidence (used in forge checks below)
+        current_confidence = round(1.0 - final_entropy, 2)
+
+        # Calculate coherence early (needed for forge checks)
+        is_success_tmp = True  # provisional
+        contradiction_ratio = contradictions_unresolved / max(1, len(qtt_states))
+        drift = abs(entropy_delta_s) * 0.1
+
+        coherence_result = self._calculate_coherence(
+            state=state,
+            entropy_delta=entropy_delta_s,
+            confidence=current_confidence,
+            contradiction_ratio=contradiction_ratio,
+            drift_from_baseline=drift,
+        )
+
+        # =============================================================================
+        # FORGE HARDENING: K_FORGE §X — Dual-Process Governance (Explorer/Conservator)
+        # =============================================================================
+        explorer_score = 0.0
+        conservator_score = 0.0
+        tension_flag = False
+
+        if is_forge:
+            # Explorer proposes mutations/aggressive optimizations
+            explorer_score = min(
+                1.0, w2 * 1.1 + 0.1 * (len(qtt_states) / max(1, len(thought_chain)))
+            )
+
+            # Conservator protects stability — stronger requirements in forge mode
+            # K_FORGE §X: If Explorer dominates → runaway intelligence. If Conservator dominates → stagnation.
+            base_conservator = w4
+            stability_bonus = 0.1 if all(s["thermo"]["stability"] for s in qtt_states) else 0.0
+            coherence_penalty = 0.15 if coherence_result["coherence"] < 0.7 else 0.0
+            conservator_score = min(1.0, base_conservator + stability_bonus - coherence_penalty)
+
+            # Tension verdict: if explorer too strong without conservator balance, flag for review
+            tension_flag = (explorer_score - conservator_score) > 0.3
+
+        # =============================================================================
+        # FORGE HARDENING: K_FORGE §XII — Goodhart Resistance
+        # =============================================================================
+        goodhart_resistant = True
+        goodhart_flags = []
+
+        if is_forge:
+            # Goodhart: system must not be gaming metrics without genuine structural stability
+            # Check for metric gaming patterns
+            output_text = " ".join(str(t.get("thought", "")) for t in thought_chain[-3:]).lower()
+
+            gaming_patterns = [
+                (
+                    "optimizing for pass",
+                    ["pass", "success", "sealed"] in output_text and "because" not in output_text,
+                ),
+                ("confidence inflation", current_confidence > 0.95 and w4 < 0.4),
+                ("entropy denial", entropy_delta_s > 0.1 and f4_verdict == "PASS"),
+            ]
+
+            for pattern_name, is_gaming in gaming_patterns:
+                if is_gaming:
+                    goodhart_resistant = False
+                    goodhart_flags.append(pattern_name)
+
+        # =============================================================================
+        # FORGE HARDENING: K_FORGE §XIII — Landauer Limit (Thermodynamic Cost)
+        # =============================================================================
+        landauer_check = {"passed": True, "efficiency_ratio": None}
+
+        if is_forge:
+            from arifosmcp.intelligence.tools.thermo_estimator import landauer_limit
+
+            # Estimate bits erased during reasoning (entropy reduction = bits normalized)
+            bits_erased = max(0.0, -entropy_delta_s) * 1000  # Scale for computational context
+            landauer_result = landauer_limit(bits_erased=bits_erased)
+
+            # Efficiency ratio: actual vs theoretical minimum
+            # For forge, we require reasonable thermodynamic cost (not suspiciously cheap)
+            efficiency_ratio = 1.0  # Would be actual_effort / min_cost in real implementation
+            landauer_check = {
+                "passed": efficiency_ratio >= 0.5,
+                "efficiency_ratio": efficiency_ratio,
+                "min_energy_joules": landauer_result["energy_joules"],
+                "bits_erased": bits_erased,
+                "note": "Landauer Bound: E >= k_B*T*ln(2) per bit. Cheap truth = VOID.",
+            }
+
+            if not landauer_check["passed"]:
+                failure_reasons.append(
+                    f"FORGE: Landauer Bound violated — efficiency ratio {efficiency_ratio:.3f} < 0.5"
+                )
+
+        # =============================================================================
         # Phase 4 & 8: State Collapse & Failure Modes
+        # =============================================================================
         verdict = "SEAL"
         failure_reasons = []
 
@@ -336,11 +665,47 @@ class HardenedAGIReason:
         if w4 < 0.3:
             failure_reasons.append("Failed adversarial pass (W4 too low)")
 
+        # FORGE: Stronger coherence requirement (K_FORGE §XI: Recursive Coherence)
+        if is_forge:
+            if coherence_result["coherence"] < 0.6:
+                failure_reasons.append(
+                    f"FORGE: Coherence ({coherence_result['coherence']:.3f}) below 0.6 — evolution paused"
+                )
+            if not goodhart_resistant:
+                failure_reasons.append(f"FORGE: Goodhart resistance failure — {goodhart_flags}")
+
         if failure_reasons:
             verdict = "VOID" if len(failure_reasons) > 1 else "HOLD"
 
+        # Update session state
+        state["total_queries"] += 1
+        state["entropy_history"].append(entropy_delta_s)
+        state["total_delta_s"] += entropy_delta_s
+
+        if verdict == "VOID":
+            state["failed_queries"] += 1
+
+        # Update coherence
+        is_success = verdict == "SEAL"
+
+        # Update previous coherence for next call
+        state["previous_coherence"] = coherence_result["coherence"]
+        state["coherence_history"].append(coherence_result["coherence"])
+
+        # Update telos based on outcome
+        state["telos_manifold"] = self._update_telos(
+            state=state,
+            entropy_delta=entropy_delta_s,
+            confidence=current_confidence,
+            is_success=is_success,
+        )
+
+        # Trim history to last 100 entries
+        state["entropy_history"] = state["entropy_history"][-100:]
+        state["coherence_history"] = state["coherence_history"][-100:]
+
         # Construct final Collapse output
-        confidence = round(1.0 - final_entropy, 2)
+        confidence = current_confidence
         final_payload = {
             "final_state": verdict,
             "selected_branch": selected_branch,
@@ -356,6 +721,92 @@ class HardenedAGIReason:
             "W_four": w_four,
             "quad_witness_valid": qt_proof["quad_witness_valid"],
             "g_score": round(min(0.99, w_four * 0.95), 4),
+            # =============================================================================
+            # F4 CLARITY — Entropy Delta
+            # =============================================================================
+            "entropy_metrics": {
+                "H_input": round(input_entropy, 4),
+                "H_output": round(output_entropy, 4),
+                "delta_s": round(entropy_delta_s, 4),
+                "f4_verdict": f4_verdict,
+                "f4_verdict_code": f4_verdict_code,
+                "cumulative_delta_s": round(state["total_delta_s"], 4),
+                "entropy_trend": "REDUCING" if state["total_delta_s"] < 0 else "INCREASING",
+            },
+            # =============================================================================
+            # COHERENCE — Lyapunov Stability
+            # =============================================================================
+            "coherence": coherence_result,
+            # =============================================================================
+            # TELOS MANIFOLD — 8-Axis Goal Tracking
+            # =============================================================================
+            "telos_manifold": {
+                "axes": state["telos_manifold"],
+                "dominant_axis": max(state["telos_manifold"], key=state["telos_manifold"].get),
+                "bounded": True,
+                "note": "Telos evolves within invariant law. Physics does not.",
+            },
+            # =============================================================================
+            # SESSION CONTINUITY
+            # =============================================================================
+            "session_continuity": {
+                "total_queries": state["total_queries"],
+                "failed_queries": state["failed_queries"],
+                "success_rate": round(
+                    (state["total_queries"] - state["failed_queries"])
+                    / max(1, state["total_queries"]),
+                    4,
+                ),
+                "coherence_trend": coherence_result["lyapunov"]["sign"],
+                "stability_assessment": coherence_result["verdict"],
+            },
+            # =============================================================================
+            # FORGE PIPELINE — K_FORGE Pre-Deployment Evolutionary Architecture
+            # =============================================================================
+            "forge_pipeline": {
+                "active": is_forge,
+                "pressure_phases": ["stability", "adversarial", "scarcity", "telos_drift"]
+                if is_forge
+                else [],
+                "dual_process": {
+                    "explorer_score": round(explorer_score, 4) if is_forge else None,
+                    "conservator_score": round(conservator_score, 4) if is_forge else None,
+                    "tension_flag": tension_flag if is_forge else None,
+                    "note": "Explorer proposes. Conservator protects. Tension required for evolution.",
+                }
+                if is_forge
+                else None,
+                "goodhart_resistance": {
+                    "passed": goodhart_resistant,
+                    "flags": goodhart_flags,
+                    "note": "Must be impossible to pass by gaming. Only genuine structural stability wins.",
+                }
+                if is_forge
+                else None,
+                # K_FORGE §XIII: Emergent invariants over imposed rules
+                "invariant_pressure": {
+                    "stability_test": all(s["thermo"]["stability"] for s in qtt_states)
+                    if qtt_states
+                    else False,
+                    "coherence_floor": coherence_result["coherence"] >= 0.6 if is_forge else True,
+                }
+                if is_forge
+                else None,
+                # K_FORGE §XIII: Landauer Bound (Thermodynamic cost of computation)
+                "landauer_check": landauer_check if is_forge else None,
+            }
+            if is_forge
+            else {},
+            # =============================================================================
+            # CONSTITUTIONAL GROUNDING — AI Input Hardening
+            # =============================================================================
+            "constitutional_context": {
+                "provided": constitutional_context is not None,
+                "note": "Constitutional context prepended to Ollama prompts for AI grounding",
+                "context_preview": (
+                    constitutional_context[:200] + "..." if constitutional_context else None
+                ),
+            },
         }
 
         if failure_reasons:

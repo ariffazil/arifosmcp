@@ -225,12 +225,19 @@ async def _wrap_call(
             )
 
         # ── Philosophy Injection (APEX-G) ──
-        # Wire the 33-quote rich wisdom layer to every tool output.
+        # Wire the 27-zone atlas philosophy to every tool output.
         from arifosmcp.runtime.philosophy import select_governed_philosophy
 
         g_score = 1.0
+        delta_s = 0.0
+        omega_score = 0.05  # Default F7 band center
+
         if envelope.metrics and envelope.metrics.telemetry:
             g_score = envelope.metrics.telemetry.G_star
+
+        # Extract entropy delta from envelope
+        if hasattr(envelope, "entropy") and envelope.entropy:
+            delta_s = getattr(envelope.entropy, "delta_s", 0.0)
 
         failed_codes = [e.code for e in envelope.errors if str(e.code).startswith("F")]
 
@@ -249,6 +256,8 @@ async def _wrap_call(
             g_score=g_score,
             failed_floors=failed_codes,
             session_id=session_id,
+            delta_s=delta_s,
+            omega_score=omega_score,
         )
 
         # Final ABI Alignment: Sync flags from payload to authority
@@ -295,14 +304,14 @@ async def _wrap_call(
             else str(envelope.verdict),
             g_score=0.33,  # Humility floor for failures
             session_id=session_id,
+            delta_s=0.0,  # Unknown in failure state
+            omega_score=0.08,  # Higher humility in failure
         )
 
         return envelope
 
 
 # --- GOVERNANCE IMPLEMENTATIONS ---
-
-
 
 
 async def arifos_kernel_impl(
@@ -324,8 +333,6 @@ async def arifos_kernel_impl(
         "allow_execution": allow_execution,
     }
     return await _wrap_call("arifOS_kernel", Stage.ROUTER_444, session_id, payload, ctx)
-
-
 
 
 async def apex_soul_dispatch_impl(

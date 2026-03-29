@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-import time # Added for start time tracking
+import time  # Added for start time tracking
 from typing import Any
 
 from fastmcp import FastMCP
@@ -74,7 +74,7 @@ def _register_local_phase2_tools(mcp: FastMCP, profile: str = "full") -> None:
 
 
 def _register_aclip_tools(mcp: FastMCP) -> None:
-    """Register ACLIP Hardened Tools (Nervous System 9)."""
+    """Register ACLIP Hardened Tools (Nervous System 9 + Constitutional Math)."""
     from arifosmcp.intelligence import console_tools
 
     mcp.tool(name="system_health")(console_tools.system_health)
@@ -85,7 +85,12 @@ def _register_aclip_tools(mcp: FastMCP) -> None:
     mcp.tool(name="net_status")(console_tools.net_status)
     mcp.tool(name="arifos_list_resources")(console_tools.arifos_list_resources)
     mcp.tool(name="arifos_read_resource")(console_tools.arifos_read_resource)
+    # Cost & Constitutional Math
     mcp.tool(name="cost_estimator")(console_tools.cost_estimator)
+    mcp.tool(name="coherence_score")(console_tools.coherence_score)
+    mcp.tool(name="shadow_prices")(console_tools.shadow_prices)
+    mcp.tool(name="shannon_entropy")(console_tools.shannon_entropy)
+    mcp.tool(name="entropy_delta")(console_tools.entropy_delta)
 
 
 def register_phase2_tools(mcp: FastMCP, profile: str = "full") -> None:

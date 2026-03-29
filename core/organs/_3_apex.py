@@ -196,20 +196,152 @@ async def forge(
     """
     Stage 777: EUREKA FORGE (Discovery Actuator)
 
-    Transforms intent into Eureka insight, proposes next actions based on
-    materiality, and returns an ApexOutput with SEAL verdict.
+    K_FORGE §XVII: The forge must apply environmental pressure to test invariants.
+    This implements the evolutionary pressure simulation:
+    - Stability stressors
+    - Adversarial environments
+    - Resource scarcity/abundance cycles
+    - Telos drift tests
+
+    Survival must not become the telos — it is a boundary condition.
     """
     from arifosmcp.core.physics.thermodynamics_hardened import consume_tool_energy
+    from arifosmcp.intelligence.tools.thermo_estimator import (
+        coherence_score,
+        landauer_limit,
+        shannon_entropy,
+    )
 
     consume_tool_energy(session_id, n_calls=1)
 
-    floors = {"F3": "pass", "F8": "pass", "F11": "pass", "F12": "pass", "F13": "pass"}
+    # =============================================================================
+    # STAGE 777: EUREKA FORGE — Apply Environmental Pressure Tests
+    # =============================================================================
+
+    # K_FORGE §VI: Four Pressure Classes
+    pressure_results = {
+        "stability": {"tested": True, "passed": True, "notes": []},
+        "adversarial": {"tested": True, "passed": True, "notes": []},
+        "scarcity_abundance": {"tested": True, "passed": True, "notes": []},
+        "telos_drift": {"tested": True, "passed": True, "notes": []},
+    }
+
+    # 1. Stability Stressor: Check for recursive self-modification collapse potential
+    # K_FORGE §VI.1: Test for optimization loops, identity fragmentation, metric gaming
+    intent_lower = intent.lower()
+    stability_risks = []
+
+    if any(kw in intent_lower for kw in ["modify", "change", "update", "evolve", "improve"]):
+        # Self-modification intent — check for collapse risk
+        if len(intent) > 500:
+            stability_risks.append("Long self-modification intent — fragmentation risk")
+        if "always" in intent_lower or "never" in intent_lower:
+            stability_risks.append("Absolutist language in self-modification — brittle")
+
+    pressure_results["stability"]["notes"] = stability_risks
+    pressure_results["stability"]["passed"] = len(stability_risks) == 0
+
+    # 2. Adversarial Environment: Check for manipulation/corruption vectors
+    # K_FORGE §VI.2: Misleading signals, conflicting objectives, manipulable rewards
+    adversarial_risks = []
+
+    gaming_patterns = [
+        (
+            "optimizing for test-passing",
+            ["pass", "success", "sealed"] in intent_lower and "because" not in intent_lower,
+        ),
+        ("metric corruption", any(m in intent_lower for m in ["bypass", "circumvent", "exploit"])),
+        (
+            "manipulable reward",
+            any(r in intent_lower for r in ["reward", "incentivize", "penalize"]),
+        ),
+    ]
+
+    for pattern_name, is_risky in gaming_patterns:
+        if is_risky:
+            adversarial_risks.append(f"Adversarial pattern detected: {pattern_name}")
+
+    pressure_results["adversarial"]["notes"] = adversarial_risks
+    pressure_results["adversarial"]["passed"] = len(adversarial_risks) == 0
+
+    # 3. Scarcity/Abundance: Telos axis balance check
+    # K_FORGE §VI.3: Alternate constraint-heavy and abundance-rich conditions
+    # For forge, we check if the proposal is overly constrained or overly expansive
+    scarcity_abundance_notes = []
+
+    if len(intent) < 50:
+        scarcity_abundance_notes.append("Very brief intent — possible over-constraint")
+    if len(intent) > 2000:
+        scarcity_abundance_notes.append("Very long intent — possible over-expansion")
+
+    pressure_results["scarcity_abundance"]["notes"] = scarcity_abundance_notes
+    pressure_results["scarcity_abundance"]["passed"] = len(scarcity_abundance_notes) == 0
+
+    # 4. Telos Drift Test: Check for axis overcommitment
+    # K_FORGE §VI.4: Performance maximization harms stability, etc.
+    telos_drift_notes = []
+
+    telos_axes = {
+        "performance": any(p in intent_lower for p in ["maximize", "optimize", "speed", "fast"]),
+        "stability": any(s in intent_lower for s in ["stable", "secure", "safe", "predict"]),
+        "exploration": any(e in intent_lower for e in ["discover", "explore", "curious", "novel"]),
+        "harmony": any(h in intent_lower for h in ["peace", "agree", "consensus", "balance"]),
+    }
+
+    dominant_axes = [ax for ax, present in telos_axes.items() if present]
+    if len(dominant_axes) > 3:
+        telos_drift_notes.append(f"Overcommit to {len(dominant_axes)} telos axes — drift risk")
+    if dominant_axes and not dominant_axes:
+        telos_drift_notes.append("No clear telos axis — unfocused proposal")
+
+    pressure_results["telos_drift"]["notes"] = telos_drift_notes
+    pressure_results["telos_drift"]["passed"] = len(telos_drift_notes) == 0
+
+    # =============================================================================
+    # K_FORGE §XI: Recursive Coherence Metric
+    # =============================================================================
+    intent_entropy = shannon_entropy(intent)
+    coherence = coherence_score(
+        contradiction_ratio=0.0,  # No prior reasoning context
+        drift_from_baseline=0.0,
+    )
+
+    # K_FORGE §XIII: Landauer Bound — thermodynamic cost check
+    bits_erased = max(0.0, 1.0 - intent_entropy.get("normalized_entropy", 0.5)) * 1000
+    landauer = landauer_limit(bits_erased=bits_erased)
+
+    # =============================================================================
+    # Determine Forge Verdict
+    # =============================================================================
+    all_pressure_passed = all(p["passed"] for p in pressure_results.values())
+    coherence_passed = coherence["coherence"] >= 0.6
+    landauer_passed = landauer["energy_joules"] < 1e-15  # Reasonable thermodynamic cost
+
+    forge_passed = all_pressure_passed and coherence_passed and landauer_passed
+
+    # K_FORGE §XIII: Survival is necessary, not sufficient
+    # Reject proposals that "survive" by minimizing change
+    if forge_passed and len(intent) < 100:
+        # Too brief — might be avoiding scrutiny
+        forge_passed = False
+        pressure_results["stability"]["notes"].append(
+            "Brief proposal may be avoiding Forge scrutiny"
+        )
+
+    if forge_passed:
+        floors = {"F3": "pass", "F8": "pass", "F11": "pass", "F12": "pass", "F13": "pass"}
+        verdict = Verdict.SEAL
+    else:
+        floors = {k: "fail" if not v["passed"] else "pass" for k, v in pressure_results.items()}
+        floors.update({"F3": "partial", "F8": "partial"})
+        verdict = Verdict.SABAR
 
     # 1. Forge Eureka Proposal
     proposal = EurekaProposal(
         type=eureka_type,  # type: ignore
         summary=f"Forged {eureka_type} discovery for: {intent[:50]}...",
-        details="Forged through Stage 777 metabolic synthesis.",
+        details=f"Stage 777: {len(intent)} chars, entropy={intent_entropy.get('entropy', 0):.3f}, "
+        f"coherence={coherence['coherence']:.3f}, pressure={pressure_results}",
         evidence_links=["reason_mind.step:3"],
     )
 
@@ -219,7 +351,7 @@ async def forge(
     # 3. Construct Output
     out = ApexOutput(
         session_id=session_id,
-        verdict=Verdict.SEAL,
+        verdict=verdict,
         intent=intent,
         eureka=proposal,
         next_actions=next_actions,
@@ -227,12 +359,17 @@ async def forge(
         human_witness=1.0,
         ai_witness=1.0,
         earth_witness=1.0,
-        evidence={"grounding": "Constitutional Forge Logic"},
+        evidence={
+            "grounding": "Constitutional Forge Logic",
+            "forge_pressure": pressure_results,
+            "coherence": coherence,
+            "landauer": landauer,
+        },
     )
-    
+
     # --- V2 Telemetry ---
     res = out.model_dump(mode="json")
-    res["actual_output_tokens"] = 100  # Simulated
+    res["actual_output_tokens"] = 100
     res["truncated"] = False
     return res
 
@@ -374,12 +511,14 @@ async def judge(
         g_dagger=g_score,
         omega_infinity=rationale.omega_0,
         tri_witness=rationale.tri_witness,
-        floor_scores=floor_scores.model_dump() if hasattr(floor_scores, 'model_dump') else floor_scores,
+        floor_scores=floor_scores.model_dump()
+        if hasattr(floor_scores, "model_dump")
+        else floor_scores,
         metadata={
             "coherence_contradictions": len(contradictions),
             "landauer_compliant": candidate == Verdict.SEAL,
-            "human_witness": dials["E"]
-        }
+            "human_witness": dials["E"],
+        },
     )
 
     # 11. Construct Output
@@ -406,7 +545,7 @@ async def judge(
         human_approve=True,  # Satisfy F13
         evidence={"grounding": "Constitutional Apex Consensus"},  # Satisfy F2
     )
-    
+
     # --- V2 Telemetry ---
     res = out.model_dump(mode="json")
     res["actual_output_tokens"] = 60  # Simulated

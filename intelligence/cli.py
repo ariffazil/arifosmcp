@@ -35,7 +35,12 @@ def create_aclip_server() -> FastMCP:
     mcp.tool(name="chroma_query")(console_tools.chroma_query)
     mcp.tool(name="arifos_list_resources")(console_tools.arifos_list_resources)
     mcp.tool(name="arifos_read_resource")(console_tools.arifos_read_resource)
+    # Cost & Constitutional Math Tools
     mcp.tool(name="cost_estimator")(console_tools.cost_estimator)
+    mcp.tool(name="coherence_score")(console_tools.coherence_score)
+    mcp.tool(name="shadow_prices")(console_tools.shadow_prices)
+    mcp.tool(name="shannon_entropy")(console_tools.shannon_entropy)
+    mcp.tool(name="entropy_delta")(console_tools.entropy_delta)
 
     return mcp
 

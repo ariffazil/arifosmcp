@@ -22,6 +22,7 @@ from arifosmcp.runtime.models import (
 # Tool 1: system_health
 # =============================================================================
 
+
 async def system_health(
     include_swap: bool = True,
     include_io: bool = False,
@@ -46,9 +47,11 @@ async def system_health(
         auth_context=auth_context,
     )
 
+
 # =============================================================================
 # Tool 2: fs_inspect
 # =============================================================================
+
 
 async def fs_inspect(
     path: str = ".",
@@ -82,9 +85,11 @@ async def fs_inspect(
         auth_context=auth_context,
     )
 
+
 # =============================================================================
 # Tool 3: chroma_query
 # =============================================================================
+
 
 async def chroma_query(
     query: str,
@@ -114,9 +119,11 @@ async def chroma_query(
         auth_context=auth_context,
     )
 
+
 # =============================================================================
 # Tool 4: log_tail
 # =============================================================================
+
 
 async def log_tail(
     log_file: str = "arifosmcp.transport.log",
@@ -150,9 +157,11 @@ async def log_tail(
         auth_context=auth_context,
     )
 
+
 # =============================================================================
 # Tool 5: process_list
 # =============================================================================
+
 
 async def process_list(
     filter_name: str | None = None,
@@ -184,9 +193,11 @@ async def process_list(
         auth_context=auth_context,
     )
 
+
 # =============================================================================
 # Tool 6: net_status
 # =============================================================================
+
 
 async def net_status(
     check_ports: bool = True,
@@ -216,9 +227,11 @@ async def net_status(
         auth_context=auth_context,
     )
 
+
 # =============================================================================
 # Tool 7: arifos_list_resources
 # =============================================================================
+
 
 async def arifos_list_resources(
     session_id: str | None = None,
@@ -226,6 +239,7 @@ async def arifos_list_resources(
 ) -> RuntimeEnvelope:
     """List available arifOS resources."""
     from arifosmcp.runtime.resources import manifest_resources
+
     resources = manifest_resources()
     return RuntimeEnvelope(
         tool="arifos_list_resources",
@@ -237,9 +251,11 @@ async def arifos_list_resources(
         auth_context=auth_context,
     )
 
+
 # =============================================================================
 # Tool 8: arifos_read_resource
 # =============================================================================
+
 
 async def arifos_read_resource(
     uri: str,
@@ -248,6 +264,7 @@ async def arifos_read_resource(
 ) -> RuntimeEnvelope:
     """Read a specific arifOS resource by URI."""
     from arifosmcp.runtime.resources import read_resource_content
+
     content = await read_resource_content(uri)
     return RuntimeEnvelope(
         tool="arifos_read_resource",
@@ -259,9 +276,11 @@ async def arifos_read_resource(
         auth_context=auth_context,
     )
 
+
 # =============================================================================
 # Tool 9: cost_estimator
 # =============================================================================
+
 
 async def cost_estimator(
     action_description: str = "",
@@ -275,7 +294,7 @@ async def cost_estimator(
     api_calls: int | None = None,
     provider: str = "openai",
     model: str = "gpt-4",
-    operation: str | None = None, # Alias alias
+    operation: str | None = None,  # Architectural alias
     session_id: str | None = None,
     auth_context: dict[str, Any] | None = None,
 ) -> RuntimeEnvelope:
@@ -292,13 +311,163 @@ async def cost_estimator(
         api_calls=api_calls,
         provider=provider,
         model=model,
-        operation=operation
+        operation=operation,
     )
     is_ok = res.get("status") == "SEAL"
     return RuntimeEnvelope(
         tool="cost_estimator",
         session_id=session_id,
         stage=Stage.ROUTER_444.value,
+        verdict=Verdict.SEAL if is_ok else Verdict.VOID,
+        status=RuntimeStatus.SUCCESS if is_ok else RuntimeStatus.ERROR,
+        payload=res,
+        auth_context=auth_context,
+    )
+
+
+# =============================================================================
+# Tool 10: coherence_score — Lyapunov Stability Metric
+# =============================================================================
+
+
+async def coherence_score(
+    delta_bundle: dict | None = None,
+    omega_bundle: dict | None = None,
+    agi_vote: float = 1.0,
+    asi_vote: float = 1.0,
+    apex_vote: float = 1.0,
+    contradiction_ratio: float = 0.0,
+    drift_from_baseline: float = 0.0,
+    previous_coherence: float | None = None,
+    session_id: str | None = None,
+    auth_context: dict[str, Any] | None = None,
+) -> RuntimeEnvelope:
+    """
+    Compute Lyapunov-like coherence metric for constitutional stability.
+
+    V(state) decreases → system stabilizing
+    V(state) increases → system destabilizing
+
+    Three dimensions:
+    1. Goal consistency — reasoning aligned with intent
+    2. Identity stability — minimal drift from baseline
+    3. Cross-module agreement — AGI, ASI, APEX consensus
+
+    Returns verdict: STABLE (≥0.8) | MARGINAL (≥0.5) | UNSTABLE (<0.5)
+    """
+    res = internal_tools.coherence_score(
+        delta_bundle=delta_bundle,
+        omega_bundle=omega_bundle,
+        agi_vote=agi_vote,
+        asi_vote=asi_vote,
+        apex_vote=apex_vote,
+        contradiction_ratio=contradiction_ratio,
+        drift_from_baseline=drift_from_baseline,
+        previous_coherence=previous_coherence,
+    )
+    is_ok = res.get("verdict_code") == "SEAL"
+    return RuntimeEnvelope(
+        tool="coherence_score",
+        session_id=session_id,
+        stage=Stage.APEX_888.value,
+        verdict=Verdict.SEAL if is_ok else Verdict.VOID,
+        status=RuntimeStatus.SUCCESS if is_ok else RuntimeStatus.ERROR,
+        payload=res,
+        auth_context=auth_context,
+    )
+
+
+# =============================================================================
+# Tool 11: shadow_prices — Lagrange Multiplier Estimation
+# =============================================================================
+
+
+async def shadow_prices(
+    floor_scores: dict[str, float] | None = None,
+    thresholds: dict[str, float] | None = None,
+    session_id: str | None = None,
+    auth_context: dict[str, Any] | None = None,
+) -> RuntimeEnvelope:
+    """
+    Estimate Lagrange multipliers (λᵢ) for constitutional floor constraints.
+
+    λᵢ > 0 → floor i is binding (system lives exactly at boundary)
+    λᵢ = 0 → floor i is slack (system has margin)
+
+    Reveals which floors are critical vs which have spare capacity.
+    """
+    res = internal_tools.shadow_prices(
+        floor_scores=floor_scores,
+        thresholds=thresholds,
+    )
+    return RuntimeEnvelope(
+        tool="shadow_prices",
+        session_id=session_id,
+        stage=Stage.APEX_888.value,
+        verdict=Verdict.SEAL,
+        status=RuntimeStatus.SUCCESS,
+        payload=res,
+        auth_context=auth_context,
+    )
+
+
+# =============================================================================
+# Tool 12: shannon_entropy — Information-Theoretic Entropy
+# =============================================================================
+
+
+async def shannon_entropy(
+    text: str,
+    base: float = 2.0,
+    session_id: str | None = None,
+    auth_context: dict[str, Any] | None = None,
+) -> RuntimeEnvelope:
+    """
+    Compute Shannon entropy H(X) of a text.
+
+    H(X) = -Σ p(x) log₂ p(x)
+
+    High entropy → random, unpredictable (confusion)
+    Low entropy → ordered, predictable (clarity)
+    """
+    res = {"entropy": internal_tools.shannon_entropy(text, base), "base": base}
+    return RuntimeEnvelope(
+        tool="shannon_entropy",
+        session_id=session_id,
+        stage=Stage.MIND_333.value,
+        verdict=Verdict.SEAL,
+        status=RuntimeStatus.SUCCESS,
+        payload=res,
+        auth_context=auth_context,
+    )
+
+
+# =============================================================================
+# Tool 13: entropy_delta — F4 Clarity Check
+# =============================================================================
+
+
+async def entropy_delta(
+    input_text: str,
+    output_text: str,
+    base: float = 2.0,
+    session_id: str | None = None,
+    auth_context: dict[str, Any] | None = None,
+) -> RuntimeEnvelope:
+    """
+    Compute entropy change ΔS = H_output - H_input.
+
+    F4 Clarity requires ΔS ≤ 0 (clarity must increase).
+
+    If ΔS > 0: The system added confusion → FAIL
+    If ΔS ≤ 0: Clarity improved → PASS
+    """
+    res = internal_tools.entropy_delta(input_text, output_text, base)
+    is_ok = res.get("verdict_code") == "SEAL"
+    return RuntimeEnvelope(
+        tool="entropy_delta",
+        session_id=session_id,
+        stage=Stage.MIND_333.value,
         verdict=Verdict.SEAL if is_ok else Verdict.VOID,
         status=RuntimeStatus.SUCCESS if is_ok else RuntimeStatus.ERROR,
         payload=res,
