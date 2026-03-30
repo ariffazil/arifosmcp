@@ -347,7 +347,9 @@ async def apex_soul_dispatch_impl(
     payload["session_id"] = session_id
 
     if mode == "judge":
-        # Argument mismatch fix: candidate -> verdict_candidate for organ layer
+        # FIELD_NOTE: callers pass "candidate"; organ layer expects "verdict_candidate".
+        # Do NOT rename the public field — existing callers (MCP clients, tests) use "candidate".
+        # This translation layer is intentional; any refactor must update both sides together.
         candidate = payload.get("candidate", "SEAL")
         payload["verdict_candidate"] = candidate
         return await _wrap_call("apex_judge", Stage.JUDGE_888, session_id, payload, ctx)
@@ -532,6 +534,9 @@ async def engineering_memory_dispatch_impl(
             session_id=session_id,
         )
     elif mode == "write":
+        # FIELD_NOTE: accepts both "content" and "text" as the memory body (first non-empty wins).
+        # Canonical field is "content". "text" is a legacy alias kept for backward compatibility.
+        # New callers should always send "content"; do not add more aliases here.
         content = payload.get("content") or payload.get("text") or "No content provided."
         project_id = payload.get("project_id", "default")
         area_str = payload.get("area", "main")
@@ -984,6 +989,9 @@ async def ollama_local_generate_impl(prompt: str, session_id: str | None) -> Run
 async def physics_reality_dispatch_impl(
     mode: str, payload: dict, auth_context: dict | None, risk_tier: str, dry_run: bool, ctx: Context
 ) -> RuntimeEnvelope:
+    # FIELD_NOTE: physics_reality uses "input" as its query field; all other tools use "query".
+    # Do NOT rename to "query" here without updating BundleInput downstream and all MCP callers.
+    # Tracked inconsistency — standardise in a dedicated field-rename pass, not here.
     input_val = payload.get("input", "")
     session_id = payload.get("session_id")
     if mode == "search":
