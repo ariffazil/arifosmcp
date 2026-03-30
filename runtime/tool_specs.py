@@ -39,7 +39,7 @@ class PromptSpec:
 MegaToolName = Literal[
     "init_anchor",
     "arifOS_kernel",
-    "apex_soul",
+    "apex_judge",
     "vault_ledger",
     "agi_mind",
     "asi_heart",
@@ -54,7 +54,7 @@ MegaToolName = Literal[
 MEGA_TOOLS: tuple[str, ...] = (
     "init_anchor",
     "arifOS_kernel",
-    "apex_soul",
+    "apex_judge",
     "vault_ledger",
     "agi_mind",
     "asi_heart",
@@ -298,7 +298,7 @@ PUBLIC_TOOL_SPECS: tuple[ToolSpec, ...] = (
         ),
     ),
     ToolSpec(
-        name="apex_soul",
+        name="apex_judge",
         stage="888_JUDGE",
         role="Constitutional Verdict",
         layer="GOVERNANCE",
@@ -309,7 +309,7 @@ PUBLIC_TOOL_SPECS: tuple[ToolSpec, ...] = (
         trinity="PSI Ψ",
         floors=("F3", "F12", "F13"),
         input_schema=_build_mega_schema(
-            "apex_soul",
+            "apex_judge",
             ["judge", "rules", "validate", "hold", "armor", "notify", "probe"],
             {
                 "candidate": {"type": "string"},
