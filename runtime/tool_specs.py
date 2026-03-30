@@ -434,13 +434,13 @@ PUBLIC_TOOL_SPECS: tuple[ToolSpec, ...] = (
         role="Thermodynamic Vitals",
         layer="MACHINE",
         description=(
-            "Quantitative health and metabolic estimation. Modes: 'cost', 'health', 'vitals'."
+            "Quantitative health and metabolic estimation. Modes: 'cost', 'health', 'vitals', 'entropy'."
         ),
         trinity="DELTA Δ",
         floors=("F4", "F5"),
         input_schema=_build_mega_schema(
             "math_estimator",
-            ["cost", "health", "vitals"],
+            ["cost", "health", "vitals", "entropy"],
             {"action": {"type": "string"}, "session_id": {"type": "string"}},
         ),
     ),

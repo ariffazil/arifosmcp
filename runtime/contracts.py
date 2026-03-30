@@ -13,7 +13,7 @@ from typing import Any
 from .public_registry import public_tool_names, CANONICAL_PUBLIC_TOOLS, EXPECTED_TOOL_COUNT
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# 11-TOOL CONTRACT ENFORCEMENT
+# 12-TOOL CONTRACT ENFORCEMENT
 # ═══════════════════════════════════════════════════════════════════════════════
 
 _import_time_names = frozenset(public_tool_names())
@@ -49,6 +49,7 @@ REQUIRES_SESSION: frozenset[str] = frozenset(
         "math_estimator",
         "code_engine",
         "architect_registry",
+        "compat_probe",
     }
 )
 
@@ -56,6 +57,7 @@ READ_ONLY_TOOLS: set[str] = {
     "physics_reality",
     "math_estimator",
     "architect_registry",
+    "compat_probe",
 }
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -83,6 +85,7 @@ AAA_TOOL_STAGE_MAP: dict[str, str] = {
     "math_estimator": "444_ROUTER",
     "code_engine": "M-3_EXEC",
     "architect_registry": "M-4_ARCH",
+    "compat_probe": "M-5_COMPAT",
 }
 
 TRINITY_BY_TOOL: dict[str, str] = {
@@ -97,6 +100,7 @@ TRINITY_BY_TOOL: dict[str, str] = {
     "math_estimator": "DELTA Δ",
     "code_engine": "ALL",
     "architect_registry": "DELTA Δ",
+    "compat_probe": "ALL",
 }
 
 AAA_TOOL_ALIASES: dict[str, str] = {

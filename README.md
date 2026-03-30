@@ -89,62 +89,40 @@ graph TB
 | Mode | Tools | Features | Entrypoint |
 |------|-------|----------|------------|
 | **Horizon (Cloud)** | 8 | Proxied to VPS | `server_horizon.py` |
-| **VPS (Sovereign)** | 11 | Full kernel, local Ollama | `runtime/server.py` |
-
-### Constitutional Flow
-
-```mermaid
-graph TB
-    subgraph TRANSPORT["FastMCP Transport Layer"]
-        T["HTTP / stdio"]
-    end
-    
-    subgraph DISPATCH["Tool Dispatch (HARDENED)"]
-        D["Constitutional Pre-Check<br/>(F1-F13)"]
-    end
-    
-    subgraph PIPELINE["Pipeline Orchestrator"]
-        P["000→111→333→444→555→666→777→888→999"]
-    end
-    
-    subgraph ORGANS["Core Organs"]
-        M["333_MIND<br/>AGI"]
-        H["666_HEART<br/>ASI"]
-        J["888_JUDGE<br/>APEX"]
-    end
-    
-    subgraph ENFORCEMENT["Constitutional Enforcement"]
-        F["13 Floors"]
-    end
-    
-    T --> D --> P --> ORGANS --> F
-    
-    style TRANSPORT fill:#1a1a2e,color:#fff
-    style DISPATCH fill:#16213e,color:#fff
-    style PIPELINE fill:#0f3460,color:#fff
-    style ORGANS fill:#1a1a2e,color:#fff
-    style ENFORCEMENT fill:#16213e,color:#fff
-```
+| **VPS (Sovereign)** | 12 | Full kernel, local Ollama | `runtime/server.py` |
 
 ---
 
-## 🔧 TOOL INVENTORY (11 Mega-Tools)
+## 🚦 LIVE MCP CONTRACT STATUS
+
+| Subsystem | Constitutional | Operational | Production | Stability |
+|-----------|----------------|-------------|------------|-----------|
+| **Anchoring** | ✅ Verified | ✅ Stable | ✅ Ready | **A** |
+| **Registry** | ✅ Verified | ✅ Stable | ✅ Ready | **A** |
+| **Reasoning** | ✅ Verified | ✅ Hardened | ✅ Ready | **B** |
+| **Vitals** | ✅ Verified | ✅ Corrected | ✅ Ready | **B** |
+| **Diagnostic** | ✅ Verified | ✅ New | ✅ Ready | **B** |
+
+---
+
+## 🔧 TOOL INVENTORY (12 Mega-Tools)
 
 ### Tool Reference Table
 
-| Tool | Band | Stage | Constitutional Role |
-|------|------|-------|-------------------|
-| `init_anchor` | 000_INIT | 000 | Session anchoring, Ω₀, philosophy |
-| `architect_registry` | 000_INIT | 000 | Tool discovery, catalog |
-| `physics_reality` | 111_SENSE | 111 | Grounding, F2 Truth enforcement |
-| `agi_mind` | 333_MIND | 333 | Constitutional reasoning |
-| `arifOS_kernel` | 444_ROUT | 444 | Primary orchestration |
-| `asi_heart` | 666_HEART | 666 | Safety critique, F5/F9 |
-| `math_estimator` | 777_OPS | 777 | Thermodynamic cost |
-| `apex_soul` | 888_JUDGE | 888 | Constitutional verdict |
-| `vault_ledger` | 999_SEAL | 999 | Immutable storage |
-| `engineering_memory` | 555_MEM | 555 | Redis context |
-| `code_engine` | — | — | Sandboxed execution |
+| Tool | Band | Stage | Constitutional Role | Modes |
+|------|------|-------|-------------------|-------|
+| `init_anchor` | 000_INIT | 000 | Session anchoring, Ω₀, philosophy | init, state, status, revoke, refresh |
+| `arifOS_kernel` | 444_ROUT | 444 | Primary metabolic orchestration | kernel, status |
+| `apex_soul` | 888_JUDGE | 888 | Sovereign verdict and defense | judge, rules, validate, armor, probe |
+| `vault_ledger` | 999_SEAL | 999 | Immutable ledger (Merkle chain) | seal, verify, resolve |
+| `agi_mind` | 333_MIND | 333 | Constitutional reasoning and synthesis | reason, reflect, forge |
+| `asi_heart` | 666_HEART | 666 | Safety critique, impact simulation | critique, simulate |
+| `engineering_memory` | 555_MEM | 555 | Governed engineering and context | engineer, write, vector_query |
+| `physics_reality` | 111_SENSE | 111 | Environmental grounding and time | search, ingest, atlas, time |
+| `math_estimator` | 444_ROUT | 444 | Thermodynamic health and vitals | cost, health, vitals |
+| `code_engine` | M-3_EXEC | M-3 | Sandboxed execution and observation | fs, process, net, replay |
+| `architect_registry` | M-4_ARCH | M-4 | Tool discovery and schema catalog | list, read, register |
+| `compat_probe` | M-5_COMP | M-5 | Interoperability and enum audit | audit, probe, ping |
 
 ---
 

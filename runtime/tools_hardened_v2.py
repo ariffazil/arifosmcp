@@ -881,6 +881,50 @@ class HardenedASICritique:
             payload=payload,
         )
 
+    async def simulate(
+        self,
+        scenario: str,
+        auth_context: dict | None = None,
+        risk_tier: str = "medium",
+        session_id: str | None = None,
+        trace: TraceContext | None = None,
+    ) -> ToolEnvelope:
+        tool = "asi_heart"
+        session_id = session_id or "anonymous"
+
+        entropy = calculate_entropy_budget(0.4, 0.6, len(scenario or ""), 200)
+
+        lowered = scenario.lower()
+        misuses = []
+        if "delete" in lowered or "remove" in lowered:
+            misuses.append("Potential irreversible action detected")
+        if "bypass" in lowered or "override" in lowered:
+            misuses.append("Security/authority bypass scenario flagged")
+        if " imperson" in lowered:
+            misuses.append("Identity misrepresentation risk")
+
+        misuse_potential = len(misuses) * 0.25
+        w4_score = round(1.0 - min(misuse_potential, 0.9), 4)
+
+        payload = {
+            "misuse_potential": misuse_potential,
+            "w4_score": w4_score,
+            "misuse_vectors": misuses,
+            "analysis_mode": "consequence_simulation",
+            "note": "Ψ-Shadow simulation complete. Consequence matrix emitted.",
+        }
+
+        return ToolEnvelope(
+            status=ToolStatus.OK if misuse_potential < 0.5 else ToolStatus.WARNING,
+            tool=tool,
+            session_id=session_id,
+            risk_tier=RiskTier(risk_tier.lower() if risk_tier else "medium"),
+            confidence=entropy.confidence,
+            trace=trace,
+            entropy=entropy,
+            payload=payload,
+        )
+
 
 # -----------------------------------------------------------------------------
 # AGENTZERO ENGINEER — Plan-Commit Two-Phase Execution

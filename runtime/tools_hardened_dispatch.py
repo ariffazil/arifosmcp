@@ -299,9 +299,14 @@ async def hardened_agi_mind_dispatch(
 async def hardened_asi_heart_dispatch(
     mode: str, payload: dict[str, Any], **kwargs
 ) -> dict[str, Any]:
-    if mode in ("critique", "simulate"):
+    if mode == "critique":
         envelope = await asi_heart_dispatch_impl.critique(
             candidate=payload.get("proposal") or payload.get("content"),
+            session_id=payload.get("session_id"),
+        )
+    elif mode == "simulate":
+        envelope = await asi_heart_dispatch_impl.simulate(
+            scenario=payload.get("scenario") or payload.get("content"),
             session_id=payload.get("session_id"),
         )
     else:
@@ -319,6 +324,19 @@ async def hardened_engineering_memory_dispatch(
             action_class=payload.get("action_class", "read"),
             session_id=payload.get("session_id"),
         )
+    elif mode in ("vector_query", "vector_store", "vector_forget", "query"):
+        from arifosmcp.runtime.tools_internal import engineering_memory_dispatch_impl
+        from fastmcp.dependencies import CurrentContext
+
+        envelope = await engineering_memory_dispatch_impl(
+            mode=mode,
+            payload=payload,
+            auth_context=payload.get("auth_context"),
+            risk_tier=payload.get("risk_tier", "medium"),
+            dry_run=payload.get("dry_run", True),
+            ctx=CurrentContext(),
+        )
+        return _apply_policy(envelope.to_dict(), "engineering_memory", mode, payload)
     else:
         return {"ok": False, "error": f"Invalid mode for engineering_memory: {mode}"}
 

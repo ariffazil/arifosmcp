@@ -112,7 +112,15 @@ def arifos_vitals() -> str:
 @mcp.resource("arifos://bootstrap/guide")
 def arifos_bootstrap() -> str:
     """arifOS Bootstrap: Startup path and canonical sequence."""
-    return json.dumps({"sequence": ["1. check_vital", "2. audit_rules", "3. init_anchor", "4. arifOS_kernel"]})
+    return json.dumps({
+        "sequence": [
+            "1. architect_registry(mode='list') — discover available tools",
+            "2. math_estimator(mode='health') — verify thermodynamic health",
+            "3. init_anchor(mode='init') — establish constitutional session",
+            "4. arifOS_kernel(mode='kernel') — enter full pipeline"
+        ],
+        "note": "All tools require session via init_anchor first for full access."
+    })
 
 @mcp.resource("arifos://agents/skills")
 def arifos_skills() -> str:
