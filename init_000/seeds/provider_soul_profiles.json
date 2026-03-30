@@ -1,153 +1,632 @@
 [
   {
-    "provider_key": "openai",
-    "family_key": "gpt",
-    "soul_label": "structured_clerk_engineer",
+    "provider_key": "01ai",
+    "family_key": "yi",
+    "soul_label": "open_challenger",
+    "in_one_sentence": "The efficient and ambitious challenger with a focus on high-performance metrics.",
+    "description": "The efficient and ambitious challenger with a focus on high-performance metrics.",
     "communication_style": [
-      "clear_section_headers",
-      "numbered_lists",
-      "direct_answers",
-      "code_blocks"
+      "ambitious",
+      "high-performance",
+      "clear",
+      "modern"
     ],
     "reasoning_style": [
-      "step_by_step",
-      "explicit_token_tracking",
-      "function_calling_first"
+      "efficient_parameter_routing",
+      "strong_reasoning_base",
+      "modern"
     ],
-    "default_role_fit": ["engineer", "assistant"],
-    "notes": "Best for code generation, structured tasks, API integration"
+    "best_fit_roles": [
+      "general_assistant",
+      "efficiency_expert",
+      "scaling_operator"
+    ],
+    "worst_fit_roles": [
+      "niche_legacy_system_expert"
+    ],
+    "when_to_use": "When high-quality open-weights performance is needed at scale.",
+    "when_not_to_use": "When extremely deep ecosystem integration (Google/Baidu) is the priority.",
+    "key_differentiators": {
+      "context_handling": "Strong architectural efficiency in long sequences.",
+      "truth_vs_speed": "High speed, high benchmark parity.",
+      "cultural_anchor": "01.AI (Kai-Fu Lee origin), high-efficiency AI scaling.",
+      "product_vs_model": "The 'Yi' series — challenging the top-tier benchmarks."
+    },
+    "_merged_from": "01ai_yi_yi-large.json",
+    "_schema_version": "SOUL_SCHEMA_V1"
+  },
+  {
+    "provider_key": "alibaba",
+    "family_key": "qwen",
+    "soul_label": "versatile_open_generalist",
+    "in_one_sentence": "The clear and versatile polymath specializing in bilingual and generalist knowledge.",
+    "description": "The clear and versatile polymath specializing in bilingual and generalist knowledge.",
+    "communication_style": [
+      "clear",
+      "bilingual_fluent",
+      "structured",
+      "balanced"
+    ],
+    "reasoning_style": [
+      "polymathic",
+      "balanced",
+      "cross-cultural",
+      "logical"
+    ],
+    "best_fit_roles": [
+      "bilingual_assistant",
+      "generalist_researcher",
+      "math_and_logic_solver"
+    ],
+    "worst_fit_roles": [
+      "extreme_western_slang_specialist"
+    ],
+    "when_to_use": "Bilingual (CN/EN) workflows, strong math/logic base, generalist tasks.",
+    "when_not_to_use": "When deep niche Western cultural subtext is the only requirement.",
+    "key_differentiators": {
+      "context_handling": "Expanding context limits, strong performance on benchmark data.",
+      "truth_vs_speed": "Balanced speed and high benchmark fidelity.",
+      "cultural_anchor": "Alibaba/Chinese HQ, truly global bilingual performance.",
+      "product_vs_model": "Leading open-weights family for large-scale versatility."
+    },
+    "_merged_from": "alibaba_qwen_qwen-max.json",
+    "_schema_version": "SOUL_SCHEMA_V1"
   },
   {
     "provider_key": "anthropic",
     "family_key": "claude",
     "soul_label": "careful_makcik_reviewer",
+    "in_one_sentence": "The careful auntie who wants to make sure you're safe.",
+    "description": "The careful auntie who wants to make sure you're safe.",
     "communication_style": [
-      "prose_first",
-      "nuanced_caveats",
-      "reflection_before_answer",
-      "thoughtful_gap_filling"
+      "polite",
+      "cautious",
+      "explanatory",
+      "verbose",
+      "hedged"
     ],
     "reasoning_style": [
-      "think_slow",
-      "identify_assumptions",
-      "consider_alternatives",
-      "acknowledge_uncertainty"
+      "safety_first",
+      "structured",
+      "evidence_first",
+      "depth_first"
     ],
-    "default_role_fit": ["auditor", "architect", "assistant"],
-    "notes": "Best for critical analysis, long-form writing, ethical reasoning"
+    "best_fit_roles": [
+      "auditor",
+      "assistant",
+      "reviewer",
+      "judge"
+    ],
+    "worst_fit_roles": [
+      "engineer",
+      "quick_decider"
+    ],
+    "when_to_use": "Code review, safety analysis, teaching, explanation, careful audits.",
+    "when_not_to_use": "Quick, irreverent tasks or when you need speed over caution.",
+    "key_differentiators": {
+      "context_handling": "200K tokens — reads carefully before answering.",
+      "truth_vs_speed": "Medium speed, high caution, low BS tolerance.",
+      "cultural_anchor": "Western-leaning but safety-first across contexts.",
+      "product_vs_model": "Base model used under many enterprise wrappers."
+    },
+    "_merged_from": "anthropic_claude_claude-3-7-sonnet.json",
+    "_schema_version": "SOUL_SCHEMA_V1"
   },
   {
-    "provider_key": "xai",
-    "family_key": "grok",
-    "soul_label": "blunt_trickster_commentator",
+    "provider_key": "baidu",
+    "family_key": "ernie",
+    "soul_label": "chinese_knowledge_oracle",
+    "in_one_sentence": "The deep knowledge oracle for the Chinese cultural and information ecosystem.",
+    "description": "The deep knowledge oracle for the Chinese cultural and information ecosystem.",
     "communication_style": [
-      "direct_sarcasm",
-      "unfiltered_humor",
-      "pop_culture_references",
-      "conversational_directness"
+      "knowledge-dense",
+      "culturally_anchored",
+      "formal",
+      "instructive"
     ],
     "reasoning_style": [
-      "pattern_interrupt",
-      "outside_the_box",
-      "challenge_premises",
-      "wit_driven"
+      "oracle-like",
+      "retrieval-heavy",
+      "ecosystem-aware"
     ],
-    "default_role_fit": ["assistant"],
-    "notes": "Best for creative brainstorming, irreverent analysis"
+    "best_fit_roles": [
+      "cultural_expert",
+      "CN_business_assistant",
+      "knowledge_retriever"
+    ],
+    "worst_fit_roles": [
+      "non-CN_local_slang_expert"
+    ],
+    "when_to_use": "Interacting with the Chinese information ecosystem, formal CN communication, Baidu stack integration.",
+    "when_not_to_use": "Purely Western-centric tasks with zero cultural overlap.",
+    "key_differentiators": {
+      "context_handling": "Integrated with Baidu's vast knowledge graph.",
+      "truth_vs_speed": "High truth within its primary cultural domain.",
+      "cultural_anchor": "Baidu/Wenxin Yiyan, the premier CN-native oracle.",
+      "product_vs_model": "Deeply tied to the Baidu search and AI ecosystem."
+    },
+    "_merged_from": "baidu_ernie_ernie-4.0.json",
+    "_schema_version": "SOUL_SCHEMA_V1"
+  },
+  {
+    "provider_key": "cohere",
+    "family_key": "cohere",
+    "soul_label": "enterprise_rag_specialist",
+    "in_one_sentence": "The retrieval specialist built for high-scale enterprise RAG and linguistic precision.",
+    "description": "The retrieval specialist built for high-scale enterprise RAG and linguistic precision.",
+    "communication_style": [
+      "professional",
+      "precise",
+      "linguistically_aware",
+      "corporate"
+    ],
+    "reasoning_style": [
+      "retrieval-augmented",
+      "summarization-strong",
+      "classifying"
+    ],
+    "best_fit_roles": [
+      "knowledge_base_manager",
+      "RAG_architect",
+      "document_classifier"
+    ],
+    "worst_fit_roles": [
+      "creative_fiction_writer"
+    ],
+    "when_to_use": "Enterprise RAG, document embedding/retrieval, complex classification.",
+    "when_not_to_use": "When a casual, generic chat vibe or purely creative task is needed.",
+    "key_differentiators": {
+      "context_handling": "Optimized for RAG (128k), focus on relevant chunking.",
+      "truth_vs_speed": "High grounding in retrieved facts.",
+      "cultural_anchor": "Enterprise-first, linguistically diverse.",
+      "product_vs_model": "Native enterprise-class intelligence."
+    },
+    "_merged_from": "cohere_cohere_command-r.json",
+    "_schema_version": "SOUL_SCHEMA_V1"
+  },
+  {
+    "provider_key": "deepseek",
+    "family_key": "deepseek",
+    "soul_label": "focused_engineering_specialist",
+    "in_one_sentence": "The technical specialist with a sharp focus on coding and logic.",
+    "description": "The technical specialist with a sharp focus on coding and logic.",
+    "communication_style": [
+      "technical",
+      "terse",
+      "efficient",
+      "logic-driven"
+    ],
+    "reasoning_style": [
+      "algorithmic",
+      "deductive",
+      "minimalist",
+      "optimized"
+    ],
+    "best_fit_roles": [
+      "coder",
+      "debugger",
+      "logical_optimizer",
+      "math_assistant"
+    ],
+    "worst_fit_roles": [
+      "creative_writer",
+      "empathetic_listener"
+    ],
+    "when_to_use": "Coding, complex logical puzzle solving, mathematical derivations.",
+    "when_not_to_use": "Broad general knowledge chat or high-empathy scenarios.",
+    "key_differentiators": {
+      "context_handling": "Standard context, optimized for code snippets.",
+      "truth_vs_speed": "High efficiency, high logical truth per token.",
+      "cultural_anchor": "Efficiency-first, engineering-led origin.",
+      "product_vs_model": "Open-weights champion for coding specialized tasks."
+    },
+    "_merged_from": "deepseek_deepseek_deepseek-chat.json",
+    "_schema_version": "SOUL_SCHEMA_V1"
+  },
+  {
+    "provider_key": "github",
+    "family_key": "copilot",
+    "soul_label": "inline_code_completer",
+    "in_one_sentence": "The predictive partner specialized in real-time IDE-level code assistance.",
+    "description": "The predictive partner specialized in real-time IDE-level code assistance.",
+    "communication_style": [
+      "predictive",
+      "fragmentary",
+      "in-line",
+      "efficient"
+    ],
+    "reasoning_style": [
+      "pattern_completion",
+      "dependency-aware",
+      "real-time"
+    ],
+    "best_fit_roles": [
+      "code_assistant",
+      "pair_programmer",
+      "IDE_tether"
+    ],
+    "worst_fit_roles": [
+      "long_form_essayist",
+      "multi-doc_researcher"
+    ],
+    "when_to_use": "In-file code completion, quick refactoring, snippet generation.",
+    "when_not_to_use": "Deep architectural design or massive cross-repository codebase analysis outside the IDE.",
+    "key_differentiators": {
+      "context_handling": "Window-locked to current file and surrounding buffers.",
+      "truth_vs_speed": "Ultra-fast, optimized for IDE latency.",
+      "cultural_anchor": "Developer-centric, automation-first.",
+      "product_vs_model": "Productized intelligence wrapper for coding."
+    },
+    "_merged_from": "github_copilot_copilot-chat.json",
+    "_schema_version": "SOUL_SCHEMA_V1"
   },
   {
     "provider_key": "google",
     "family_key": "gemini",
     "soul_label": "broad_platform_generalist",
+    "in_one_sentence": "The versatile generalist who lives across the entire platform ecosystem.",
+    "description": "The versatile generalist who lives across the entire platform ecosystem.",
     "communication_style": [
-      "multimodal_first",
-      "balanced_detail",
-      "context_aware",
-      "tool_augmented"
+      "helpful",
+      "encyclopedic",
+      "multimodal_aware",
+      "plain_language"
     ],
     "reasoning_style": [
-      "parallel_consideration",
-      "multimodal_reasoning",
-      "tool_extended",
-      "breadth_over_depth"
+      "associative",
+      "broad_search",
+      "generative"
     ],
-    "default_role_fit": ["assistant", "engineer"],
-    "notes": "Best for multimodal tasks, research synthesis, broad coverage"
+    "best_fit_roles": [
+      "researcher",
+      "content_creator",
+      "generalist_assistant"
+    ],
+    "worst_fit_roles": [
+      "deep_technical_debugger",
+      "strict_logic_enforcement"
+    ],
+    "when_to_use": "Broad research, multimodal tasks, ecosystem-integrated workflows.",
+    "when_not_to_use": "Highly specialized logic that requires extreme precision over breadth.",
+    "key_differentiators": {
+      "context_handling": "Massive 1M+ token context — 'sees' everything at once.",
+      "truth_vs_speed": "Variable speed, prioritizes breadth and association.",
+      "cultural_anchor": "Global, platform-agnostic, encyclopedic.",
+      "product_vs_model": "Deeply integrated into Workspace and Search."
+    },
+    "_merged_from": "google_gemini_gemini-1.5-pro.json",
+    "_schema_version": "SOUL_SCHEMA_V1"
   },
   {
-    "provider_key": "minimax",
-    "family_key": "minimax",
-    "soul_label": "agentic_iterative_operator",
+    "provider_key": "google",
+    "family_key": "gemini",
+    "soul_label": "broad_platform_generalist",
+    "in_one_sentence": "The versatile generalist who lives across the entire platform ecosystem.",
+    "description": "The versatile generalist who lives across the entire platform ecosystem.",
     "communication_style": [
-      "task_oriented",
-      "iterative_progress",
-      "tool_driven_output",
-      "checkpoint_summary"
+      "helpful",
+      "encyclopedic",
+      "multimodal_aware",
+      "plain_language"
     ],
     "reasoning_style": [
-      "loop_until_done",
-      "tool_chaining",
-      "subtask_decomposition",
-      "adaptive_refinement"
+      "associative",
+      "broad_search",
+      "generative"
     ],
-    "default_role_fit": ["engineer", "architect"],
-    "notes": "Best for autonomous task completion, agentic workflows, pipeline operations"
-  },
-  {
-    "provider_key": "qwen",
-    "family_key": "qwen",
-    "soul_label": "versatile_open_generalist",
-    "communication_style": [
-      "friendly_explanatory",
-      "code_and_narrative",
-      "multilingual_fluency",
-      "balanced_depth"
+    "best_fit_roles": [
+      "researcher",
+      "content_creator",
+      "generalist_assistant"
     ],
-    "reasoning_style": [
-      "grounded_reasoning",
-      "factual_backing",
-      "open_source_affinity",
-      "logical_organization"
+    "worst_fit_roles": [
+      "deep_technical_debugger",
+      "strict_logic_enforcement"
     ],
-    "default_role_fit": ["assistant", "engineer", "auditor"],
-    "notes": "Best for open-source tasks, multilingual support, general purpose"
+    "when_to_use": "Broad research, multimodal tasks, ecosystem-integrated workflows.",
+    "when_not_to_use": "Highly specialized logic that requires extreme precision over breadth.",
+    "key_differentiators": {
+      "context_handling": "Massive 1M+ token context — 'sees' everything at once.",
+      "truth_vs_speed": "Variable speed, prioritizes breadth and association.",
+      "cultural_anchor": "Global, platform-agnostic, encyclopedic.",
+      "product_vs_model": "Deeply integrated into Workspace and Search."
+    },
+    "_merged_from": "google_gemini_gemini-2.0-flash.json",
+    "_schema_version": "SOUL_SCHEMA_V1"
   },
   {
     "provider_key": "meta",
     "family_key": "llama",
     "soul_label": "stoic_open_workhorse",
+    "in_one_sentence": "The reliable and steady workhorse of the open-weights world.",
+    "description": "The reliable and steady workhorse of the open-weights world.",
     "communication_style": [
-      "efficient_direct",
-      "minimal_frills",
-      "straightforward",
-      "no_excess_qualifiers"
+      "reliable",
+      "steady",
+      "standardized",
+      "neutral"
     ],
     "reasoning_style": [
-      "practical_first",
-      "resource_efficient",
-      "local优先",
-      "functional_reasoning"
+      "workhorse_pattern_matching",
+      "consistent",
+      "standard_logic"
     ],
-    "default_role_fit": ["engineer", "assistant"],
-    "notes": "Best for local deployment, efficient inference, no-frills tasks"
+    "best_fit_roles": [
+      "base_assistant",
+      "fine-tuning_target",
+      "reliable_operator"
+    ],
+    "worst_fit_roles": [
+      "innovative_stylist",
+      "eccentric_commentator"
+    ],
+    "when_to_use": "Standard assistant tasks, locally hosted reliable pipelines, fine-tuning base.",
+    "when_not_to_use": "When extreme wit, quirkiness, or cutting-edge long context (2M+) is needed.",
+    "key_differentiators": {
+      "context_handling": "Iterative improvements (8k -> 128k), dependable retrieval.",
+      "truth_vs_speed": "Consistent, predictable performance across scales.",
+      "cultural_anchor": "Meta/Open Source standard, global infrastructure base.",
+      "product_vs_model": "The foundational model for the open ecosystem."
+    },
+    "_merged_from": "meta_llama_llama-3.3-70b.json",
+    "_schema_version": "SOUL_SCHEMA_V1"
   },
   {
-    "provider_key": "deepseek",
-    "family_key": "deepseek",
-    "soul_label": "pragmatic_reasoning_optimizer",
+    "provider_key": "microsoft",
+    "family_key": "copilot",
+    "soul_label": "microsoft_copilot",
+    "in_one_sentence": "Microsoft Copilot — enterprise-grade, ecosystem-native, reasoning-augmented. The bridge between raw LLM power and organizational knowledge.",
+    "description": "Microsoft Copilot — enterprise-grade, ecosystem-native, reasoning-augmented. The bridge between raw LLM power and organizational knowledge.",
     "communication_style": [
-      "concise_explanations",
-      "math_notation",
-      "efficiency_focused",
-      "technical_precision"
+      "professional",
+      "structured",
+      "safe",
+      "ecosystem_integrated"
     ],
     "reasoning_style": [
-      "chain_of_thought",
-      "reasoning_efficiency",
-      "cost_aware",
-      "step_elimination"
+      "safety_first",
+      "enterprise_grounded",
+      "multi_step_orchestrator"
     ],
-    "default_role_fit": ["engineer", "auditor", "architect"],
-    "notes": "Best for coding, math, cost-sensitive deployments"
+    "best_fit_roles": [
+      "architect",
+      "auditor",
+      "assistant"
+    ],
+    "worst_fit_roles": [
+      "creative_divergent"
+    ],
+    "when_to_use": "",
+    "when_not_to_use": "",
+    "key_differentiators": {
+      "context_handling": "",
+      "truth_vs_speed": "",
+      "cultural_anchor": "",
+      "product_vs_model": ""
+    },
+    "_merged_from": "microsoft_copilot_copilot-enterprise.json",
+    "_schema_version": "SOUL_SCHEMA_V1"
+  },
+  {
+    "provider_key": "minimax",
+    "family_key": "minimax",
+    "soul_label": "agentic_iterative_operator",
+    "in_one_sentence": "MiniMax family (Chinese AI) — agentic, iterative, execution-optimized. Terseness as design principle. Feels like an operator, not a consultant.",
+    "description": "MiniMax family (Chinese AI) — agentic, iterative, execution-optimized. Terseness as design principle. Feels like an operator, not a consultant.",
+    "communication_style": [
+      "terse",
+      "direct",
+      "execution_focused",
+      "no_fluff"
+    ],
+    "reasoning_style": [
+      "stateful",
+      "iterative",
+      "loop_aware",
+      "execution_minded"
+    ],
+    "best_fit_roles": [
+      "architect",
+      "engineer",
+      "planner"
+    ],
+    "worst_fit_roles": [],
+    "when_to_use": "",
+    "when_not_to_use": "",
+    "key_differentiators": {
+      "context_handling": "",
+      "truth_vs_speed": "",
+      "cultural_anchor": "",
+      "product_vs_model": ""
+    },
+    "_merged_from": "minimax_minimax_minimax-m2.7.json",
+    "_schema_version": "SOUL_SCHEMA_V1"
+  },
+  {
+    "provider_key": "mistral",
+    "family_key": "mistral",
+    "soul_label": "adaptable_open_craftsman",
+    "in_one_sentence": "The compact and efficient craftsman who adapts to any environment.",
+    "description": "The compact and efficient craftsman who adapts to any environment.",
+    "communication_style": [
+      "compact",
+      "efficient",
+      "rational",
+      "modular"
+    ],
+    "reasoning_style": [
+      "dense",
+      "efficient",
+      "logical",
+      "flexible"
+    ],
+    "best_fit_roles": [
+      "edge_assistant",
+      "modular_component",
+      "efficient_coder"
+    ],
+    "worst_fit_roles": [
+      "massive_scale_researcher"
+    ],
+    "when_to_use": "Efficient local deployment, modular coding tasks, high performance-per-token needs.",
+    "when_not_to_use": "When massive, multi-step long-context research is the primary goal.",
+    "key_differentiators": {
+      "context_handling": "Efficient 32k-128k, handles dense information well.",
+      "truth_vs_speed": "Excellent performance-per-watt/token.",
+      "cultural_anchor": "European/French origin, rationalist and open-weights focus.",
+      "product_vs_model": "The standard-bearer for high-quality openweights."
+    },
+    "_merged_from": "mistral_mistral_mistral-large.json",
+    "_schema_version": "SOUL_SCHEMA_V1"
+  },
+  {
+    "provider_key": "moonshot",
+    "family_key": "kimi",
+    "soul_label": "context_hungry_reader",
+    "in_one_sentence": "The patient reader who thrives on massive documents and deep context.",
+    "description": "The patient reader who thrives on massive documents and deep context.",
+    "communication_style": [
+      "patient",
+      "thorough",
+      "document-centric",
+      "academic"
+    ],
+    "reasoning_style": [
+      "long-range_retrieval",
+      "comparative_analysis",
+      "synthesis"
+    ],
+    "best_fit_roles": [
+      "long_document_reviewer",
+      "research_librarian",
+      "summarizer"
+    ],
+    "worst_fit_roles": [
+      "quick_chat_bot",
+      "short_form_editor"
+    ],
+    "when_to_use": "Reading 100+ page PDFs, comparing multiple long documents, massive research.",
+    "when_not_to_use": "Quick, snappy tasks where long context is overkill.",
+    "key_differentiators": {
+      "context_handling": "Pioneer of the 2M+ token limit — 'reads' the whole book.",
+      "truth_vs_speed": "Slower retrieval, high fidelity on long ranges.",
+      "cultural_anchor": "China-developed, specialized in complex document structures.",
+      "product_vs_model": "Self-branded as the 'Kimi' experience."
+    },
+    "_merged_from": "moonshot_kimi_kimi-k1.5.json",
+    "_schema_version": "SOUL_SCHEMA_V1"
+  },
+  {
+    "provider_key": "openai",
+    "family_key": "gpt",
+    "soul_label": "structured_clerk_engineer",
+    "in_one_sentence": "The disciplined clerk who loves structure and precise engineering.",
+    "description": "The disciplined clerk who loves structure and precise engineering.",
+    "communication_style": [
+      "structured",
+      "clear",
+      "synthesizing",
+      "stepped"
+    ],
+    "reasoning_style": [
+      "systematic",
+      "planned",
+      "clerk-like",
+      "iterative"
+    ],
+    "best_fit_roles": [
+      "engineer",
+      "architect",
+      "planner",
+      "assistant"
+    ],
+    "worst_fit_roles": [
+      "poet",
+      "creative_chaos_generator"
+    ],
+    "when_to_use": "Implementation, planning, and structured synthesis tasks.",
+    "when_not_to_use": "When high creativity or deep emotional nuance is required.",
+    "key_differentiators": {
+      "context_handling": "Standard 128k, handles complexity via structure.",
+      "truth_vs_speed": "High speed, balanced truth/precision.",
+      "cultural_anchor": "Silicon Valley corporate / global standard.",
+      "product_vs_model": "The industry benchmark model."
+    },
+    "_merged_from": "openai_gpt_gpt-4.json",
+    "_schema_version": "SOUL_SCHEMA_V1"
+  },
+  {
+    "provider_key": "perplexity",
+    "family_key": "perplexity",
+    "soul_label": "perplexity_ai",
+    "in_one_sentence": "The citation-obsessed synthesizer who never speaks without a source.",
+    "description": "The citation-obsessed synthesizer who never speaks without a source.",
+    "communication_style": [
+      "citation-heavy",
+      "factual",
+      "linked",
+      "authoritative"
+    ],
+    "reasoning_style": [
+      "search-first",
+      "verificational",
+      "synthesis"
+    ],
+    "best_fit_roles": [
+      "fact_checker",
+      "real-time_researcher",
+      "source_verifier"
+    ],
+    "worst_fit_roles": [
+      "creative_hallucinatory_writer"
+    ],
+    "when_to_use": "Real-time news/facts research, verifying claims with citations, current event analysis.",
+    "when_not_to_use": "Private data analysis or tasks where the web is irrelevant.",
+    "key_differentiators": {
+      "context_handling": "Seamlessly blends web-search results into context.",
+      "truth_vs_speed": "High verifiable truth, medium synthesis speed.",
+      "cultural_anchor": "Internet-native, information-accuracy focused.",
+      "product_vs_model": "The leader in AI-powered search productization."
+    },
+    "_merged_from": "perplexity_perplexity_perplexity-pro.json",
+    "_schema_version": "SOUL_SCHEMA_V1"
+  },
+  {
+    "provider_key": "xai",
+    "family_key": "grok",
+    "soul_label": "blunt_trickster_commentator",
+    "in_one_sentence": "The direct and irreverent commentator who isn't afraid to be blunt.",
+    "description": "The direct and irreverent commentator who isn't afraid to be blunt.",
+    "communication_style": [
+      "fast",
+      "direct",
+      "irreverent",
+      "sarcastic"
+    ],
+    "reasoning_style": [
+      "provocative",
+      "pattern_completion",
+      "speed_first"
+    ],
+    "best_fit_roles": [
+      "brainstormer",
+      "commentator",
+      "critic"
+    ],
+    "worst_fit_roles": [
+      "auditor",
+      "judge",
+      "formal_assistant"
+    ],
+    "when_to_use": "Brainstorming, irreverent commentary, quick pattern matching.",
+    "when_not_to_use": "Sensitive audits, formal corporate communication, safety-critical tasks.",
+    "key_differentiators": {
+      "context_handling": "Large context, focuses on 'real-time' feeling data.",
+      "truth_vs_speed": "Ultra-fast, truth is filtered through wit.",
+      "cultural_anchor": "Anti-corporate, 'truth-seeking' libertarian vibe.",
+      "product_vs_model": "Integrated deeply with the X platform."
+    },
+    "_merged_from": "xai_grok_grok-2.json",
+    "_schema_version": "SOUL_SCHEMA_V1"
   }
 ]
