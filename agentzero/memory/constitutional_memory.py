@@ -143,7 +143,7 @@ def _build_qdrant_client():
         return QdrantClient(**kwargs)
     
     # Wired for srv1325122.hstgr.cloud internal Docker networking
-    return QdrantClient(host="qdrant_memory", port=6333)
+    return QdrantClient(host="qdrant", port=6333)
 
 
 def _embed_with_status(text: str) -> tuple[list[float], bool]:

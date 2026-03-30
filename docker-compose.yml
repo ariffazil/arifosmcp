@@ -11,7 +11,7 @@ services:
   # --- Edge Router ---
   traefik:
     image: traefik:v3.6.9
-    container_name: traefik_router
+    container_name: traefik
     init: true
     command:
       - "--api.insecure=false"
@@ -65,7 +65,7 @@ services:
   # --- Persistence Layers ---
   postgres:
     image: postgres:16-alpine
-    container_name: arifos_postgres
+    container_name: postgres
     init: true
 
     environment:
@@ -98,7 +98,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: arifos_redis
+    container_name: redis
     init: true
     command: redis-server --save 60 1 --loglevel warning --maxmemory 96mb --maxmemory-policy allkeys-lru
     volumes:
@@ -130,7 +130,7 @@ services:
   # --- Internal Memory Layers ---
   qdrant:
     image: qdrant/qdrant:latest
-    container_name: qdrant_memory
+    container_name: qdrant
     ports:
       - "6333:6333"
       - "6334:6334"
@@ -198,7 +198,7 @@ services:
   # --- AgentZero (Reasoning Engine) ---
   agent-zero:
     image: agent0ai/agent-zero:latest
-    container_name: agent_zero_reasoner
+    container_name: agent-zero
     init: true
     environment:
       - HF_TOKEN=${HF_TOKEN}
@@ -206,7 +206,7 @@ services:
       - AGENT_NAME=arifos-agentzero
     volumes:
       - /opt/arifos/data/agent_zero:/app/work_dir:rw
-      - /srv/arifOS:/mnt/arifos:rw
+      - /root/arifOS:/mnt/arifos:rw
       - /opt/arifos/APEX-THEORY:/mnt/apex:rw
     networks:
       - arifos_trinity
@@ -242,7 +242,7 @@ services:
       context: .
       dockerfile: infrastructure/openclaw/Dockerfile
     image: arifos/openclaw-forged:2026.03.14
-    container_name: openclaw_gateway
+    container_name: openclaw
     init: true
     user: root  # AGI-level executive power
     env_file:
@@ -327,7 +327,7 @@ services:
       args:
         - BUILDKIT_INLINE_CACHE=1
     image: arifos/arifosmcp:latest
-    container_name: arifosmcp_server
+    container_name: arifosmcp
     init: true
     env_file:
       - path: .env.docker
@@ -336,15 +336,15 @@ services:
       - /opt/arifos/data/core:/usr/src/app/data:rw
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
-      - /srv/arifosmcp/arifosmcp:/usr/src/app/arifosmcp:ro
-      - /srv/arifosmcp/server.py:/usr/src/app/server.py:ro
-      - /srv/arifosmcp/stdio_server.py:/usr/src/app/stdio_server.py:ro
-      - /srv/arifosmcp/fastmcp.json:/usr/src/app/fastmcp.json:ro
-      - /srv/arifosmcp/mcp.json:/usr/src/app/mcp.json:ro
-      - /srv/arifosmcp/core:/usr/src/app/core:ro
-      - /srv/arifosmcp/000:/usr/src/app/000:ro
-      - /srv/arifosmcp/333:/usr/src/app/333:ro
-      - /srv/arifosmcp/spec:/usr/src/app/spec:ro
+      - /root/arifosmcp/arifosmcp:/usr/src/app/arifosmcp:ro
+      - /root/arifosmcp/server.py:/usr/src/app/server.py:ro
+      - /root/arifosmcp/stdio_server.py:/usr/src/app/stdio_server.py:ro
+      - /root/arifosmcp/fastmcp.json:/usr/src/app/fastmcp.json:ro
+      - /root/arifosmcp/mcp.json:/usr/src/app/mcp.json:ro
+      - /root/arifosmcp/core:/usr/src/app/core:ro
+      - /root/arifosmcp/000:/usr/src/app/000:ro
+      - /root/arifosmcp/333:/usr/src/app/333:ro
+      - /root/arifosmcp/spec:/usr/src/app/spec:ro
       - /opt/arifos/secrets:/opt/arifos/secrets:ro
       - arifosmcp_telemetry:/usr/src/app/telemetry:rw
       - arifosmcp_vault:/usr/src/app/VAULT999:rw
@@ -355,13 +355,13 @@ services:
       PYTHONPATH: /usr/src/app
       PYTHONDONTWRITEBYTECODE: 1
       ARIFOS_WORKDIR: /usr/src/app
-      DATABASE_URL: postgresql://${POSTGRES_USER:-arifos_admin}:${POSTGRES_PASSWORD}@arifos_postgres:5432/${POSTGRES_DB:-arifos_vault}
-      REDIS_URL: redis://arifos_redis:6379/0
-      QDRANT_URL: http://qdrant_memory:6333
+      DATABASE_URL: postgresql://${POSTGRES_USER:-arifos_admin}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-arifos_vault}
+      REDIS_URL: redis://redis:6379/0
+      QDRANT_URL: http://qdrant:6333
       OLLAMA_URL: http://ollama_engine:11434
       BROWSERLESS_URL: http://headless_browser:3000
-      OPENCLAW_URL: http://openclaw_gateway:18789
-      AGENT_ZERO_URL: http://agent_zero_reasoner:80
+      OPENCLAW_URL: http://openclaw:18789
+      AGENT_ZERO_URL: http://agent-zero:80
       DASHBOARD_ENABLED: "true"
       AAA_MCP_TRANSPORT: http
       ARIFOS_GOVERNANCE_SECRET_FILE: ${ARIFOS_GOVERNANCE_SECRET_FILE:-}
@@ -458,7 +458,7 @@ services:
       - '--web.enable-lifecycle'
       - '--log.level=warn'
     volumes:
-      - /srv/arifosmcp/infrastructure/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - /root/arifosmcp/infrastructure/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - /opt/arifos/data/prometheus:/prometheus
     networks:
       - arifos_trinity
@@ -496,9 +496,9 @@ services:
       GF_AUTH_BASIC_ENABLED: "true"
     volumes:
       - /opt/arifos/data/grafana:/var/lib/grafana
-      - /srv/arifosmcp/infrastructure/grafana/datasources/prometheus.yml:/etc/grafana/provisioning/datasources/prometheus.yml:ro
-      - /srv/arifosmcp/infrastructure/grafana/dashboards/arifos.yaml:/etc/grafana/provisioning/dashboards/arifos.yaml:ro
-      - /srv/arifosmcp/infrastructure/grafana/dashboards:/etc/grafana/provisioning/dashboards/json:ro
+      - /root/arifosmcp/infrastructure/grafana/datasources/prometheus.yml:/etc/grafana/provisioning/datasources/prometheus.yml:ro
+      - /root/arifosmcp/infrastructure/grafana/dashboards/arifos.yaml:/etc/grafana/provisioning/dashboards/arifos.yaml:ro
+      - /root/arifosmcp/infrastructure/grafana/dashboards:/etc/grafana/provisioning/dashboards/json:ro
     networks:
       - arifos_trinity
     labels:
@@ -588,8 +588,8 @@ services:
     init: true
     command: ["-verbose", "-hooks=/etc/webhook/hooks.json", "-hotreload"]
     volumes:
-      - /srv/arifosmcp/deployment/hooks.json:/etc/webhook/hooks.json:ro
-      - /srv/arifosmcp/infrastructure/deploy_from_git.sh:/var/scripts/deploy_from_git.sh:ro
+      - /root/arifosmcp/deployment/hooks.json:/etc/webhook/hooks.json:ro
+      - /root/arifosmcp/infrastructure/deploy_from_git.sh:/var/scripts/deploy_from_git.sh:ro
       - /root/arifOS:/usr/src/app:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /usr/bin/docker:/usr/bin/docker:ro

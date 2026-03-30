@@ -2,7 +2,7 @@
 arifosmcp.intelligence/tools/chroma_query.py — Qdrant Vector Store Query
 
 ACLIP Console tool: lets AI agents query persistent memory
-via the qdrant_memory container (QDRANT_URL env var).
+via the qdrant container (QDRANT_URL env var).
 API-compatible with the former ChromaDB interface — same signatures,
 same return shape — so callers (console_tools, mcp_bridge) need no changes.
 """

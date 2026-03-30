@@ -48,7 +48,7 @@ def build_encrypted_redis_store() -> Any:
         logger.warning("Redis storage deps not available (%s). Vault will use file backend.", exc)
         return None
 
-    redis_host = os.getenv("REDIS_HOST", "arifos_redis")
+    redis_host = os.getenv("REDIS_HOST", "redis")
     redis_port = int(os.getenv("REDIS_PORT", "6379"))
     encryption_key = os.getenv("STORAGE_ENCRYPTION_KEY")
 

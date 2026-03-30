@@ -518,7 +518,7 @@ def _get_constitutional_memory_store():
             from arifosmcp.agentzero.memory.constitutional_memory import ConstitutionalMemoryStore
 
             _constitutional_memory_store = ConstitutionalMemoryStore()
-            logger.info("ConstitutionalMemoryStore initialised (Qdrant: qdrant_memory:6333)")
+            logger.info("ConstitutionalMemoryStore initialised (Qdrant: qdrant:6333)")
         except Exception as exc:
             logger.warning("ConstitutionalMemoryStore unavailable: %s", exc)
     return _constitutional_memory_store

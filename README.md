@@ -504,9 +504,9 @@ services:
       dockerfile: Dockerfile
     environment:
       - OLLAMA_URL=http://ollama_engine:11434
-      - REDIS_URL=redis://arifos_redis:6379/0
-      - DATABASE_URL=postgresql://user:pass@arifos_postgres:5432/arifos_vault
-      - QDRANT_URL=http://qdrant_memory:6333
+      - REDIS_URL=redis://redis:6379/0
+      - DATABASE_URL=postgresql://user:pass@postgres:5432/arifos_vault
+      - QDRANT_URL=http://qdrant:6333
     ports:
       - "127.0.0.1:8080:8080"
 ```

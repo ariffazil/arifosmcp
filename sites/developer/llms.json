@@ -223,14 +223,14 @@
   "service_topology": {
     "source": "infrastructure/VPS_ARCHITECTURE_STATE_2026-03-13.md",
     "services": [
-      { "name": "arifosmcp_server", "port": 8080,  "purpose": "Constitutional MCP Kernel" },
-      { "name": "openclaw_gateway", "port": 18789, "purpose": "Multi-channel AI Gateway" },
-      { "name": "qdrant_memory",    "port": 6333,  "purpose": "Vector Store (BGE-M3)" },
+      { "name": "arifosmcp", "port": 8080,  "purpose": "Constitutional MCP Kernel" },
+      { "name": "openclaw", "port": 18789, "purpose": "Multi-channel AI Gateway" },
+      { "name": "qdrant",    "port": 6333,  "purpose": "Vector Store (BGE-M3)" },
       { "name": "ollama_engine",    "port": 11434, "purpose": "Local LLM Runtime" },
-      { "name": "arifos_postgres",  "port": 5432,  "purpose": "VAULT999 Ledger" },
-      { "name": "arifos_redis",     "port": 6379,  "purpose": "Session Cache" },
+      { "name": "postgres",  "port": 5432,  "purpose": "VAULT999 Ledger" },
+      { "name": "redis",     "port": 6379,  "purpose": "Session Cache" },
       { "name": "headless_browser", "port": 3000,  "purpose": "Reality Fetch Fallback" },
-      { "name": "traefik_router",   "port": "80/443", "purpose": "Edge Router" },
+      { "name": "traefik",   "port": "80/443", "purpose": "Edge Router" },
       { "name": "arifos_n8n",       "port": 5678,  "purpose": "Workflow Automation" },
       { "name": "arifos_grafana",   "port": 3000,  "purpose": "Observability" },
       { "name": "arifos_prometheus","port": 9090,  "purpose": "Metrics" }

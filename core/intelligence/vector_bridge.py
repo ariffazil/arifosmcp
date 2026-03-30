@@ -45,7 +45,7 @@ class IngestionResult:
 
 class QdrantVectorBridge:
     def __init__(self):
-        self.qdrant_url = os.getenv("QDRANT_URL", "http://qdrant_memory:6333")
+        self.qdrant_url = os.getenv("QDRANT_URL", "http://qdrant:6333")
         self.collection_name = os.getenv("QDRANT_COLLECTION", "arifos_memory")
         self.embedding_dimension = int(os.getenv("EMBEDDING_DIMENSION", "1024"))
         self.batch_size = int(os.getenv("VECTOR_BATCH_SIZE", "100"))

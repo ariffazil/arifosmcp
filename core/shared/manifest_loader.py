@@ -7,11 +7,11 @@ from pathlib import Path
 
 # Platform-aware path resolution.
 # Windows Forge:  C:/arifOS/0_KERNEL/FLOORS
-# Linux VPS:      /srv/arifOS/0_KERNEL/FLOORS  (or set ARIFOS_MIND_PATH env var)
+# Linux VPS:      /root/arifOS/0_KERNEL/FLOORS  (or set ARIFOS_MIND_PATH env var)
 _DEFAULT_MIND_ROOT = (
     Path("C:/arifOS")
     if os.name == "nt"
-    else Path(os.environ.get("ARIFOS_MIND_PATH", "/srv/arifOS"))
+    else Path(os.environ.get("ARIFOS_MIND_PATH", "/root/arifOS"))
 )
 
 
@@ -19,7 +19,7 @@ class ManifestLoader:
     """
     Dynamically loads constitutional thresholds from the Mind (arifOS kernel).
     Bridges Markdown theory into Python runtime enforcement.
-    Works on both Windows Forge (C:/arifOS) and Linux VPS (/srv/arifOS).
+    Works on both Windows Forge (C:/arifOS) and Linux VPS (/root/arifOS).
     Override path with ARIFOS_MIND_PATH env var.
     """
 

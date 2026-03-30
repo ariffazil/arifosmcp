@@ -19,7 +19,7 @@ from cryptography.fernet import Fernet
 class RedisVaultStore:
     """Redis-backed vault with optional Fernet encryption."""
     
-    def __init__(self, host: str = "arifos_redis", port: int = 6379, db: int = 0):
+    def __init__(self, host: str = "redis", port: int = 6379, db: int = 0):
         self.host = host
         self.port = port
         self.db = db

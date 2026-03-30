@@ -29,7 +29,7 @@ from .models import ClaimStatus, Verdict
 logger = logging.getLogger(__name__)
 
 # P0: VPS Infrastructure Integration — Use Redis as primary vault backend
-# Docker network: arifos_redis:6379 (already running on VPS)
+# Docker network: redis:6379 (already running on VPS)
 DEFAULT_VAULT_PATH = Path(__file__).parents[2] / "VAULT999" / "vault999.jsonl"
 
 # Import Redis vault (graceful fallback to file if Redis unavailable)
@@ -975,7 +975,7 @@ async def call_kernel(
                         "status": "INTACT" if ok else "BROKEN",
                         "message": reason or "Chain Integrity: VERIFIED (Redis + SHA-256 Merkle)",
                         "backend": "redis",
-                        "host": "arifos_redis:6379",
+                        "host": "redis:6379",
                     }
                 except Exception as e:
                     logger.error(f"Redis vault verify failed: {e}")
