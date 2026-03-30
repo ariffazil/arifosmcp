@@ -1095,7 +1095,7 @@ async def math_estimator_dispatch_impl(
             verdict=Verdict.SEAL,
             status=RuntimeStatus.SUCCESS,
         )
-    elif mode == "health":
+    elif mode in ("health", "vitals"):
         identity = get_session_identity(session_id) if session_id else None
         caller_state = identity.get("caller_state", "anonymous") if identity else "anonymous"
         if caller_state not in ("claimed", "anchored", "verified"):
