@@ -361,12 +361,21 @@ async def run_stage(
                     # Continue without search results if timeout
                     pns_trace["PNS_SEARCH"] = {"error": "timeout", "source": "PNS_SEARCH"}
 
+            # F12: Retrieve constitutional grounding context from session
+            c_ctx = None
+            if session_id:
+                from arifosmcp.runtime.sessions import get_session_identity
+                ident = get_session_identity(session_id)
+                if ident:
+                    c_ctx = ident.get("constitutional_context")
+
             return await agi_reason(
                 query=query,
                 session_id=session_id,
                 pns_search=search_res.model_dump() if search_res else None,
                 ctx=None,  # type: ignore
                 auth_context=auth_ctx,
+                constitutional_context=c_ctx,
             )
 
         # 3. AGI·REFLECT (555) - Sensory (Feeds PNS·VISION)

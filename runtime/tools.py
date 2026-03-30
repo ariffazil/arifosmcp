@@ -300,6 +300,7 @@ async def agi_reason(
     caller_context: dict | None = None,
     auth_context: dict | None = None,
     ctx: Context | None = None,
+    constitutional_context: str | None = None,
 ) -> RuntimeEnvelope:
     return await agi_mind(
         mode="reason",
@@ -313,6 +314,7 @@ async def agi_reason(
         caller_context=caller_context,
         auth_context=auth_context,
         ctx=ctx,
+        constitutional_context=constitutional_context,
     )
 
 
@@ -327,6 +329,7 @@ async def agi_reflect(
     caller_context: dict | None = None,
     auth_context: dict | None = None,
     ctx: Context | None = None,
+    constitutional_context: str | None = None,
 ) -> RuntimeEnvelope:
     return await agi_mind(
         mode="reflect",
@@ -340,6 +343,7 @@ async def agi_reflect(
         caller_context=caller_context,
         auth_context=auth_context,
         ctx=ctx,
+        constitutional_context=constitutional_context,
     )
 
 

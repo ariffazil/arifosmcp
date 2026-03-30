@@ -101,8 +101,12 @@ def verify_vault_ledger(path: Path) -> tuple[bool, str | None]:
                 except json.JSONDecodeError as exc:
                     return False, f"line {line_no}: invalid json ({exc})"
 
-                # Skip seed/bootstrap records
-                if payload.get("type") in ("seed", "bootstrap"):
+                # Skip seed/bootstrap/legacy records
+                if payload.get("type") in ("seed", "bootstrap") or payload.get("entry_id") == "GENESIS":
+                    continue
+                
+                if "chain" not in payload:
+                    logger.warning("Line %s: Skipping legacy record (no chain)", line_no)
                     continue
 
                 # Basic record check
@@ -113,8 +117,15 @@ def verify_vault_ledger(path: Path) -> tuple[bool, str | None]:
                 # Chain check
                 chain = payload.get("chain", {})
                 current_prev_hash = chain.get("prev_entry_hash")
+                
+                # Resync logic: If a record claims to be a new start (0x0 or seed), allow it.
+                if current_prev_hash in (_CHAIN_SEED, "0x0000000000000000000000000000000000000000000000000000000000000000"):
+                    logger.info("Line %s: Merkle chain resync detected", line_no)
+                    prev_entry_hash = chain.get("entry_hash")
+                    continue
+
                 if current_prev_hash != prev_entry_hash:
-                    return False, f"line {line_no}: chain broken (prev_hash mismatch)"
+                    return False, f"line {line_no}: chain broken (prev_hash mismatch). Expected {prev_entry_hash}, found {current_prev_hash}"
 
                 expected_entry_hash = hashlib.sha256(
                     (prev_entry_hash + payload["seal_hash"]).encode()

@@ -414,15 +414,6 @@ class HardenedInitAnchor:
             challenge.compute_hash(),
         )
         self._sessions[session_id] = state
-        bind_session_identity(
-            session_id,
-            declared_name_norm,
-            sclass.value,
-            effective_auth_ctx,
-            req_scope,
-            bool(human_approval),
-            "anchored",
-        )
 
         class_map = {
             "execute": AuthorityLevel.AGENT,
@@ -537,6 +528,17 @@ When reasoning with is_forge=True:
 - Survival is a BOUNDARY condition, not a goal
 
 Begin reasoning with this constitutional grounding. Flag any paradox, uncertainty, or coherence violation immediately."""
+
+        bind_session_identity(
+            session_id,
+            declared_name_norm,
+            sclass.value,
+            effective_auth_ctx,
+            req_scope,
+            bool(human_approval),
+            "anchored",
+            constitutional_context,
+        )
 
         return ToolEnvelope(
             status=ToolStatus.OK,
@@ -673,6 +675,7 @@ Begin reasoning with this constitutional grounding. Flag any paradox, uncertaint
             identity.get("approval_scope") or state.current_scope,
             bool(identity.get("human_approval", False)),
             identity.get("caller_state") or "anchored",
+            identity.get("constitutional_context"),
         )
         state.last_activity = datetime.now(timezone.utc).isoformat()
         envelope = await self.state(session_id, trace)

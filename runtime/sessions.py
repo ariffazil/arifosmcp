@@ -45,6 +45,7 @@ def bind_session_identity(
     approval_scope: list[str] | None = None,
     human_approval: bool = False,
     caller_state: str | None = None,
+    constitutional_context: str | None = None,
 ) -> None:
     """
     Bind a verified identity to a session. Called after successful init_anchor.
@@ -59,6 +60,7 @@ def bind_session_identity(
         "approval_scope": approval_scope or [],
         "caller_state": caller_state or "anchored",
         "human_approval": human_approval,
+        "constitutional_context": constitutional_context,
     }
     _ACTOR_SESSION_MAP[session_id] = actor_id
 
