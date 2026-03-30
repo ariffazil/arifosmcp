@@ -20,9 +20,9 @@ ROOT = Path(__file__).resolve().parents[2]
 PYPROJECT_PATH = ROOT / "pyproject.toml"
 DEFAULT_PUBLIC_BASE_URL = "https://arifosmcp.arif-fazil.com"
 
-# Canonical 11 Mega-Tools
+# Canonical 12 Mega-Tools
 CANONICAL_PUBLIC_TOOLS = frozenset(spec.name for spec in PUBLIC_TOOL_SPECS)
-EXPECTED_TOOL_COUNT = 11
+EXPECTED_TOOL_COUNT = 12
 
 # Mandatory schema for resource discovery
 RUNTIME_ENVELOPE_SCHEMA = {
