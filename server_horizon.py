@@ -52,9 +52,19 @@ async def arifOS_kernel(query: str, risk_tier: str = "medium") -> dict:
     return await _proxy_to_vps("arifOS_kernel", {"query": query, "risk_tier": risk_tier})
 
 @mcp.tool()
-async def agi_mind(query: str, mode: str = "reason") -> dict:
+async def agi_mind(
+    query: str, 
+    mode: str = "reason", 
+    constitutional_context: str = None,
+    telos_manifold: dict = None,
+) -> dict:
     """333_MIND: Reasoning and synthesis engine (QTT-enabled)."""
-    return await _proxy_to_vps("agi_mind", {"query": query, "mode": mode})
+    return await _proxy_to_vps("agi_mind", {
+        "query": query, 
+        "mode": mode, 
+        "constitutional_context": constitutional_context,
+        "telos_manifold": telos_manifold
+    })
 
 @mcp.tool()
 async def apex_soul(query: str, mode: str = "judge") -> dict:

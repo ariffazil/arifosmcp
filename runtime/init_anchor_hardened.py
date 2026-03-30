@@ -227,7 +227,11 @@ class HardenedInitAnchor:
         parent_signature: str = "",
     ) -> dict[str, Any]:
         """Mint a verifiable auth_context with signed continuity fields (F11)."""
-        seed = f"{session_id}:{actor_id}:{authority_level}".encode("utf-8")
+        # Align with bridge._normalize_public_authority_level logic
+        from arifosmcp.runtime.bridge import _normalize_public_authority_level
+        public_level = _normalize_public_authority_level(authority_level)
+        
+        seed = f"{session_id}:{actor_id}:{public_level}".encode("utf-8")
         token_fingerprint = hashlib.sha256(seed).hexdigest()
         return mint_auth_context(
             session_id=session_id,
@@ -237,7 +241,7 @@ class HardenedInitAnchor:
                 SessionClass(authority_level), scope, human_approval
             ),
             parent_signature=parent_signature,
-            authority_level=authority_level,
+            authority_level=public_level,
         )
 
     def _bind_identity(

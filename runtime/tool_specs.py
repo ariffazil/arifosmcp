@@ -48,6 +48,7 @@ MegaToolName = Literal[
     "math_estimator",
     "code_engine",
     "architect_registry",
+    "compat_probe",
 ]
 
 MEGA_TOOLS: tuple[str, ...] = (
@@ -62,6 +63,7 @@ MEGA_TOOLS: tuple[str, ...] = (
     "math_estimator",
     "code_engine",
     "architect_registry",
+    "compat_probe",
 )
 
 
@@ -476,6 +478,20 @@ PUBLIC_TOOL_SPECS: tuple[ToolSpec, ...] = (
             {"uri": {"type": "string"}, "session_id": {"type": "string"}},
         ),
     ),
+    ToolSpec(
+        name="compat_probe",
+        stage="M-5_COMPAT",
+        role="Interoperability Audit",
+        layer="MACHINE",
+        description="Verify session portability and enum compatibility between layers. Modes: 'audit', 'probe', 'ping'.",
+        trinity="ALL",
+        floors=("F11", "F4"),
+        input_schema=_build_mega_schema(
+            "compat_probe",
+            ["audit", "probe", "ping"],
+            {"session_id": {"type": "string"}},
+        ),
+    ),
 )
 
 PUBLIC_RESOURCE_SPECS: tuple[ResourceSpec, ...] = (
@@ -500,9 +516,24 @@ PUBLIC_RESOURCE_SPECS: tuple[ResourceSpec, ...] = (
         description="Forensic session state progression: anonymous -> claimed -> anchored -> verified -> scoped -> approved.",
     ),
     ResourceSpec(
+        uri="arifos://governance/floors",
+        name="Constitutional Doctrine",
+        description="Immutable thresholds and legal doctrine for the 13 Floors.",
+    ),
+    ResourceSpec(
         uri="arifos://status/vitals",
         name="System Vitals",
         description="Real-time thermodynamic and metabolic health of the kernel.",
+    ),
+    ResourceSpec(
+        uri="arifos://bootstrap/guide",
+        name="Bootstrap Guide",
+        description="Step-by-step sequence for establishing a governed session.",
+    ),
+    ResourceSpec(
+        uri="arifos://agents/skills",
+        name="Agent Skills",
+        description="Canonical registry of AI agent competencies and behaviors.",
     ),
     ResourceSpec(
         uri="arifos://caller/state",
@@ -513,6 +544,18 @@ PUBLIC_RESOURCE_SPECS: tuple[ResourceSpec, ...] = (
         uri="arifos://sessions/{session_id}/vitals",
         name="Session Vitals",
         description="Dynamic vitals for a specific governed session.",
+        is_template=True,
+    ),
+    ResourceSpec(
+        uri="arifos://tools/{tool_name}/spec",
+        name="Tool Specification",
+        description="Dynamic contract and schema for a specific arifOS tool.",
+        is_template=True,
+    ),
+    ResourceSpec(
+        uri="arifos://floors/{floor_id}/doctrine",
+        name="Floor Doctrine",
+        description="Dynamic legal and physical doctrine for a specific floor.",
         is_template=True,
     ),
 )

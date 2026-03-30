@@ -17,6 +17,7 @@ from .tool_08_physics_reality import physics_reality
 from .tool_09_math_estimator import math_estimator
 from .tool_10_code_engine import code_engine
 from .tool_11_architect_registry import architect_registry
+from .tool_12_compat_probe import compat_probe
 
 MEGA_TOOLS = {
     "init_anchor": init_anchor,
@@ -30,6 +31,7 @@ MEGA_TOOLS = {
     "math_estimator": math_estimator,
     "code_engine": code_engine,
     "architect_registry": architect_registry,
+    "compat_probe": compat_probe,
 }
 
 __all__ = [
@@ -44,5 +46,6 @@ __all__ = [
     "math_estimator",
     "code_engine",
     "architect_registry",
+    "compat_probe",
     "MEGA_TOOLS",
 ]

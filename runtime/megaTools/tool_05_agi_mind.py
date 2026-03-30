@@ -38,6 +38,8 @@ async def agi_mind(
     caller_context: dict | None = None,
     auth_context: dict | None = None,
     constitutional_context: str | None = None,
+    telos_manifold: dict | None = None,
+    previous_coherence: float | None = None,
     debug: bool = False,
     request_id: str | None = None,
     timestamp: str | None = None,
@@ -53,6 +55,10 @@ async def agi_mind(
         payload.setdefault("auth_context", auth_context)
     if constitutional_context:
         payload.setdefault("constitutional_context", constitutional_context)
+    if telos_manifold:
+        payload.setdefault("telos_manifold", telos_manifold)
+    if previous_coherence is not None:
+        payload.setdefault("previous_coherence", previous_coherence)
     if query:
         payload.setdefault("query", query)
     if session_id:

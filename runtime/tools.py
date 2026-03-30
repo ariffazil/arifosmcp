@@ -617,6 +617,18 @@ async def seal_vault_commit(**kwargs: Any) -> RuntimeEnvelope:
     return await vault_ledger(mode="seal", **kwargs)
 
 
+async def architect_registry(mode: str = "list", **kwargs: Any) -> RuntimeEnvelope:
+    from arifosmcp.runtime.megaTools import architect_registry as impl
+
+    return await impl(mode=mode, **kwargs)
+
+
+async def compat_probe(mode: str = "audit", **kwargs: Any) -> RuntimeEnvelope:
+    from arifosmcp.runtime.megaTools import compat_probe as impl
+
+    return await impl(mode=mode, **kwargs)
+
+
 # ═══════════════════════════════════════════════════════════════════════════════
 # FINAL TOOL IMPLEMENTATIONS MAP
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -633,6 +645,7 @@ FINAL_TOOL_IMPLEMENTATIONS: dict[str, Callable[..., Any]] = {
     "math_estimator": math_estimator,
     "code_engine": code_engine,
     "architect_registry": architect_registry,
+    "compat_probe": compat_probe,
     # init_000 tools
     "init_000_get_deployment": init_000_get_deployment,
     "init_000_get_provider_soul": init_000_get_provider_soul,

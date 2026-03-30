@@ -396,12 +396,26 @@ async def hardened_arifos_kernel_dispatch(
 async def hardened_math_estimator_dispatch(
     mode: str, payload: dict[str, Any], **kwargs
 ) -> dict[str, Any]:
-    if mode in ("health", "cost"):
+    if mode in ("health", "cost", "vitals"):
         envelope = await math_estimator_tool.estimate(
             mode=mode, session_id=payload.get("session_id")
         )
         return _apply_policy(envelope.to_dict(), "math_estimator", mode, payload)
     return {"ok": False, "error": f"Invalid mode for math_estimator: {mode}"}
+
+
+async def hardened_compat_probe_dispatch(
+    mode: str, payload: dict[str, Any], **kwargs
+) -> dict[str, Any]:
+    # This tool is its own implementation for now
+    from arifosmcp.runtime.megaTools.tool_12_compat_probe import compat_probe
+
+    envelope = await compat_probe(
+        mode=mode,
+        session_id=payload.get("session_id"),
+        auth_context=payload.get("auth_context"),
+    )
+    return _apply_policy(envelope.to_dict(), "compat_probe", mode, payload)
 
 
 HARDENED_DISPATCH_MAP = {
@@ -416,4 +430,5 @@ HARDENED_DISPATCH_MAP = {
     "code_engine": hardened_code_engine_dispatch,
     "architect_registry": hardened_architect_registry_dispatch,
     "math_estimator": hardened_math_estimator_dispatch,
+    "compat_probe": hardened_compat_probe_dispatch,
 }
