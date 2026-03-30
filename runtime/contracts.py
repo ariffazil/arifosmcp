@@ -110,17 +110,17 @@ AAA_TOOL_ALIASES: dict[str, str] = {
 }
 
 TOOL_MODES: dict[str, frozenset[str]] = {
-    "init_anchor": frozenset({"init", "revoke", "refresh"}),
+    "init_anchor": frozenset({"init", "state", "revoke", "refresh"}),
     "arifOS_kernel": frozenset({"kernel", "status"}),
-    "apex_soul": frozenset({"judge", "rules", "validate", "hold", "armor", "notify"}),
-    "vault_ledger": frozenset({"seal", "verify"}),
+    "apex_soul": frozenset({"judge", "rules", "validate", "hold", "armor", "notify", "probe"}),
+    "vault_ledger": frozenset({"seal", "verify", "resolve"}),
     "agi_mind": frozenset({"reason", "reflect", "forge"}),
     "asi_heart": frozenset({"critique", "simulate"}),
     "engineering_memory": frozenset(
-        {"engineer", "vector_query", "vector_store", "vector_forget", "generate", "query"}
+        {"engineer", "write", "vector_query", "vector_store", "vector_forget", "generate", "query"}
     ),
-    "physics_reality": frozenset({"search", "ingest", "compass", "atlas"}),
-    "math_estimator": frozenset({"cost", "health", "vitals"}),
+    "physics_reality": frozenset({"search", "ingest", "compass", "atlas", "time"}),
+    "math_estimator": frozenset({"cost", "health", "vitals", "entropy"}),
     "code_engine": frozenset({"fs", "process", "net", "tail", "replay"}),
     "architect_registry": frozenset({"register", "list", "read"}),
 }
