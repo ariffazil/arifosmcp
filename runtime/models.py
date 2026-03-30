@@ -642,6 +642,21 @@ class CallerContext(BaseModel):
     model_config = ConfigDict(extra="allow")
 
 
+class VerdictCode(str, Enum):
+    SEAL = "SEAL"
+    SABAR = "SABAR"
+    PARTIAL = "PARTIAL"
+    VOID = "VOID"
+
+
+class VerdictDetail(BaseModel):
+    """Rule 4: The Structured Verdict Envelope v1.0."""
+
+    code: VerdictCode = Field(..., description="Canonical verdict status.")
+    reason_code: str = Field(..., description="String enum for machine-readable logic.")
+    message: str = Field(..., description="Human readable explanation.")
+
+
 class RuntimeEnvelope(BaseModel):
     ok: bool = True
     tool: str
@@ -662,7 +677,8 @@ class RuntimeEnvelope(BaseModel):
 
     session_id: str | None = None
     stage: str
-    verdict: Verdict = Verdict.SABAR
+    verdict: Any = VerdictCode.SABAR  # Flexible during init, forced to string in dict
+    verdict_detail: VerdictDetail | None = Field(default=None, description="Structured v1.0 details.")
     status: RuntimeStatus = RuntimeStatus.SUCCESS
     machine_status: MachineState = MachineState.READY
     machine_issue: MachineIssueLabel | None = None
@@ -713,7 +729,11 @@ class RuntimeEnvelope(BaseModel):
         return getattr(self, item)
 
     def to_dict(self) -> dict:
-        return self.model_dump(mode="json")
+        # Compatibility injection: ensure top-level 'verdict' matches code
+        res = self.model_dump(mode="json")
+        if self.verdict_detail:
+            res["verdict"] = self.verdict_detail.code.value
+        return res
 
 
 # Rebuild models after all forward references are resolved

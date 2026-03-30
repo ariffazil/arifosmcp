@@ -275,7 +275,9 @@ async def check_vital(
     auth_context: dict | None = None,
     **kwargs: Any,
 ) -> RuntimeEnvelope:
-    return await math_estimator(
+    from arifosmcp.runtime.megaTools import math_estimator as impl
+
+    return await impl(
         mode="vitals",
         session_id=session_id,
         actor_id=actor_id,
@@ -294,7 +296,9 @@ async def audit_rules(
     auth_context: dict | None = None,
     **kwargs: Any,
 ) -> RuntimeEnvelope:
-    return await apex_judge(
+    from arifosmcp.runtime.megaTools import apex_judge as impl
+
+    return await impl(
         mode="rules",
         session_id=session_id,
         actor_id=actor_id,
@@ -317,8 +321,11 @@ async def agi_reason(
     auth_context: dict | None = None,
     ctx: Context | None = None,
     constitutional_context: str | None = None,
+    **kwargs: Any,
 ) -> RuntimeEnvelope:
-    return await agi_mind(
+    from arifosmcp.runtime.megaTools import agi_mind as impl
+
+    return await impl(
         mode="reason",
         query=query,
         session_id=session_id,
@@ -331,6 +338,7 @@ async def agi_reason(
         auth_context=auth_context,
         ctx=ctx,
         constitutional_context=constitutional_context,
+        **kwargs,
     )
 
 

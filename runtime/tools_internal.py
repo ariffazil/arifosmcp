@@ -201,9 +201,33 @@ async def _wrap_call(
 
     try:
         kernel_res = await call_kernel(tool_name, session_id, payload)
-        envelope = RuntimeEnvelope(**kernel_res)
-        envelope.session_id = session_id
-        envelope.stage = stage.value  # Ensure string value
+        
+        # ─── V1.0 VERDICT MAPPING ───
+        from arifosmcp.runtime.verdict_wrapper import forge_verdict
+        from arifosmcp.runtime.models import VerdictCode, CanonicalMetrics
+        
+        # Convert legacy Verdict to VerdictCode
+        legacy_v = kernel_res.get("verdict", "SABAR")
+        if legacy_v == "SEAL": v_code = VerdictCode.SEAL
+        elif legacy_v == "VOID": v_code = VerdictCode.VOID
+        elif legacy_v == "PARTIAL": v_code = VerdictCode.PARTIAL
+        else: v_code = VerdictCode.SABAR
+        
+        # Build metrics
+        metrics = CanonicalMetrics()
+        metrics.telemetry.ds = kernel_res.get("delta_s", 0.0)
+        metrics.telemetry.G_star = kernel_res.get("g_score", 0.0)
+        
+        envelope = forge_verdict(
+            tool_id=tool_name,
+            stage=stage.value,
+            payload=kernel_res.get("payload", kernel_res),
+            session_id=session_id,
+            metrics=metrics,
+            override_code=v_code,
+            message=kernel_res.get("note")
+        )
+        
         envelope.meta.motto = _resolve_motto(envelope.stage)
 
         # Ensure status matches dry_run intent

@@ -88,8 +88,8 @@ async def apex_judge(
         return res
 
     # Fallback if dispatcher missing
-    from arifosmcp.runtime.tools_internal import apex_soul_dispatch_impl
-    return await apex_soul_dispatch_impl(
+    from arifosmcp.runtime.tools_internal import apex_judge_dispatch_impl
+    return await apex_judge_dispatch_impl(
         mode=mode,
         payload=resolved_payload,
         auth_context=resolved_payload.get("auth_context", auth_context),

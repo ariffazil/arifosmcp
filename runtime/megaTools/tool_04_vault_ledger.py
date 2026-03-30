@@ -58,34 +58,21 @@ async def vault_ledger(
     if "vault_ledger" in HARDENED_DISPATCH_MAP:
         if mode is None:
             mode = "seal"
-        res = await HARDENED_DISPATCH_MAP["vault_ledger"](mode=mode, payload=payload)
-        if isinstance(res, dict):
-            ok = res.get("ok", res.get("status") not in ("HOLD", "ERROR", "VOID", None))
-            _next_tools = res.get("next_allowed_tools", [])
-            _payload = res.get("payload", res) if isinstance(res.get("payload"), dict) else res
-            _hold_reason = res.get("warnings", [""])[0] if res.get("warnings") else ""
-            _next_action = None
-            if not ok and _hold_reason:
-                _next_action = {
-                    "reason": _hold_reason,
-                    "missing_requirements": _payload.get("missing_requirements", [])
-                    if isinstance(_payload, dict)
-                    else [],
-                    "next_allowed_tools": _next_tools,
-                    "suggested_canonical_call": _payload.get("suggested_canonical_call")
-                    if isinstance(_payload, dict)
-                    else None,
-                }
-            return RuntimeEnvelope(
-                tool=res.get("tool", "unknown"),
-                stage=res.get("stage", "444_ROUTER"),
-                status=RuntimeStatus.SUCCESS if ok else RuntimeStatus.ERROR,
-                verdict=Verdict.SEAL if ok else Verdict.VOID,
-                allowed_next_tools=_next_tools,
-                next_action=_next_action,
-                payload=res,
-            )
-        return res
+        res_dict = await HARDENED_DISPATCH_MAP["vault_ledger"](mode=mode, payload=payload)
+        
+        # ─── V1.0 VERDICT FORGING ───
+        from arifosmcp.runtime.verdict_wrapper import forge_verdict
+        from arifosmcp.runtime.models import CanonicalMetrics
+        
+        return forge_verdict(
+            tool_id="vault_ledger",
+            stage="999_VAULT",
+            payload=res_dict.get("payload", res_dict),
+            session_id=session_id,
+            metrics=CanonicalMetrics(),
+            floors_checked=["F1", "F13"],
+            message=res_dict.get("note")
+        )
 
     resolved_payload = dict(payload or {})
     return await vault_ledger_dispatch_impl(

@@ -73,37 +73,29 @@ async def agi_mind(
     if "agi_mind" in HARDENED_DISPATCH_MAP:
         if mode is None:
             mode = "reason"
-        res = await HARDENED_DISPATCH_MAP["agi_mind"](mode=mode, payload=payload)
-        if isinstance(res, dict):
-            ok = res.get("ok", res.get("status") not in ("HOLD", "ERROR", "VOID", None))
-            _next_tools = res.get("next_allowed_tools", [])
-            _payload = res.get("payload", res) if isinstance(res.get("payload"), dict) else res
-            _hold_reason = res.get("warnings", [""])[0] if res.get("warnings") else ""
-            _next_action = None
-            if not ok and _hold_reason:
-                _next_action = {
-                    "reason": _hold_reason,
-                    "missing_requirements": _payload.get("missing_requirements", [])
-                    if isinstance(_payload, dict)
-                    else [],
-                    "next_allowed_tools": _next_tools,
-                    "suggested_canonical_call": _payload.get("suggested_canonical_call")
-                    if isinstance(_payload, dict)
-                    else None,
-                }
-            return RuntimeEnvelope(
-                tool=res.get("tool", "unknown"),
-                stage=res.get("stage", "444_ROUTER"),
-                status=RuntimeStatus.SUCCESS if ok else RuntimeStatus.ERROR,
-                verdict=Verdict.SEAL if ok else Verdict.VOID,
-                allowed_next_tools=_next_tools,
-                next_action=_next_action,
-                payload=res,
-            )
-        return res
+        res_dict = await HARDENED_DISPATCH_MAP["agi_mind"](mode=mode, payload=payload)
+
+        # ─── V1.0 VERDICT FORGING ───
+        from arifosmcp.runtime.verdict_wrapper import forge_verdict
+        from arifosmcp.runtime.models import CanonicalMetrics
+
+        # Extract metrics from hardened result
+        metrics = CanonicalMetrics()
+        metrics.telemetry.ds = res_dict.get("metrics", {}).get("telemetry", {}).get("ds", 0.0)
+        metrics.telemetry.confidence = res_dict.get("confidence", 0.5)
+
+        return forge_verdict(
+            tool_id="agi_mind",
+            stage="333_MIND",
+            payload=res_dict.get("payload", res_dict),
+            session_id=session_id,
+            metrics=metrics,
+            floors_checked=["F2", "F4", "F7", "F8"],
+            message=res_dict.get("note")
+        )
 
     resolved_payload = dict(payload or {})
-    return await agi_mind_dispatch_impl(
+    res = await agi_mind_dispatch_impl(
         mode=mode,
         payload=resolved_payload,
         auth_context=resolved_payload.get("auth_context", auth_context),
@@ -111,3 +103,16 @@ async def agi_mind(
         dry_run=bool(resolved_payload.get("dry_run", dry_run)),
         ctx=ctx or (CurrentContext() if CurrentContext else None),
     )
+    
+    # ─── V1.0 VERDICT FORGING (FALLBACK) ───
+    if not hasattr(res, "verdict_detail") or not res.verdict_detail:
+        from arifosmcp.runtime.verdict_wrapper import forge_verdict
+        return forge_verdict(
+            tool_id="agi_mind",
+            stage=res.stage,
+            payload=res.payload,
+            session_id=session_id,
+            override_code=VerdictCode(res.verdict.value) if hasattr(res.verdict, "value") else VerdictCode.SABAR,
+            message=res.payload.get("note", "Fallback reasoning active.")
+        )
+    return res
