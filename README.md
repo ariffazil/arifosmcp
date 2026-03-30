@@ -849,6 +849,152 @@ All AI agents operating in this repository MUST follow the rules in [`../AGENTS.
 
 ---
 
+## ⚖️ Truth Hierarchy
+
+The arifOS verdict system follows a strict **Truth Hierarchy** where higher-priority verdicts override lower ones:
+
+| Priority | Verdict | Meaning | Action |
+|----------|---------|---------|--------|
+| 1 (P0) | `VOID` | Hard constitutional violation | Immediate termination |
+| 2 (P1) | `HOLD_888` | Sovereign veto / human required | Block until ratified |
+| 3 (P2) | `SABAR` | Insufficient grounding (F7/F9) | Pause, cool down, re-ground |
+| 4 (P3) | `PARTIAL` | Data incomplete / conditional | Proceed with modifications |
+| 5 (P4) | `SEAL` | Constitutional alignment confirmed | Proceed |
+
+**Derived Verdicts** (not primary):
+- `ALIVE` — Session initialized, not yet grounded
+- `PROVISIONAL` — Exploratory result, needs confirmation
+
+---
+
+## 🗺️ Tool Categories
+
+arifOS tools are organized into **5 constitutional bands**:
+
+| Band | Range | Purpose | Examples |
+|------|-------|---------|----------|
+| **KERNEL** | 000–099 | Session anchoring, constitutional init | `init_anchor` |
+| **SENSE** | 100–199 | Environmental grounding (F2/F4) | `physics_reality`, `math_estimator` |
+| **BRIDGE** | 300–399 | Hardened routing and dispatch | `arifOS_kernel` |
+| **MIND** | 333 | Constitutional reasoning (F2/F4/F7/F8) | `agi_mind` |
+| **HEART** | 666 | Safety critique and impact prediction (F5/F6/F9) | `asi_heart` |
+| **VAULT** | 900–999 | Immutable ledger and seal (F1/F13) | `vault_ledger` |
+| **APEX** | 888 | Sovereign verdict and defense (F3/F12/F13) | `apex_soul` |
+
+---
+
+## 🗂️ Contract Truth Table
+
+| Tool | F1 | F2 | F3 | F4 | F5 | F6 | F7 | F8 | F9 | F10 | F11 | F12 | F13 |
+|------|----|----|----|----|----|----|----|----|----|-----|-----|-----|-----|
+| `init_anchor` | — | — | — | — | — | — | — | — | — | — | ✅ | — | — |
+| `physics_reality` | — | ✅ | — | ✅ | — | — | — | — | — | — | — | — | — |
+| `agi_mind` | — | ✅ | — | ✅ | — | — | ✅ | ✅ | — | — | — | — | — |
+| `asi_heart` | — | — | — | — | ✅ | ✅ | — | — | ✅ | — | — | — | — |
+| `apex_soul` | — | — | ✅ | — | — | — | — | — | — | — | — | ✅ | ✅ |
+| `vault_ledger` | ✅ | — | — | — | — | — | — | — | — | — | — | — | ✅ |
+
+**Legend:** ✅ = mandatory floor for this tool
+
+---
+
+## 📡 Horizon vs VPS Exposure Matrix
+
+| Tool | Horizon (External) | VPS (Internal) | Notes |
+|------|-------------------|----------------|-------|
+| `search_tool` | ✅ | — | External web search |
+| `reality_compass` | ✅ | — | Routing/external calls |
+| `vault_ledger` | — | ✅ | Internal Merkle chain |
+| `agi_mind` | — | ✅ | Internal reasoning |
+| `architect_registry` | ✅ | ✅ | Both interfaces exposed |
+
+---
+
+## ⚠️ Known Misalignments and Limitations
+
+1. **`apex_judge` alias**: The tool is canonically named `apex_soul` in code but exposed as `apex_judge` via MCP. This is a **public alias** documented here — do not rename canonical code without completing the full migration.
+
+2. **`physics_reality` field name**: Uses `input` field instead of `query` — historical inconsistency from legacy API.
+
+3. **`check_vital`, `audit_rules`**: Internal lifecycle tools in `server_horizon.py` bootstrap — **NOT callable via MCP**.
+
+4. **`agi_mind` nested verdicts**: When `agi_mind` returns `verdict: "SEAL"` at top-level but `coherence.verdict: "SABAR"` inside, the **worst verdict wins** (truth before speed).
+
+5. **`search_tool`, `vault_ledger`, `reality_compass`**: These "naked" tools return raw data without verdict wrapper. Wrap in `RuntimeEnvelope` with `verdict_wrapper.forge_verdict()` — empty results produce `PARTIAL`, not `VOID`.
+
+6. **`VerdictCode` vs `Verdict`**: Two separate enum classes exist — `VerdictCode` (SEAL/SABAR/PARTIAL/VOID) for verdict_wrapper and `Verdict` (includes HOLD/ALIVE/PROVISIONAL) for stage contracts. Keep separate to avoid breaking existing code.
+
+---
+
+## 🛰️ MCP Call Schema Examples
+
+### init_anchor
+```json
+{
+  "tool": "init_anchor",
+  "arguments": {
+    "actor_id": "user-123",
+    "declared_name": "Arif",
+    "mode": "init"
+  }
+}
+```
+
+### agi_mind (reason mode)
+```json
+{
+  "tool": "agi_mind",
+  "arguments": {
+    "mode": "reason",
+    "query": "Why does entropy matter?",
+    "constitutional_context": {
+      "stage": "MIND_333",
+      "floors_active": ["F2", "F4", "F7", "F8"]
+    }
+  }
+}
+```
+
+### vault_ledger (seal mode)
+```json
+{
+  "tool": "vault_ledger",
+  "arguments": {
+    "mode": "seal",
+    "data": {
+      "content": "Verified fact",
+      "metadata": {"source": "arifOS"}
+    }
+  }
+}
+```
+
+### apex_soul (judge mode)
+```json
+{
+  "tool": "apex_soul",
+  "arguments": {
+    "mode": "judge",
+    "action": "seal_vault",
+    "stakes": "HIGH"
+  }
+}
+```
+
+---
+
+## 🔐 Stability Tiers
+
+| Tier | Description | Verdict Expected |
+|------|-------------|------------------|
+| **A** | Verified, stable, ready for production | `SEAL` |
+| **B** | Verified, hardened, minor issues resolved | `SEAL` or `PARTIAL` |
+| **C** | Verified, known limitations documented | `PARTIAL` or `SABAR` |
+| **D** | Experimental, breaking changes possible | Any |
+| **INTERNAL** | Not exposed via MCP | N/A |
+
+---
+
 ## 🏛️ LICENSE
 
 **Runtime:** AGPL-3.0 (must release modifications)

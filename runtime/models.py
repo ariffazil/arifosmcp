@@ -73,7 +73,13 @@ class ArifOSError(FastMCPError):
 class ConstitutionalViolationError(ArifOSError, AuthorizationError):
     """Raised when a Hard Constitutional Floor is breached. Results in VOID."""
 
-    def __init__(self, message: str, floor_code: Any, extra: dict[str, Any] | None = None, remediation: dict[str, Any] | None = None):
+    def __init__(
+        self,
+        message: str,
+        floor_code: Any,
+        extra: dict[str, Any] | None = None,
+        remediation: dict[str, Any] | None = None,
+    ):
         super().__init__(
             message=f"CONSTITUTIONAL COLLAPSE: {message}",
             fault_class="CONSTITUTIONAL",
@@ -87,7 +93,13 @@ class ConstitutionalViolationError(ArifOSError, AuthorizationError):
 class InfrastructureFaultError(ArifOSError, ToolError):
     """Raised when a mechanical fault occurs. Results in 888_HOLD."""
 
-    def __init__(self, message: str, fault_code: Any, extra: dict[str, Any] | None = None, remediation: dict[str, Any] | None = None):
+    def __init__(
+        self,
+        message: str,
+        fault_code: Any,
+        extra: dict[str, Any] | None = None,
+        remediation: dict[str, Any] | None = None,
+    ):
         super().__init__(
             message=f"MECHANICAL FAULT: {message}",
             fault_class="MECHANICAL",
@@ -101,7 +113,12 @@ class InfrastructureFaultError(ArifOSError, ToolError):
 class EpistemicGapError(ArifOSError, ToolError):
     """Raised when grounding is insufficient. Results in SABAR."""
 
-    def __init__(self, message: str, extra: dict[str, Any] | None = None, remediation: dict[str, Any] | None = None):
+    def __init__(
+        self,
+        message: str,
+        extra: dict[str, Any] | None = None,
+        remediation: dict[str, Any] | None = None,
+    ):
         super().__init__(
             message=f"EPISTEMIC GAP: {message}",
             fault_class="EPISTEMIC",
@@ -120,6 +137,7 @@ class AuthMethod(str, Enum):
 
 class BudgetTier(str, Enum):
     """Token budget tiers for MCP tools."""
+
     MICRO = "micro"
     SMALL = "small"
     MEDIUM = "medium"
@@ -128,6 +146,7 @@ class BudgetTier(str, Enum):
 
 class OverflowPolicy(str, Enum):
     """Behavior when a budget is exceeded."""
+
     FAIL = "fail"
     TRUNCATE = "truncate"
     TRUNCATE_AND_FLAG = "truncate_and_flag"
@@ -143,7 +162,6 @@ BUDGET_MAP: dict[BudgetTier | str, int] = {
     "medium": 1000,
     "large": 2000,
 }
-
 
 
 class AuthContext(BaseModel):
@@ -163,7 +181,7 @@ class AuthContext(BaseModel):
     parent_signature: str | None = None
     signature: str | None = None
     prev_vault_hash: str | None = None
-    
+
     # Backward compatibility
     method: AuthMethod = AuthMethod.SESSION
     credential: str | None = Field(default=None, description="Token, signature, or session key.")
@@ -175,6 +193,7 @@ class AuthContext(BaseModel):
 
     def __getitem__(self, item: str) -> Any:
         return getattr(self, item)
+
 
 class RuntimeStatus(str, Enum):
     SUCCESS = "SUCCESS"
@@ -268,6 +287,7 @@ class Stage(str, Enum):
 
 class StageContract(BaseModel):
     """The Law of the Stage: Rules for metabolic transitions."""
+
     stage: Stage
     allowed_tools: list[str]
     mandatory_floors: list[str]
@@ -281,56 +301,56 @@ CANONICAL_STAGE_CONTRACTS: dict[Stage, StageContract] = {
         allowed_tools=["init_anchor"],
         mandatory_floors=["F11"],
         valid_verdicts=[Verdict.ALIVE, Verdict.PROVISIONAL, Verdict.HOLD, Verdict.SEAL],
-        exit_criteria="Anchored identity (session_id != 'global')."
+        exit_criteria="Anchored identity (session_id != 'global').",
     ),
     Stage.SENSE_111: StageContract(
         stage=Stage.SENSE_111,
         allowed_tools=["physics_reality", "math_estimator"],
         mandatory_floors=["F2", "F4"],
         valid_verdicts=[Verdict.PROVISIONAL, Verdict.SABAR],
-        exit_criteria="Environmental data ingested."
+        exit_criteria="Environmental data ingested.",
     ),
     Stage.REALITY_222: StageContract(
         stage=Stage.REALITY_222,
         allowed_tools=["physics_reality", "engineering_memory"],
         mandatory_floors=["F2", "F10"],
         valid_verdicts=[Verdict.PROVISIONAL, Verdict.SABAR, Verdict.HOLD],
-        exit_criteria="Truth-grounded state established."
+        exit_criteria="Truth-grounded state established.",
     ),
     Stage.ROUTER_444: StageContract(
         stage=Stage.ROUTER_444,
         allowed_tools=["arifOS_kernel"],
         mandatory_floors=["F11", "F12"],
         valid_verdicts=[Verdict.PROVISIONAL, Verdict.HOLD, Verdict.VOID, Verdict.SEAL],
-        exit_criteria="Directed reasoning path."
+        exit_criteria="Directed reasoning path.",
     ),
     Stage.MIND_333: StageContract(
         stage=Stage.MIND_333,
         allowed_tools=["agi_mind", "physics_reality", "engineering_memory"],
         mandatory_floors=["F2", "F4", "F7", "F8"],
         valid_verdicts=[Verdict.PROVISIONAL, Verdict.SABAR, Verdict.HOLD, Verdict.SEAL],
-        exit_criteria="Grounded hypotheses with G★ > 0.70."
+        exit_criteria="Grounded hypotheses with G★ > 0.70.",
     ),
     Stage.HEART_666: StageContract(
         stage=Stage.HEART_666,
         allowed_tools=["asi_heart"],
         mandatory_floors=["F5", "F6", "F9"],
         valid_verdicts=[Verdict.PROVISIONAL, Verdict.HOLD, Verdict.VOID, Verdict.SEAL],
-        exit_criteria="Non-destructive consequence prediction (Peace² >= 1.0)."
+        exit_criteria="Non-destructive consequence prediction (Peace² >= 1.0).",
     ),
     Stage.JUDGE_888: StageContract(
         stage=Stage.JUDGE_888,
         allowed_tools=["apex_soul"],
         mandatory_floors=["F3", "F12", "F13"],
         valid_verdicts=[Verdict.SEAL, Verdict.HOLD, Verdict.VOID],
-        exit_criteria="Human or Consensus ratification."
+        exit_criteria="Human or Consensus ratification.",
     ),
     Stage.VAULT_999: StageContract(
         stage=Stage.VAULT_999,
         allowed_tools=["vault_ledger"],
         mandatory_floors=["F1", "F13"],
         valid_verdicts=[Verdict.SEAL],
-        exit_criteria="Immutable Merkle chain commit."
+        exit_criteria="Immutable Merkle chain commit.",
     ),
 }
 
@@ -382,6 +402,7 @@ class PNSContext(BaseModel):
         """Helper to retrieve a signal by name."""
         return getattr(self, organ_name.lower(), None)
 
+
 class PersonaRole(str, Enum):
     """AI self-declared operational roles - governed whitelist."""
 
@@ -394,14 +415,29 @@ class PersonaRole(str, Enum):
 
 class TelemetryVitals(BaseModel):
     """Rule 3: The Public Score Card — Sovereign Vitals."""
-    ds: float = Field(0.0, description="ΔS: Entropy Delta (Landauer derivation). High dS blocks Forge (F4).")
-    peace2: float = Field(1.0, description="Peace²: Lyapunov Stability. Low Peace blocks Execute (F5).")
-    kappa_r: float | None = Field(None, description="κwᵣ: Maruah/Empathy Score. Low score raises Hold (F6).")
+
+    ds: float = Field(
+        0.0, description="ΔS: Entropy Delta (Landauer derivation). High dS blocks Forge (F4)."
+    )
+    peace2: float = Field(
+        1.0, description="Peace²: Lyapunov Stability. Low Peace blocks Execute (F5)."
+    )
+    kappa_r: float | None = Field(
+        None, description="κwᵣ: Maruah/Empathy Score. Low score raises Hold (F6)."
+    )
     G_star: float = Field(0.0, description="G★: Genius/Coherence Score. <0.80 blocks Forge (F8).")
-    echo_debt: float = Field(0.0, description="Historical Contradictions. Measured from VAULT999 (F5).")
-    shadow: float = Field(0.0, description="Hidden Assumption Load. Inferred from Grounding gaps (F9).")
-    confidence: float = Field(0.0, description="Ω0: Confidence (Gödel-bounded). High Ω0 requires Hold (F7).")
-    psi_le: str = Field("0.0 (Estimate Only)", description="Ψ_LE: Emergence Pressure. Forensic trace only.")
+    echo_debt: float = Field(
+        0.0, description="Historical Contradictions. Measured from VAULT999 (F5)."
+    )
+    shadow: float = Field(
+        0.0, description="Hidden Assumption Load. Inferred from Grounding gaps (F9)."
+    )
+    confidence: float = Field(
+        0.0, description="Ω0: Confidence (Gödel-bounded). High Ω0 requires Hold (F7)."
+    )
+    psi_le: str = Field(
+        "0.0 (Estimate Only)", description="Ψ_LE: Emergence Pressure. Forensic trace only."
+    )
     verdict: str = Field("Alive", description="System-level vitality state.")
     # Hard Budgeting & Telemetry (V2)
     token_usage: int = Field(0, description="Total tokens consumed in this tool call.")
@@ -459,6 +495,7 @@ class TripleWitness(BaseModel):
 
 class CanonicalMetrics(BaseModel):
     """Unified arifOS Telemetry (Score Integrity Protocol)."""
+
     telemetry: TelemetryVitals = Field(default_factory=TelemetryVitals)
     basis: TelemetryBasis = Field(default_factory=TelemetryBasis)
     witness: TripleWitness = Field(default_factory=TripleWitness)
@@ -483,6 +520,7 @@ class CanonicalMetrics(BaseModel):
         return self.telemetry.ds
 
     model_config = ConfigDict(populate_by_name=True)
+
 
 class CanonicalAuthority(BaseModel):
     actor_id: str = "anonymous"
@@ -511,6 +549,15 @@ class CanonicalMeta(BaseModel):
     dry_run: bool = False
     motto: str | None = None
     deprecation: dict[str, Any] | None = None
+    reason_code: str | None = Field(
+        default=None, description="Standardized reason code (e.g., OK_ALL_PASS, ENTROPY_HIGH)"
+    )
+    floors_checked: list[str] = Field(
+        default_factory=list, description="F-codes checked during this tool call"
+    )
+    floors_failed: list[str] = Field(
+        default_factory=list, description="F-codes that failed during this tool call"
+    )
 
 
 class PersonaId(str, Enum):
@@ -668,7 +715,7 @@ class RuntimeEnvelope(BaseModel):
     next_action: dict[str, Any] | None = None  # Anti-chaos: exact next step
     sabar_step: str | None = None  # SABAR protocol: exact cooling / de-escalation step
     state_transition: str | None = None
-    
+
     # Anti-chaos: caller state visibility (Phase 1)
     caller_state: str = "anonymous"  # anonymous|claimed|anchored|verified|scoped|approved
     allowed_next_tools: list[str] = Field(default_factory=list)
@@ -677,8 +724,10 @@ class RuntimeEnvelope(BaseModel):
 
     session_id: str | None = None
     stage: str
-    verdict: Any = VerdictCode.SABAR  # Flexible during init, forced to string in dict
-    verdict_detail: VerdictDetail | None = Field(default=None, description="Structured v1.0 details.")
+    verdict: Verdict = Verdict.SABAR  # Backward compat - to_dict() injects from verdict_detail.code
+    verdict_detail: VerdictDetail | None = Field(
+        default=None, description="Structured v1.0 details."
+    )
     status: RuntimeStatus = RuntimeStatus.SUCCESS
     machine_status: MachineState = MachineState.READY
     machine_issue: MachineIssueLabel | None = None
@@ -729,10 +778,11 @@ class RuntimeEnvelope(BaseModel):
         return getattr(self, item)
 
     def to_dict(self) -> dict:
-        # Compatibility injection: ensure top-level 'verdict' matches code
         res = self.model_dump(mode="json")
         if self.verdict_detail:
             res["verdict"] = self.verdict_detail.code.value
+        elif isinstance(self.verdict, Verdict):
+            res["verdict"] = self.verdict.value
         return res
 
 
