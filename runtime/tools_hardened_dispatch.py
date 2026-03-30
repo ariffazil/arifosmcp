@@ -24,6 +24,7 @@ from arifosmcp.runtime.tools_hardened_v2 import (
     HardenedASICritique,
     HardenedApexJudge,
     HardenedVaultSeal,
+    HardenedMathEstimator,
 )
 from arifosmcp.runtime.truth_pipeline_hardened import HardenedRealityAtlas, HardenedRealityCompass
 
@@ -36,6 +37,7 @@ asi_heart_dispatch_impl = HardenedASICritique()
 agentzero_engineer_tool = HardenedAgentZeroEngineer()
 apex_judge_tool = HardenedApexJudge()
 vault_seal_tool = HardenedVaultSeal()
+math_estimator_tool = HardenedMathEstimator()
 
 
 def _apply_policy(
@@ -391,6 +393,17 @@ async def hardened_arifos_kernel_dispatch(
     return _apply_policy(result, "arifOS_kernel", mode, payload)
 
 
+async def hardened_math_estimator_dispatch(
+    mode: str, payload: dict[str, Any], **kwargs
+) -> dict[str, Any]:
+    if mode in ("health", "cost"):
+        envelope = await math_estimator_tool.estimate(
+            mode=mode, session_id=payload.get("session_id")
+        )
+        return _apply_policy(envelope.to_dict(), "math_estimator", mode, payload)
+    return {"ok": False, "error": f"Invalid mode for math_estimator: {mode}"}
+
+
 HARDENED_DISPATCH_MAP = {
     "init_anchor": hardened_init_anchor_dispatch,
     "arifOS_kernel": hardened_arifos_kernel_dispatch,
@@ -402,4 +415,5 @@ HARDENED_DISPATCH_MAP = {
     "vault_ledger": hardened_vault_ledger_dispatch,
     "code_engine": hardened_code_engine_dispatch,
     "architect_registry": hardened_architect_registry_dispatch,
+    "math_estimator": hardened_math_estimator_dispatch,
 }
