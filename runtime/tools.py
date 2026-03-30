@@ -270,22 +270,38 @@ async def arifos_kernel(
 async def check_vital(
     session_id: str | None = None,
     actor_id: str | None = None,
+    risk_tier: str = "low",
+    dry_run: bool = True,
+    auth_context: dict | None = None,
+    **kwargs: Any,
 ) -> RuntimeEnvelope:
     return await math_estimator(
         mode="vitals",
         session_id=session_id,
         actor_id=actor_id,
+        risk_tier=risk_tier,
+        dry_run=dry_run,
+        auth_context=auth_context,
+        **kwargs,
     )
 
 
 async def audit_rules(
     session_id: str | None = None,
     actor_id: str | None = None,
+    risk_tier: str = "low",
+    dry_run: bool = True,
+    auth_context: dict | None = None,
+    **kwargs: Any,
 ) -> RuntimeEnvelope:
     return await apex_soul(
         mode="rules",
         session_id=session_id,
         actor_id=actor_id,
+        risk_tier=risk_tier,
+        dry_run=dry_run,
+        auth_context=auth_context,
+        **kwargs,
     )
 
 

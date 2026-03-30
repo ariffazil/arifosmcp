@@ -419,7 +419,7 @@ class HardenedInitAnchor:
             "execute": AuthorityLevel.AGENT,
             "observe": AuthorityLevel.OPERATOR,
             "advise": AuthorityLevel.USER,
-            "sovereign": AuthorityLevel.SYSTEM,
+            "sovereign": AuthorityLevel.SOVEREIGN,
         }
         auth_state = "verified" if effective_auth_ctx.get("signature") else "claimed_only"
         authority_obj = CanonicalAuthority(
@@ -623,7 +623,7 @@ Begin reasoning with this constitutional grounding. Flag any paradox, uncertaint
             "execute": AuthorityLevel.AGENT,
             "observe": AuthorityLevel.OPERATOR,
             "advise": AuthorityLevel.USER,
-            "sovereign": AuthorityLevel.SYSTEM,
+            "sovereign": AuthorityLevel.SOVEREIGN,
         }
         authority_obj = CanonicalAuthority(
             actor_id=state.declared_name,
