@@ -7,7 +7,7 @@ Each mega-tool is now in its own file for independent auditing and testing.
 11 Mega-Tools:
   01_init_anchor       → 000_INIT   (PSI Ψ)
   02_arifOS_kernel     → 444_ROUTER (DELTA/PSI)
-  03_apex_soul         → 888_JUDGE  (PSI Ψ)
+  03_apex_judge         → 888_JUDGE  (PSI Ψ)
   04_vault_ledger      → 999_VAULT  (PSI Ψ)
   05_agi_mind          → 333_MIND   (DELTA Δ)
   06_asi_heart         → 666_HEART  (OMEGA Ω)
@@ -72,7 +72,7 @@ from arifosmcp.runtime.schemas import IntentType
 from arifosmcp.runtime.tools_hardened_dispatch import HARDENED_DISPATCH_MAP
 from arifosmcp.runtime.tools_internal import (
     agi_mind_dispatch_impl,
-    apex_soul_dispatch_impl,
+    apex_judge_dispatch_impl,
     architect_registry_dispatch_impl,
     arifos_kernel_impl,
     asi_heart_dispatch_impl,
@@ -92,7 +92,7 @@ logger = logging.getLogger(__name__)
 from arifosmcp.runtime.megaTools import (
     init_anchor,
     arifOS_kernel,
-    apex_soul,
+    apex_judge,
     vault_ledger,
     agi_mind,
     asi_heart,
@@ -294,7 +294,7 @@ async def audit_rules(
     auth_context: dict | None = None,
     **kwargs: Any,
 ) -> RuntimeEnvelope:
-    return await apex_soul(
+    return await apex_judge(
         mode="rules",
         session_id=session_id,
         actor_id=actor_id,
@@ -430,6 +430,7 @@ async def asi_critique(
 
 
 async def apex_judge(
+    mode: str = "judge",
     candidate: str | None = None,
     session_id: str | None = None,
     actor_id: str | None = None,
@@ -439,10 +440,13 @@ async def apex_judge(
     caller_context: dict | None = None,
     auth_context: dict | None = None,
     ctx: Context | None = None,
+    **kwargs: Any,
 ) -> RuntimeEnvelope:
-    return await apex_soul(
-        mode="judge",
-        query=candidate,
+    from arifosmcp.runtime.megaTools import apex_judge as impl
+
+    return await impl(
+        mode=mode,
+        proposal=candidate,
         session_id=session_id,
         actor_id=actor_id,
         human_approval=human_approval,
@@ -451,6 +455,7 @@ async def apex_judge(
         caller_context=caller_context,
         auth_context=auth_context,
         ctx=ctx,
+        **kwargs,
     )
 
 
@@ -598,15 +603,15 @@ async def agentzero_engineer(
 
 
 async def agentzero_validate(**kwargs: Any) -> RuntimeEnvelope:
-    return await apex_soul(mode="validate", **kwargs)
+    return await apex_judge(mode="validate", **kwargs)
 
 
 async def agentzero_armor_scan(**kwargs: Any) -> RuntimeEnvelope:
-    return await apex_soul(mode="armor", **kwargs)
+    return await apex_judge(mode="armor", **kwargs)
 
 
 async def agentzero_hold_check(**kwargs: Any) -> RuntimeEnvelope:
-    return await apex_soul(mode="hold", **kwargs)
+    return await apex_judge(mode="hold", **kwargs)
 
 
 async def agentzero_memory_query(**kwargs: Any) -> RuntimeEnvelope:
@@ -636,7 +641,7 @@ async def compat_probe(mode: str = "audit", **kwargs: Any) -> RuntimeEnvelope:
 FINAL_TOOL_IMPLEMENTATIONS: dict[str, Callable[..., Any]] = {
     "init_anchor": init_anchor,
     "arifOS_kernel": arifOS_kernel,
-    "apex_soul": apex_soul,
+    "apex_judge": apex_judge,
     "vault_ledger": vault_ledger,
     "agi_mind": agi_mind,
     "asi_heart": asi_heart,
@@ -690,7 +695,7 @@ ALL_TOOL_IMPLEMENTATIONS = {**FINAL_TOOL_IMPLEMENTATIONS, **LEGACY_COMPAT_MAP}
 
 def _build_legacy_payload(mega_tool: str, mode: str, values: dict[str, Any]) -> dict[str, Any]:
     payload = {key: value for key, value in values.items() if value is not None}
-    if mega_tool == "apex_soul":
+    if mega_tool == "apex_judge":
         candidate = (
             payload.get("candidate")
             or payload.get("candidate_output")
@@ -822,7 +827,7 @@ __all__ = [
     # 11 Mega-Tools
     "init_anchor",
     "arifOS_kernel",
-    "apex_soul",
+    "apex_judge",
     "vault_ledger",
     "agi_mind",
     "asi_heart",

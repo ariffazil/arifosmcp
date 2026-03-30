@@ -16,7 +16,7 @@ from arifosmcp.runtime.tools_hardened_dispatch import HARDENED_DISPATCH_MAP
 from fastmcp.dependencies import CurrentContext
 
 
-async def apex_soul(
+async def apex_judge(
     mode: str = "judge",
     payload: dict[str, Any] | None = None,
     proposal: str | None = None,
@@ -42,8 +42,8 @@ async def apex_soul(
     resolved_payload.setdefault("dry_run", dry_run)
     resolved_payload.update(kwargs)
 
-    if "apex_soul" in HARDENED_DISPATCH_MAP:
-        res = await HARDENED_DISPATCH_MAP["apex_soul"](mode=mode, payload=resolved_payload)
+    if "apex_judge" in HARDENED_DISPATCH_MAP:
+        res = await HARDENED_DISPATCH_MAP["apex_judge"](mode=mode, payload=resolved_payload)
         if isinstance(res, dict):
             ok = res.get("ok", True)
             _payload = res.get("payload", res) if isinstance(res.get("payload"), dict) else res
@@ -53,7 +53,7 @@ async def apex_soul(
                 # Move diagnostic fields to top level of payload for TestAuditRulesBootstrap
                 _final_payload = {
                     "ok": True,
-                    "tool": "apex_soul",
+                    "tool": "apex_judge",
                     "status": "SUCCESS",
                     "result_type": "apex_rules_result@v2",
                     # Metadata for governance
@@ -78,7 +78,7 @@ async def apex_soul(
                 effective_verdict = verdict_val or (Verdict.SEAL if ok else Verdict.VOID)
 
             return RuntimeEnvelope(
-                tool=res.get("tool", "apex_soul"),
+                tool=res.get("tool", "apex_judge"),
                 stage=res.get("organ_stage") or res.get("stage") or "888_JUDGE",
                 status=RuntimeStatus.SUCCESS if ok else RuntimeStatus.ERROR,
                 verdict=effective_verdict,

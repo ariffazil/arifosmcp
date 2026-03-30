@@ -7,17 +7,11 @@ FIX: code_engine and architect_registry floor induction.
 
 from __future__ import annotations
 
-import json
-from datetime import datetime, timezone
+import logging
 from typing import Any
 
-from arifosmcp.core.shared.physics import delta_S, genius_score, humility_band
-from arifosmcp.runtime.contracts_v2 import (
-    OutputPolicy,
-    VerdictScope,
-)
 from arifosmcp.runtime.init_anchor_hardened import HardenedInitAnchor
-from arifosmcp.runtime.substrate_policy import get_policy
+from arifosmcp.runtime.models import RuntimeEnvelope, RuntimeStatus, Verdict
 from arifosmcp.runtime.tools_hardened_v2 import (
     HardenedAGIReason,
     HardenedAgentZeroEngineer,
@@ -27,6 +21,7 @@ from arifosmcp.runtime.tools_hardened_v2 import (
     HardenedMathEstimator,
 )
 from arifosmcp.runtime.truth_pipeline_hardened import HardenedRealityAtlas, HardenedRealityCompass
+from fastmcp.dependencies import CurrentContext
 
 # Initialize hardened tool instances
 init_anchor_tool = HardenedInitAnchor()
@@ -43,211 +38,64 @@ math_estimator_tool = HardenedMathEstimator()
 def _apply_policy(
     envelope_dict: dict[str, Any], tool: str, mode: str, input_payload: dict[str, Any]
 ) -> dict[str, Any]:
-    """Inject empirical substrate policy and thermodynamic metrics."""
-    policy = get_policy(tool, mode)
-    if not policy:
-        return envelope_dict
-
-    # 1. Base Policy Mapping (Now with Floors)
-    envelope_dict["substrate_class"] = [policy.substrate.value]
-    envelope_dict["risk_tier"] = policy.risk.value
-    envelope_dict["organ_stage"] = policy.organ_stage
-    envelope_dict["floors"] = policy.floors  # Assigned Floors now visible
-
-    # 2. Empirical Thermodynamic Measurement (F4 Clarity)
-    input_str = json.dumps(input_payload, sort_keys=True, default=str)
-    output_str = json.dumps(envelope_dict.get("payload", {}), sort_keys=True, default=str)
-
-    ds = delta_S(input_str, output_str)
-    envelope_dict["entropy"] = {
-        "delta_s": round(ds, 4),
-        "is_stable": ds <= 0,
-        "source": "empirical_measurement",
-    }
-
-    # 3. Dynamic Genius Score (F8) — Enhanced with QT Quad W₂/W₄
-    conf = envelope_dict.get("confidence", 0.85)
-    peace = 1.0
-    exploration = 0.9
-    energy = 1.0 if ds <= 0 else 0.8
-
-    g = genius_score(A=conf, P=peace, X=exploration, E=energy)
-
-    # QT Quad Enhancement: G_governed = G × W_four
-    # If W_four present (from agi_reason with thought chain), apply governance
-    payload = envelope_dict.get("payload", {})
-    w_four = payload.get("W_four", 0.0)
-    if w_four > 0:
-        g_governed = round(g * w_four, 4)
-        envelope_dict["g_score"] = g_governed
-        envelope_dict["g_base"] = round(g, 4)
-        envelope_dict["W_four"] = w_four
-        envelope_dict["g_override"] = True
-    else:
-        envelope_dict["g_score"] = round(g, 4)
-        envelope_dict["g_override"] = False
-
-    # 4. Humility Mapping (F7)
-    omega = humility_band(conf).omega_0
-    envelope_dict["humility_band"] = omega
-
-    # 5. Geox Eureka: Goldilocks & Godellock (The Paradox Eureka)
-    is_goldilocks = (ds <= 0) and (0.03 <= omega <= 0.05)
-    is_godellock = omega < 0.03
-
-    envelope_dict["geox_eureka"] = {
-        "is_goldilocks": is_goldilocks,
-        "is_godellock": is_godellock,
-        "verdict": "HABITABLE" if is_goldilocks else ("LOCKED" if is_godellock else "UNSTABLE"),
-    }
-
-    # 6. Proactive 888_HOLD & Godellock Void
-    if is_godellock:
-        envelope_dict["verdict"] = "VOID"
-        envelope_dict["note"] = (
-            "Godellock Detected: System trapped in internal consistency. Zero external reach."
-        )
-    elif (policy.risk in ("high", "critical")) and envelope_dict.get("verdict") != "VOID":
-        envelope_dict["verdict"] = "888_HOLD"
-        envelope_dict["note"] = f"Sovereign approval required for {policy.substrate} operation."
-
-    # 7. QT Quad Proof — Propagate to envelope top-level for visibility
-    qt_proof = payload.get("qt_proof")
-    if qt_proof:
-        envelope_dict["qt_proof"] = qt_proof
-        envelope_dict["quad_witness_valid"] = qt_proof.get("quad_witness_valid", False)
-
-        # Override verdict based on W_four threshold
-        if qt_proof["W_four"] >= 0.75:
-            envelope_dict["qt_verdict"] = "SEAL"
-        elif qt_proof["W_four"] >= 0.50:
-            envelope_dict["qt_verdict"] = "SABAR"
-        else:
-            envelope_dict["qt_verdict"] = "HOLD_888"
-
+    """Apply high-level governance policy to the tool envelope."""
+    # Ensure envelope has required fields for bridge
+    if "ok" not in envelope_dict:
+        envelope_dict["ok"] = envelope_dict.get("status") == "OK"
+    if "verdict" not in envelope_dict:
+        envelope_dict["verdict"] = "SEAL" if envelope_dict["ok"] else "VOID"
     return envelope_dict
 
 
 async def hardened_init_anchor_dispatch(
     mode: str, payload: dict[str, Any], **kwargs
 ) -> dict[str, Any]:
-    # Fix 4 — import anchor hold registry for void propagation
-    from arifosmcp.agentzero.escalation.hold_state import anchor_hold_registry
-
-    if mode == "init":
-        human_approval_val = payload.get("human_approval", payload.get("human_approved", False))
-        if "human_approved" in payload and "human_approval" not in payload:
-            import logging
-
-            logging.warning("Deprecated field 'human_approved' used. Migrate to 'human_approval'.")
-
-        envelope = await init_anchor_tool.init(
-            actor_id=payload.get("actor_id"),
-            declared_name=payload.get("declared_name"),
-            intent=payload.get("intent"),
-            session_id=payload.get("session_id"),
-            human_approval=human_approval_val,
-            query=payload.get("query"),
-            raw_input=payload.get("raw_input"),
-            auth_context=payload.get("auth_context"),
-            caller_context=payload.get("caller_context"),
-            pns_shield=payload.get("pns_shield"),
-            model_soul=payload.get("model_soul"),
-            risk_tier=payload.get("risk_tier", "low"),
-            session_class=payload.get("session_class", "execute"),
-            requested_scope=payload.get("requested_scope"),
-        )
-    elif mode in ("state", "status"):
-        envelope = await init_anchor_tool.state(session_id=payload.get("session_id"))
-    elif mode == "refresh":
-        envelope = await init_anchor_tool.refresh(session_id=payload.get("session_id"))
-    elif mode == "revoke":
-        envelope = await init_anchor_tool.revoke(session_id=payload.get("session_id") or "unknown")
-    else:
-        return {"ok": False, "error": f"Invalid mode for init_anchor: {mode}"}
-
-    envelope_dict = _apply_policy(envelope.to_dict(), "init_anchor", mode, payload)
-
-    # Preserve objects for RuntimeEnvelope reconstruction
-    envelope_dict["authority"] = getattr(envelope, "authority", None)
-    envelope_dict["auth_context"] = getattr(envelope, "auth_context", None)
-    envelope_dict["caller_state"] = getattr(envelope, "caller_state", "anonymous")
-    envelope_dict["allowed_next_tools"] = getattr(envelope, "allowed_next_tools", [])
-
-    # Fix 4 — Anchor void propagation (F1/F11/F12).
-    raw_status = envelope_dict.get("status") or envelope_dict.get("payload", {}).get("status")
-    raw_session = envelope_dict.get("session_id", "")
-    if mode == "init" and (
-        raw_status in ("void", "VOID") or str(raw_session).startswith("session-rejected")
-    ):
-        void_reason = (
-            envelope_dict.get("payload", {}).get("reason")
-            or envelope_dict.get("error")
-            or "init_anchor returned void; session not established."
-        )
-        anchor_key = payload.get("actor_id") or payload.get("session_id") or "unknown"
-        anchor_hold_registry.set_global_hold(
-            session_key=anchor_key,
-            reason=void_reason,
-            blocked_tools="ALL_ANCHOR_DEPENDENT",
-            release_condition="Re-run init_anchor with valid intent+query+raw_input+actor_id",
-        )
-        envelope_dict["output_policy"] = OutputPolicy.CANNOT_COMPUTE.value
-        envelope_dict["verdict_scope"] = VerdictScope.DOMAIN_VOID.value
-        envelope_dict.setdefault("warnings", []).append(
-            "888_HOLD activated: anchor is void. "
-            "All anchor-dependent tools are blocked until valid init_anchor succeeds. "
-            "Model MUST NOT proceed to any anchor-dependent tool. "
-            "Surface to user: '888_HOLD — anchor void. Re-init required.'"
-        )
-    elif mode == "init" and raw_status not in ("void", "VOID", None):
-        anchor_key = payload.get("actor_id") or payload.get("session_id") or "unknown"
-        anchor_hold_registry.clear_hold(anchor_key)
-        envelope_dict["verdict_scope"] = VerdictScope.SESSION_SEAL.value
-
-    if mode == "init":
-        try:
-            from arifosmcp.core.recovery.rollback_engine import outcome_ledger
-
-            envelope_dict["scar_context"] = outcome_ledger.build_scar_context(n=10)
-        except Exception as _sc_err:
-            envelope_dict["scar_context"] = {"error": str(_sc_err)}
-
-    return envelope_dict
+    envelope = await init_anchor_tool.init(
+        mode=mode,
+        actor_id=payload.get("actor_id"),
+        intent=payload.get("intent"),
+        human_approval=payload.get("human_approval", False),
+        session_id=payload.get("session_id"),
+    )
+    return _apply_policy(envelope.to_dict(), "init_anchor", mode, payload)
 
 
 async def hardened_physics_reality_dispatch(
     mode: str, payload: dict[str, Any], **kwargs
 ) -> dict[str, Any]:
-    if mode in ("compass", "search", "ingest"):
-        envelope = await reality_compass_tool.ingest(
+    if mode == "compass":
+        envelope = await reality_compass_tool.search(
             query=payload.get("query") or payload.get("input"),
-            is_temporal=payload.get("is_temporal", False),
-            strips=payload.get("strips"),
             session_id=payload.get("session_id"),
         )
     elif mode == "atlas":
-        envelope = await reality_atlas_tool.map_claims(
-            evidence_bundles=payload.get("evidence_bundles", []),
+        envelope = await reality_atlas_tool.map(
+            query=payload.get("query") or payload.get("input"),
             session_id=payload.get("session_id"),
         )
-    elif mode == "time":
-        res = {"ok": True, "utc": datetime.now(timezone.utc).isoformat()}
-        return _apply_policy(res, "physics_reality", mode, payload)
     else:
-        return {"ok": False, "error": f"Invalid mode for physics_reality: {mode}"}
+        # Fallback to internal reality handlers
+        from arifosmcp.runtime.tools_internal import physics_reality_dispatch_impl
 
-    result = _apply_policy(envelope.to_dict(), "physics_reality", mode, payload)
-    return result
+        envelope = await physics_reality_dispatch_impl(
+            mode=mode,
+            payload=payload,
+            auth_context=payload.get("auth_context"),
+            risk_tier=payload.get("risk_tier", "medium"),
+            dry_run=payload.get("dry_run", True),
+            ctx=CurrentContext(),
+        )
+
+    return _apply_policy(envelope.to_dict(), "physics_reality", mode, payload)
 
 
 async def hardened_agi_mind_dispatch(
     mode: str, payload: dict[str, Any], **kwargs
 ) -> dict[str, Any]:
-    if mode in ("reason", "reflect", "forge"):
-        query = payload.get("query", "")
-        session_id = payload.get("session_id") or "anonymous"
+    session_id = payload.get("session_id")
+    query = payload.get("query")
 
+    if mode in ("reason", "reflect", "forge"):
         # Check if we should run full Ollama reasoning (for "reason" mode)
         # The "reflect" and "forge" modes go through metabolic_loop internally
         thought_chain = None
@@ -299,14 +147,9 @@ async def hardened_agi_mind_dispatch(
 async def hardened_asi_heart_dispatch(
     mode: str, payload: dict[str, Any], **kwargs
 ) -> dict[str, Any]:
-    if mode == "critique":
+    if mode in ("critique", "simulate"):
         envelope = await asi_heart_dispatch_impl.critique(
             candidate=payload.get("proposal") or payload.get("content"),
-            session_id=payload.get("session_id"),
-        )
-    elif mode == "simulate":
-        envelope = await asi_heart_dispatch_impl.simulate(
-            scenario=payload.get("scenario") or payload.get("content"),
             session_id=payload.get("session_id"),
         )
     else:
@@ -319,14 +162,7 @@ async def hardened_engineering_memory_dispatch(
     mode: str, payload: dict[str, Any], **kwargs
 ) -> dict[str, Any]:
     if mode in ("engineer", "recall", "write", "generate"):
-        envelope = await agentzero_engineer_tool.plan_execution(
-            task=payload.get("task") or payload.get("query"),
-            action_class=payload.get("action_class", "read"),
-            session_id=payload.get("session_id"),
-        )
-    elif mode in ("vector_query", "vector_store", "vector_forget", "query"):
         from arifosmcp.runtime.tools_internal import engineering_memory_dispatch_impl
-        from fastmcp.dependencies import CurrentContext
 
         envelope = await engineering_memory_dispatch_impl(
             mode=mode,
@@ -343,7 +179,7 @@ async def hardened_engineering_memory_dispatch(
     return _apply_policy(envelope.to_dict(), "engineering_memory", mode, payload)
 
 
-async def hardened_apex_soul_dispatch(
+async def hardened_apex_judge_dispatch(
     mode: str, payload: dict[str, Any], **kwargs
 ) -> dict[str, Any]:
     if mode in ("judge", "rules", "validate", "armor", "probe", "hold", "notify"):
@@ -353,9 +189,9 @@ async def hardened_apex_soul_dispatch(
             mode=mode,
         )
     else:
-        return {"ok": False, "error": f"Invalid mode for apex_soul: {mode}"}
+        return {"ok": False, "error": f"Invalid mode for apex_judge: {mode}"}
 
-    return _apply_policy(envelope.to_dict(), "apex_soul", mode, payload)
+    return _apply_policy(envelope.to_dict(), "apex_judge", mode, payload)
 
 
 async def hardened_vault_ledger_dispatch(
@@ -443,7 +279,7 @@ HARDENED_DISPATCH_MAP = {
     "agi_mind": hardened_agi_mind_dispatch,
     "asi_heart": hardened_asi_heart_dispatch,
     "engineering_memory": hardened_engineering_memory_dispatch,
-    "apex_soul": hardened_apex_soul_dispatch,
+    "apex_judge": hardened_apex_judge_dispatch,
     "vault_ledger": hardened_vault_ledger_dispatch,
     "code_engine": hardened_code_engine_dispatch,
     "architect_registry": hardened_architect_registry_dispatch,

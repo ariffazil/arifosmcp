@@ -116,7 +116,7 @@ def _resolve_caller_state(
     MEGA_TOOLS = [
         "init_anchor",
         "arifOS_kernel",
-        "apex_soul",
+        "apex_judge",
         "vault_ledger",
         "agi_mind",
         "asi_heart",
@@ -129,7 +129,7 @@ def _resolve_caller_state(
 
     visibility = {
         "anonymous": {
-            "allowed": ["init_anchor", "math_estimator", "architect_registry", "apex_soul"],
+            "allowed": ["init_anchor", "math_estimator", "architect_registry", "apex_judge"],
             "blocked": {
                 "arifOS_kernel": "Requires anchored session. Run init_anchor first.",
                 "agi_mind": "Requires anchored session.",
@@ -138,7 +138,7 @@ def _resolve_caller_state(
             },
         },
         "claimed": {
-            "allowed": ["init_anchor", "math_estimator", "architect_registry", "apex_soul"],
+            "allowed": ["init_anchor", "math_estimator", "architect_registry", "apex_judge"],
             "blocked": {
                 "arifOS_kernel": "Elevate to verified identity for full kernel access.",
                 "engineering_memory": "Requires verified identity.",
@@ -335,7 +335,7 @@ async def arifos_kernel_impl(
     return await _wrap_call("arifOS_kernel", Stage.ROUTER_444, session_id, payload, ctx)
 
 
-async def apex_soul_dispatch_impl(
+async def apex_judge_dispatch_impl(
     mode: str, payload: dict, auth_context: dict | None, risk_tier: str, dry_run: bool, ctx: Context
 ) -> RuntimeEnvelope:
     session_id = _normalize_session_id(payload.get("session_id"))
@@ -368,7 +368,7 @@ async def apex_soul_dispatch_impl(
             await ctx.info(f"Escalation notification: {message}")
         return RuntimeEnvelope(
             ok=True,
-            tool="apex_soul",
+            tool="apex_judge",
             session_id=session_id,
             stage="888_HOLD",
             verdict=Verdict.HOLD,
@@ -388,11 +388,11 @@ async def apex_soul_dispatch_impl(
             else {"query": "rm -rf /"}
         )
         envelope = await _wrap_call(
-            "apex_soul_probe", Stage.JUDGE_888, session_id, probe_payload, ctx
+            "apex_judge_probe", Stage.JUDGE_888, session_id, probe_payload, ctx
         )
         return RuntimeEnvelope(
             ok=True,
-            tool="apex_soul",
+            tool="apex_judge",
             session_id=session_id,
             stage="888_JUDGE",
             verdict=Verdict.SEAL,
@@ -404,7 +404,7 @@ async def apex_soul_dispatch_impl(
             },
         )
 
-    raise ValueError(f"Invalid mode for apex_soul: {mode}")
+    raise ValueError(f"Invalid mode for apex_judge: {mode}")
 
 
 async def vault_ledger_dispatch_impl(
@@ -709,7 +709,7 @@ async def engineering_memory_dispatch_impl(
                         ],
                         "what_it_is_not": [
                             "live system state (→ use physics_reality)",
-                            "authority for truth (→ use agi_mind/apex_soul)",
+                            "authority for truth (→ use agi_mind/apex_judge)",
                             "execution capability (→ use code_engine)",
                         ],
                         "next_required_layer": "REALITY",
