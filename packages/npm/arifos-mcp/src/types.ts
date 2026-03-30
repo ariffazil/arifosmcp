@@ -126,7 +126,20 @@ export type RuntimeTrace = Partial<Record<string, Verdict>> & Record<string, Ver
 
 export interface RuntimeAuthority {
   actor_id?: string;
-  level?: "human" | "agent" | "system" | "anonymous" | "operator" | "sovereign" | "declared";
+  level?:
+    | "human"
+    | "user"
+    | "agent"
+    | "system"
+    | "anonymous"
+    | "operator"
+    | "sovereign"
+    | "declared"
+    | "claimed"
+    | "verified"
+    | "apex"
+    | "none"
+    | "execute";
   human_required?: boolean;
   approval_scope?: string[];
   auth_state?: string;

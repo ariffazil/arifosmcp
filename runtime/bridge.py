@@ -97,6 +97,25 @@ TOOL_MAP = {
     "trace_replay": "trace_replay",
 }
 
+
+def _normalize_public_authority_level(level: str | None) -> str:
+    """
+    Public envelopes should expose identity-style authority labels, not session-class labels.
+
+    auth_context may legitimately carry session classes like ``execute`` for continuity logic.
+    The outward-facing ``authority.level`` field is used by clients that expect identity classes.
+    """
+    normalized = (level or "anonymous").strip().lower()
+    return {
+        "observe": "anonymous",
+        "advise": "declared",
+        "execute": "agent",
+        "execute_limited": "agent",
+        "verified_execute": "verified",
+        "web_session": "agent",
+        "web_session_degraded": "declared",
+    }.get(normalized, normalized or "anonymous")
+
 AUTO_BOOTSTRAP_RISK_TIERS = frozenset({"low", "medium"})
 PROTECTED_AUTO_ANCHOR_IDS = frozenset({"arif", "arif-fazil", "ariffazil"})
 _AUTH_CONTEXT_CONTINUITY_KEYS = (
@@ -1053,15 +1072,16 @@ async def call_kernel(
                 effective_level = (
                     auth_ctx.get("authority_level", "declared") if auth_ctx else "declared"
                 )
+                public_level = _normalize_public_authority_level(effective_level)
 
                 # Update authority level in the result as well
                 if "authority" in result:
-                    result["authority"]["level"] = effective_level
+                    result["authority"]["level"] = public_level
                     result["authority"]["auth_state"] = "verified"
                 else:
                     result["authority"] = {
                         "actor_id": effective_actor,
-                        "level": effective_level,
+                        "level": public_level,
                         "auth_state": "verified",
                     }
 
@@ -1133,7 +1153,9 @@ async def call_kernel(
             # Sync authority block
             envelope["authority"] = {
                 "actor_id": auth_ctx.get("actor_id", "anonymous"),
-                "level": auth_ctx.get("authority_level", "anonymous"),
+                "level": _normalize_public_authority_level(
+                    auth_ctx.get("authority_level", "anonymous")
+                ),
                 "auth_state": "verified",
             }
         elif canonical_name == "init_anchor":
@@ -1147,7 +1169,9 @@ async def call_kernel(
                 # Fallback to governance metadata
                 envelope["authority"] = {
                     "actor_id": result["governance"].get("actor_id", claimed_actor_id),
-                    "level": result["governance"].get("authority_level", "anonymous"),
+                    "level": _normalize_public_authority_level(
+                        result["governance"].get("authority_level", "anonymous")
+                    ),
                     "auth_state": "unverified",
                 }
 

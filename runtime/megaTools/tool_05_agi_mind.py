@@ -37,6 +37,7 @@ async def agi_mind(
     allow_execution: bool = False,
     caller_context: dict | None = None,
     auth_context: dict | None = None,
+    constitutional_context: str | None = None,
     debug: bool = False,
     request_id: str | None = None,
     timestamp: str | None = None,
@@ -50,6 +51,8 @@ async def agi_mind(
         payload.setdefault("caller_context", caller_context)
     if auth_context:
         payload.setdefault("auth_context", auth_context)
+    if constitutional_context:
+        payload.setdefault("constitutional_context", constitutional_context)
     if query:
         payload.setdefault("query", query)
     if session_id:

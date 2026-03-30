@@ -132,8 +132,8 @@ services:
     image: qdrant/qdrant:latest
     container_name: qdrant
     ports:
-      - "6333:6333"
-      - "6334:6334"
+      - "127.0.0.1:6333:6333"
+      - "127.0.0.1:6334:6334"
     init: true
     environment:
       - QDRANT__STORAGE__STORAGE_PATH=/qdrant/storage
@@ -279,7 +279,7 @@ services:
       - HF_TOKEN=${HF_TOKEN}
       - OLLAMA_URL=http://ollama:11434
       - REDIS_URL=redis://redis:6379
-      - NODE_OPTIONS=--max-old-space-size=1536
+      - NODE_OPTIONS=--max-old-space-size=4096
       - OPENCLAW_GATEWAY_TOKEN=${OPENCLAW_GATEWAY_TOKEN}
       - PATH=/usr/local/sbin:/usr/local/bin:/root/.local/bin:/root/.npm-global/bin:/host/clis:/host/bin:/usr/sbin:/usr/bin:/sbin:/bin
       - GH_TOKEN=${GITHUB_TOKEN:-}
