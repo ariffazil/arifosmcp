@@ -330,6 +330,21 @@ class FloorScores(BaseModel):
             "f13_sovereign": self.f13_sovereign,
         }
 
+    def to_v2_floors(self) -> dict[str, dict]:
+        """Convert to V2 normalized shorthand floor checks for Step 3 auditing."""
+        return {
+            "F1": {"passed": self.f1_amanah > 0.7, "score": round(self.f1_amanah, 4)},
+            "F2": {"passed": self.f2_truth > 0.7, "score": round(self.f2_truth, 4)},
+            "F3": {"passed": self.f3_tri_witness > 0.7, "score": round(self.f3_tri_witness, 4)},
+            "F4": {"passed": self.f4_clarity > 0.5, "delta_s": round(self.f4_clarity, 4)},
+            "F5": {"passed": self.f5_peace > 0.7, "score": round(self.f5_peace, 4)},
+            "F6": {"passed": self.f6_empathy > 0.7, "score": round(self.f6_empathy, 4)},
+            "F7": {"passed": self.f7_humility > 0.01, "omega": round(self.f7_humility, 4)},
+            "F8": {"passed": self.f8_genius > 0.7, "score": round(self.f8_genius, 4)},
+            "F10": {"passed": self.f10_ontology, "status": "grounded" if self.f10_ontology else "void"},
+            "F13": {"passed": self.f13_sovereign > 0.7, "score": round(self.f13_sovereign, 4)},
+        }
+
     @property
     def tri_witness_consensus(self) -> float:
         """Geometric mean of H, A, E witnesses (v60 definition)."""
@@ -733,6 +748,11 @@ class AgiOutput(BaseOrganOutput):
     answer: ReasonMindAnswer
     delta_bundle: DeltaBundle | None = None
     floors: dict[str, str] = Field(default_factory=dict)
+    
+    # Cognitive Depth (V2 Requirement)
+    claims: list[str] = Field(default_factory=list)
+    assumptions: list[str] = Field(default_factory=list)
+    uncertainties: list[str] = Field(default_factory=list)
 
     # Legacy/Extended fields
     thoughts: list[ThoughtNode] = Field(default_factory=list)

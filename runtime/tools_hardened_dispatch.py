@@ -114,6 +114,9 @@ async def hardened_agi_mind_dispatch(
                     session_id=session_id,
                     action="reason",
                     reason_mode="default",
+                    actor_id=payload.get("actor_id"),
+                    dry_run=payload.get("dry_run", False),
+                    debug=payload.get("debug", False),
                     max_tokens=800,
                 )
 
@@ -132,6 +135,9 @@ async def hardened_agi_mind_dispatch(
             query=query,
             is_forge=(mode == "forge"),
             session_id=session_id,
+            actor_id=payload.get("actor_id"),
+            dry_run=payload.get("dry_run", False),
+            debug=payload.get("debug", False),
             thought_chain=thought_chain,
             telos_manifold=payload.get("telos_manifold"),
             previous_coherence=payload.get("previous_coherence"),
@@ -141,6 +147,26 @@ async def hardened_agi_mind_dispatch(
         return {"ok": False, "error": f"Invalid mode for agi_mind: {mode}"}
 
     envelope_dict = _apply_policy(envelope.to_dict(), "agi_mind", mode, payload)
+    
+    # ═════════════════════════════════════════════════════════════════
+    # PHILOSOPHY WIRING FIX (agi_mind v2)
+    # ═════════════════════════════════════════════════════════════════
+    from arifosmcp.runtime.philosophy import select_governed_philosophy
+    
+    # Extract floor failures for philosophical context
+    floor_checks = envelope_dict.get("audit", {}).get("constitutional_checks", {})
+    failed_floors = [k for k, v in floor_checks.items() if not v] if floor_checks else []
+    
+    # Generate philosophy based on actual verdict and metrics
+    envelope_dict["philosophy"] = select_governed_philosophy(
+        context=str(payload.get("query", "")),
+        stage="333_MIND",
+        verdict=envelope_dict.get("verdict", "HOLD"),
+        g_score=envelope_dict.get("g_score", 0.5),
+        failed_floors=failed_floors,
+        session_id=payload.get("session_id", "anonymous"),
+    )
+    
     return envelope_dict
 
 
