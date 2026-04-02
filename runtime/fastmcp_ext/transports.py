@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import os
-import secrets
 import time
 from dataclasses import dataclass
 from threading import Lock
@@ -82,7 +81,14 @@ class SecurityHeadersMiddleware:
                 headers.setdefault("X-Frame-Options", "DENY")
                 headers.setdefault(
                     "Content-Security-Policy",
-                    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' wss: https:; frame-ancestors 'none'; base-uri 'self'",
+                    (
+                        "default-src 'self'; "
+                        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://static.cloudflareinsights.com; "
+                        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
+                        "font-src 'self' https://fonts.gstatic.com; "
+                        "connect-src 'self' wss: https:; "
+                        "frame-ancestors 'none'; base-uri 'self'"
+                    ),
                 )
             await send(message)
 
@@ -104,8 +110,13 @@ class AgnosticAcceptMiddleware:
             await self.app(scope, receive, send)
             return
 
-        scope["headers"] = _ensure_json_accept_header(scope.get("headers", []))
+        # 🔥 HARDENING: Never corrupt SSE or Health routes
+        path = scope.get("path", "")
+        if "/sse" in path or "/health" in path or "/metrics" in path:
+            await self.app(scope, receive, send)
+            return
 
+        scope["headers"] = _ensure_json_accept_header(scope.get("headers", []))
         await self.app(scope, receive, send)
 
 

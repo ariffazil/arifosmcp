@@ -83,6 +83,13 @@ from arifosmcp.runtime.tools_internal import (
     vault_ledger_dispatch_impl,
 )
 
+# 🔥 Hardening: Path-safe import for Canonical Schemas
+try:
+    from schemas.canonical import CanonicalResponse, Verdict, IntelligenceStatus
+except ImportError:
+    # Fallback to internal or dynamic if path is weird during bootstrap
+    CanonicalResponse = None
+
 logger = logging.getLogger(__name__)
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -811,12 +818,62 @@ def register_tools(mcp: FastMCP, profile: str = "full") -> None:
     for name, handler in all_public_tools.items():
         if handler is None:
             continue
+            
+        # 🔥 HARDENING: Precision callable check to prevent "first argument must be callable" crash
+        if not callable(handler):
+            logger.error(f"SYSTEM ERROR: Tool '{name}' handler is not callable: {type(handler)}")
+            continue
+
         sig = inspect.signature(handler)
         if any(p.kind == inspect.Parameter.VAR_KEYWORD for p in sig.parameters.values()):
             continue  # skip **kwargs handlers
+            
+        # 🔥 HARDENING: Wrap tool in Canonical Envelope for F1-F13 compliance
+        async def canonical_wrapper(*args, _target_handler=handler, _tool_name=name, **kwargs):
+            try:
+                # 1. Execute the tool kernel
+                result = await _target_handler(*args, **kwargs)
+                
+                # 2. If result is already an envelope, pass through
+                if isinstance(result, dict) and "verdict" in result:
+                    return result
+                
+                # 3. Otherwise, wrap in CanonicalResponse structure
+                if CanonicalResponse:
+                    envelope = CanonicalResponse(
+                        module="arifOS",
+                        ok=True,
+                        status=IntelligenceStatus.QUALIFY,
+                        verdict=Verdict.PROCEED,
+                        confidence=1.0,
+                        reasoning=f"Tool '{_tool_name}' executed successfully.",
+                        payload={"result": result} if not isinstance(result, dict) else result
+                    )
+                    return envelope.model_dump()
+                
+                # Fallback to dict if Pydantic model is unavailable
+                return {
+                    "ok": True, 
+                    "verdict": "PROCEED", 
+                    "module": "arifOS", 
+                    "payload": result
+                }
+            except Exception as e:
+                logger.exception(f"Tool execution failed: {_tool_name}")
+                return {
+                    "ok": False,
+                    "verdict": "VOID",
+                    "reasoning": f"Hard collapse in '{_tool_name}': {str(e)}"
+                }
+
         spec = specs.get(name)
+        
+        # Use functools.wraps to preserve signature for FastMCP inspection
+        import functools
+        wrapped_handler = functools.wraps(handler)(canonical_wrapper)
+        
         ft = FunctionTool.from_function(
-            handler,
+            wrapped_handler,
             name=name,
             description=spec.description if spec else name,
         )
